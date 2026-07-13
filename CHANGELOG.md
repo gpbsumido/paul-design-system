@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.13] - 2026-07-13
+
+### Added
+- Angular package scaffold with standalone components
+- Button Angular component with signal inputs, variant/size/disabled/loading/href
+
 ## [0.1.12] - 2026-07-13
 
 ### Added
