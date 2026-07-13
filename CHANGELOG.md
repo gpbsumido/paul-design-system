@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.17] - 2026-07-13
+
+### Added
+- Storybook stories for all React components: Button, Input, Chip, Card, Modal, Tooltip, Avatar, Badge, Skeleton, IconButton
+- CSF3 format with autodocs, argTypes controls, and args-based stories
+- Modal story with interactive open/close demo
+- Skeleton CardSkeleton composed example
+
 ## [0.1.16] - 2026-07-13
 
 ### Added
