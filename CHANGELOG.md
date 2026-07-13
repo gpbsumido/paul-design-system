@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.7] - 2026-07-13
+
+### Added
+- Chip CSS component with sizes, clickable, and removable variants
+- Badge CSS component with success/warning/error/info variants and dot indicator
+- Avatar CSS component with sizes (sm/md/lg/xl) and fallback initials
+- Card CSS component with elevated/interactive variants and header/body/footer sections
+
 ## [0.1.6] - 2026-07-13
 
 ### Added

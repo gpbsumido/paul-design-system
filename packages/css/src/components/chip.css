@@ -1,0 +1,78 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * Chip – base
+   * ---------------------------------------------------------------- */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--paul-spacing-1);
+    padding: var(--paul-spacing-1) var(--paul-spacing-2);
+    border-radius: var(--paul-radius-full);
+    font-size: var(--paul-font-size-xs);
+    line-height: var(--paul-line-height-tight);
+    border: 1px solid var(--paul-color-border);
+    background: var(--paul-color-surface);
+    color: var(--paul-color-foreground);
+  }
+
+  /* ----------------------------------------------------------------
+   * Sizes
+   * ---------------------------------------------------------------- */
+  .chip--sm {
+    padding: var(--paul-spacing-0\.5) var(--paul-spacing-1\.5);
+    font-size: var(--paul-font-size-xs);
+  }
+
+  .chip--md {
+    /* Default – matches base .chip sizing */
+  }
+
+  /* ----------------------------------------------------------------
+   * Variants
+   * ---------------------------------------------------------------- */
+  .chip--clickable {
+    cursor: pointer;
+    transition: background-color var(--paul-duration-fast) var(--paul-easing-default);
+  }
+
+  .chip--clickable:hover {
+    background-color: var(--paul-color-neutral-100);
+  }
+
+  .chip--removable {
+    padding-right: var(--paul-spacing-1);
+  }
+
+  /* ----------------------------------------------------------------
+   * Remove button
+   * ---------------------------------------------------------------- */
+  .chip__remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    border: none;
+    border-radius: var(--paul-radius-full);
+    background: transparent;
+    color: var(--paul-color-foreground);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .chip__remove:hover {
+    background-color: var(--paul-color-neutral-200);
+  }
+
+  /* ----------------------------------------------------------------
+   * Dark mode
+   * ---------------------------------------------------------------- */
+  [data-theme="dark"] .chip--clickable:hover {
+    background-color: var(--paul-color-neutral-800);
+  }
+
+  [data-theme="dark"] .chip__remove:hover {
+    background-color: var(--paul-color-neutral-700);
+  }
+}
