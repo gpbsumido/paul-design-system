@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.14] - 2026-07-13
+
+### Added
+- Input Angular component with label, error, helper, size, aria-describedby
+- Chip Angular component with clickable/removable modes
+- Card Angular compound components (card, card-header, card-body, card-footer)
+
 ## [0.1.13] - 2026-07-13
 
 ### Added
