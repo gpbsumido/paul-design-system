@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.1.15] - 2026-07-13
+
+### Added
+- Modal Angular component with backdrop dismiss, Escape key, aria-modal
+- Tooltip Angular component with hover trigger and side positioning
+- Avatar Angular component with image/fallback and size variants
+- Badge Angular component with variant colors and dot mode
+- Skeleton Angular component with CSS variable sizing
+- VisuallyHidden Angular component
+
 ## [0.1.14] - 2026-07-13
 
 ### Added

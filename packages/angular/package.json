@@ -1,6 +1,6 @@
 {
   "name": "@paul/angular",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "description": "Angular components for the Paul Design System",
   "license": "MIT",
   "main": "./dist/index.js",
