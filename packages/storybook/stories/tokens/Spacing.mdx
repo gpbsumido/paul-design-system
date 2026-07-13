@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Tokens/Spacing" />
+
+# Spacing Scale
+
+4px base unit scale following Tailwind conventions.
+
+| Token | Value | Preview |
+|-------|-------|---------|
+| `--paul-spacing-0` | 0px | |
+| `--paul-spacing-0.5` | 2px | <div style={{width: 2, height: 16, backgroundColor: '#2563eb', borderRadius: 1}} /> |
+| `--paul-spacing-1` | 4px | <div style={{width: 4, height: 16, backgroundColor: '#2563eb', borderRadius: 1}} /> |
+| `--paul-spacing-2` | 8px | <div style={{width: 8, height: 16, backgroundColor: '#2563eb', borderRadius: 2}} /> |
+| `--paul-spacing-3` | 12px | <div style={{width: 12, height: 16, backgroundColor: '#2563eb', borderRadius: 2}} /> |
+| `--paul-spacing-4` | 16px | <div style={{width: 16, height: 16, backgroundColor: '#2563eb', borderRadius: 2}} /> |
+| `--paul-spacing-6` | 24px | <div style={{width: 24, height: 16, backgroundColor: '#2563eb', borderRadius: 2}} /> |
+| `--paul-spacing-8` | 32px | <div style={{width: 32, height: 16, backgroundColor: '#2563eb', borderRadius: 2}} /> |
+| `--paul-spacing-12` | 48px | <div style={{width: 48, height: 16, backgroundColor: '#2563eb', borderRadius: 2}} /> |
+| `--paul-spacing-16` | 64px | <div style={{width: 64, height: 16, backgroundColor: '#2563eb', borderRadius: 2}} /> |
+| `--paul-spacing-24` | 96px | <div style={{width: 96, height: 16, backgroundColor: '#2563eb', borderRadius: 2}} /> |
+
+## Usage
+
+```css
+.my-element {
+  padding: var(--paul-spacing-4) var(--paul-spacing-6);
+  gap: var(--paul-spacing-3);
+  margin-bottom: var(--paul-spacing-8);
+}
+```

@@ -1,5 +1,86 @@
 # Changelog
 
+## [0.1.19] - 2026-07-13
+
+### Added
+- Storybook interaction tests for Button (click, keyboard), Modal (open/close/escape), Input (typing), Tooltip (hover)
+- test-storybook script for headless interaction test running
+- CI workflow step for interaction tests (commented, requires running Storybook)
+
+## [0.1.18] - 2026-07-13
+
+### Added
+- Chromatic visual regression testing integration
+- GitHub Actions workflow for automated Chromatic on PRs
+- Viewport coverage: 320px (mobile), 768px (tablet), 1280px (desktop)
+- Storybook README with development and Chromatic setup docs
+
+## [0.1.17] - 2026-07-13
+
+### Added
+- Storybook stories for all React components: Button, Input, Chip, Card, Modal, Tooltip, Avatar, Badge, Skeleton, IconButton
+- CSF3 format with autodocs, argTypes controls, and args-based stories
+- Modal story with interactive open/close demo
+- Skeleton CardSkeleton composed example
+
+## [0.1.16] - 2026-07-13
+
+### Added
+- Storybook 8 setup with React Vite framework
+- Theme switcher addon (light/dark via data-theme)
+- Accessibility addon for inline a11y checks
+- Token documentation: Colors, Spacing, Typography MDX pages
+
+## [0.1.15] - 2026-07-13
+
+### Added
+- Modal Angular component with backdrop dismiss, Escape key, aria-modal
+- Tooltip Angular component with hover trigger and side positioning
+- Avatar Angular component with image/fallback and size variants
+- Badge Angular component with variant colors and dot mode
+- Skeleton Angular component with CSS variable sizing
+- VisuallyHidden Angular component
+
+## [0.1.14] - 2026-07-13
+
+### Added
+- Input Angular component with label, error, helper, size, aria-describedby
+- Chip Angular component with clickable/removable modes
+- Card Angular compound components (card, card-header, card-body, card-footer)
+
+## [0.1.13] - 2026-07-13
+
+### Added
+- Angular package scaffold with standalone components
+- Button Angular component with signal inputs, variant/size/disabled/loading/href
+
+## [0.1.12] - 2026-07-13
+
+### Added
+- Modal React component with portal, backdrop click, Escape key, focus trap, aria-modal
+- Tooltip React component with hover trigger, side positioning, aria-describedby
+- Avatar React component with image/fallback modes and size variants
+- Badge React component with success/warning/error/info variants and dot mode
+- Skeleton React component with text/circle/rect variants and CSS variable sizing
+- VisuallyHidden React component wrapping .visually-hidden
+
+## [0.1.11] - 2026-07-13
+
+### Added
+- Input React component with label, error, helper text, size variants, and aria-describedby
+- Chip React component with clickable/removable modes
+- Card React compound component (Card.Header, Card.Body, Card.Footer)
+
+## [0.1.10] - 2026-07-13
+
+### Added
+- React package scaffold with vitest + Testing Library + jsdom
+- Button React component with variant/size/loading/disabled/href props
+- forwardRef support on Button
+- Polymorphic rendering (button or anchor) based on href prop
+- cx() classname utility
+- Vitest workspace config for monorepo-wide testing
+
 ## [0.1.9] - 2026-07-13
 
 ### Added
