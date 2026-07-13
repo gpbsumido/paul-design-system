@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.21] - 2026-07-13
+
+### Changed
+- Comprehensive README with full documentation, component table, architecture decisions
+- Updated CLAUDE.md to reflect final project state and all package details
+
 ## [0.1.20] - 2026-07-13
 
 ### Added
