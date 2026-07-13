@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.18] - 2026-07-13
+
+### Added
+- Chromatic visual regression testing integration
+- GitHub Actions workflow for automated Chromatic on PRs
+- Viewport coverage: 320px (mobile), 768px (tablet), 1280px (desktop)
+- Storybook README with development and Chromatic setup docs
+
 ## [0.1.17] - 2026-07-13
 
 ### Added

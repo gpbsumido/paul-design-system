@@ -1,0 +1,35 @@
+name: Chromatic
+
+on:
+  pull_request:
+    branches: [develop, main]
+
+jobs:
+  chromatic:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build tokens
+        run: npm run build --workspace=packages/tokens
+
+      - name: Build Storybook
+        run: npm run build-storybook --workspace=packages/storybook
+
+      - name: Run Chromatic
+        uses: chromaui/action@latest
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          storybookBuildDir: packages/storybook/storybook-static
+          autoAcceptChanges: main
+          exitZeroOnChanges: true
