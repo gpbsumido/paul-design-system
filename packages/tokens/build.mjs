@@ -330,9 +330,193 @@ function generateCSS() {
   return lines.join('\n');
 }
 
-// Write CSS tokens
+// ---------------------------------------------------------------------------
+// SCSS generation
+// ---------------------------------------------------------------------------
+
+function generateSCSS() {
+  const lines = [];
+  const mapEntries = [];
+
+  function addVar(name, value) {
+    lines.push(`$paul-${name}: ${value};`);
+    mapEntries.push(`  "${name}": ${value}`);
+  }
+
+  // Colors
+  lines.push('// Colors');
+  for (const [palette, shades] of Object.entries(colors)) {
+    for (const [shade, value] of Object.entries(shades)) {
+      addVar(`color-${palette}-${shade}`, value);
+    }
+  }
+  // Light-mode semantic colors
+  for (const [name, value] of Object.entries(semanticColors.light)) {
+    addVar(`color-${name}`, value);
+  }
+
+  lines.push('');
+
+  // Spacing
+  lines.push('// Spacing');
+  for (const [key, value] of Object.entries(spacing)) {
+    addVar(`spacing-${key}`, value);
+  }
+
+  lines.push('');
+
+  // Typography - font size
+  lines.push('// Font Size');
+  for (const [key, value] of Object.entries(fontSize)) {
+    addVar(`font-size-${key}`, value);
+  }
+
+  lines.push('');
+
+  // Typography - line height
+  lines.push('// Line Height');
+  for (const [key, value] of Object.entries(lineHeight)) {
+    addVar(`line-height-${key}`, value);
+  }
+
+  lines.push('');
+
+  // Typography - font weight
+  lines.push('// Font Weight');
+  for (const [key, value] of Object.entries(fontWeight)) {
+    addVar(`font-weight-${key}`, value);
+  }
+
+  lines.push('');
+
+  // Typography - letter spacing
+  lines.push('// Letter Spacing');
+  for (const [key, value] of Object.entries(letterSpacing)) {
+    addVar(`letter-spacing-${key}`, value);
+  }
+
+  lines.push('');
+
+  // Typography - font family
+  lines.push('// Font Family');
+  for (const [key, value] of Object.entries(fontFamily)) {
+    addVar(`font-family-${key}`, value);
+  }
+
+  lines.push('');
+
+  // Radii
+  lines.push('// Radius');
+  for (const [key, value] of Object.entries(radii)) {
+    addVar(`radius-${key}`, value);
+  }
+
+  lines.push('');
+
+  // Shadows
+  lines.push('// Shadow');
+  for (const [key, value] of Object.entries(shadows)) {
+    addVar(`shadow-${key}`, value);
+  }
+
+  lines.push('');
+
+  // Motion - duration
+  lines.push('// Duration');
+  for (const [key, value] of Object.entries(duration)) {
+    addVar(`duration-${key}`, value);
+  }
+
+  lines.push('');
+
+  // Motion - easing
+  lines.push('// Easing');
+  for (const [key, value] of Object.entries(easing)) {
+    addVar(`easing-${key}`, value);
+  }
+
+  lines.push('');
+
+  // Z-Index
+  lines.push('// Z-Index');
+  for (const [key, value] of Object.entries(zIndex)) {
+    addVar(`z-${key}`, value);
+  }
+
+  lines.push('');
+
+  // Token map
+  lines.push('// Token map for programmatic access');
+  lines.push('$paul-tokens: (');
+  lines.push(mapEntries.join(',\n'));
+  lines.push(');');
+  lines.push('');
+
+  return lines.join('\n');
+}
+
+// ---------------------------------------------------------------------------
+// JSON generation
+// ---------------------------------------------------------------------------
+
+function generateJSON() {
+  const tokens = {};
+
+  // Colors
+  tokens.color = {};
+  for (const [palette, shades] of Object.entries(colors)) {
+    tokens.color[palette] = {};
+    for (const [shade, value] of Object.entries(shades)) {
+      tokens.color[palette][shade] = value;
+    }
+  }
+  // Light-mode semantic colors (flat under color)
+  for (const [name, value] of Object.entries(semanticColors.light)) {
+    tokens.color[name] = value;
+  }
+
+  // Spacing
+  tokens.spacing = { ...spacing };
+
+  // Typography
+  tokens.fontSize = { ...fontSize };
+  tokens.lineHeight = { ...lineHeight };
+  tokens.fontWeight = { ...fontWeight };
+  tokens.letterSpacing = { ...letterSpacing };
+  tokens.fontFamily = { ...fontFamily };
+
+  // Radii
+  tokens.radius = {};
+  for (const [key, value] of Object.entries(radii)) {
+    tokens.radius[key] = value;
+  }
+
+  // Shadows
+  tokens.shadow = {};
+  for (const [key, value] of Object.entries(shadows)) {
+    tokens.shadow[key] = value;
+  }
+
+  // Motion
+  tokens.duration = { ...duration };
+  tokens.easing = { ...easing };
+
+  // Z-Index
+  tokens.z = {};
+  for (const [key, value] of Object.entries(zIndex)) {
+    tokens.z[key] = value;
+  }
+
+  return JSON.stringify(tokens, null, 2) + '\n';
+}
+
+// Write token files
 const buildDir = join(__dirname, 'build');
 mkdirSync(buildDir, { recursive: true });
 writeFileSync(join(buildDir, 'tokens.css'), generateCSS(), 'utf-8');
+writeFileSync(join(buildDir, 'tokens.scss'), generateSCSS(), 'utf-8');
+writeFileSync(join(buildDir, 'tokens.json'), generateJSON(), 'utf-8');
 
 console.log('tokens.css written to build/tokens.css');
+console.log('tokens.scss written to build/tokens.scss');
+console.log('tokens.json written to build/tokens.json');

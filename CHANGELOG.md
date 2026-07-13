@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.3] - 2026-07-13
+
+### Added
+- SCSS variable output (build/tokens.scss) with $paul-tokens map
+- JSON structured output (build/tokens.json)
+- Package exports for CSS, SCSS, and JSON token files
+- prepublishOnly script for automated builds
+
 ## [0.1.2] - 2026-07-13
 
 ### Added

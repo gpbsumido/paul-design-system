@@ -1,6 +1,6 @@
 {
   "name": "@paul/tokens",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Design tokens for the Paul Design System",
   "license": "MIT",
   "main": "./build/index.js",
@@ -11,11 +11,15 @@
       "import": "./build/index.js",
       "require": "./build/index.cjs",
       "types": "./build/index.d.ts"
-    }
+    },
+    "./tokens.css": "./build/tokens.css",
+    "./tokens.scss": "./build/tokens.scss",
+    "./tokens.json": "./build/tokens.json"
   },
   "files": ["build/"],
   "scripts": {
     "build": "node build.mjs",
+    "prepublishOnly": "npm run build",
     "clean": "rm -rf build",
     "test": "vitest run"
   }
