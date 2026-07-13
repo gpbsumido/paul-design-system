@@ -1,5 +1,31 @@
 # Changelog
 
+## [0.1.3] - 2026-07-13
+
+### Added
+- SCSS variable output (build/tokens.scss) with $paul-tokens map
+- JSON structured output (build/tokens.json)
+- Package exports for CSS, SCSS, and JSON token files
+- prepublishOnly script for automated builds
+
+## [0.1.2] - 2026-07-13
+
+### Added
+- Spacing tokens (4px base scale, 0-24)
+- Typography tokens: fontSize, lineHeight, fontWeight, letterSpacing, fontFamily
+- Border radius tokens (sm-full)
+- Shadow tokens (xs-2xl)
+- Motion tokens: duration and easing
+- Z-index tokens (base-toast)
+- CSS custom properties for all new token categories
+
+## [0.1.1] - 2026-07-13
+
+### Added
+- Full color palette: primary, secondary, neutral, error, success, warning (50-950 shades)
+- Semantic color aliases with light/dark mode support
+- CSS custom property output in build/tokens.css
+
 ## [0.1.0] - 2026-07-13
 
 ### Added
