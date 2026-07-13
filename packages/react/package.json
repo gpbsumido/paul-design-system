@@ -1,0 +1,27 @@
+{
+  "name": "@paul/react",
+  "version": "0.1.0",
+  "description": "React components for the Paul Design System",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": ["dist/"],
+  "peerDependencies": {
+    "@paul/tokens": ">=0.1.0",
+    "@paul/css": ">=0.1.0",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "scripts": {
+    "build": "npx tsc",
+    "clean": "rm -rf dist",
+    "test": "vitest run"
+  }
+}

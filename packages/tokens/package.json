@@ -1,0 +1,22 @@
+{
+  "name": "@paul/tokens",
+  "version": "0.1.0",
+  "description": "Design tokens for the Paul Design System",
+  "license": "MIT",
+  "main": "./build/index.js",
+  "module": "./build/index.js",
+  "types": "./build/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./build/index.js",
+      "require": "./build/index.cjs",
+      "types": "./build/index.d.ts"
+    }
+  },
+  "files": ["build/"],
+  "scripts": {
+    "build": "node build.mjs",
+    "clean": "rm -rf build",
+    "test": "vitest run"
+  }
+}

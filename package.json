@@ -1,0 +1,18 @@
+{
+  "name": "paul-design-system",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Framework-agnostic design system with tokens, CSS primitives, and React/Angular wrappers",
+  "workspaces": ["packages/*"],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "clean": "npm run clean --workspaces --if-present"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gpbsumido/paul-design-system.git"
+  },
+  "author": "Paul Sumido",
+  "license": "MIT"
+}

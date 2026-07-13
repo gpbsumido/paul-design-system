@@ -1,0 +1,18 @@
+{
+  "name": "@paul/css",
+  "version": "0.1.0",
+  "description": "Framework-agnostic CSS components for the Paul Design System",
+  "license": "MIT",
+  "main": "./src/index.css",
+  "exports": {
+    ".": "./src/index.css",
+    "./index.css": "./src/index.css"
+  },
+  "files": ["src/"],
+  "peerDependencies": {
+    "@paul/tokens": ">=0.1.0"
+  },
+  "scripts": {
+    "clean": "echo 'nothing to clean'"
+  }
+}
