@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.8] - 2026-07-13
+
+### Added
+- Skeleton loader CSS component with shimmer animation and text/circle/rect variants
+- Custom skeleton sizing via --skeleton-w and --skeleton-h CSS variables
+- Modal CSS component with backdrop blur, content panel, header/body/footer sections
+- prefers-reduced-motion support for skeleton animation
+- Body scroll lock via .modal--open class
+
 ## [0.1.7] - 2026-07-13
 
 ### Added

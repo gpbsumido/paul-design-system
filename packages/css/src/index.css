@@ -11,4 +11,7 @@
 @import './components/badge.css';
 @import './components/avatar.css';
 @import './components/card.css';
+@import './components/skeleton.css';
+@import './components/modal.css';
+@import './components/tooltip.css';
 @import './utilities/visually-hidden.css';

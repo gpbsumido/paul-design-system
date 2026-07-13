@@ -1,6 +1,6 @@
 {
   "name": "@paul/css",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Framework-agnostic CSS components for the Paul Design System",
   "license": "MIT",
   "main": "./src/index.css",
