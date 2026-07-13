@@ -1,0 +1,88 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * Modal – backdrop
+   * ---------------------------------------------------------------- */
+  .modal__backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: var(--paul-z-modal-backdrop);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+  }
+
+  /* ----------------------------------------------------------------
+   * Modal – content
+   * ---------------------------------------------------------------- */
+  .modal__content {
+    background: var(--paul-color-surface);
+    border-radius: var(--paul-radius-xl);
+    box-shadow: var(--paul-shadow-2xl);
+    max-width: 32rem;
+    width: calc(100% - var(--paul-spacing-8));
+    max-height: 90vh;
+    overflow: auto;
+    z-index: var(--paul-z-modal);
+    position: relative;
+  }
+
+  /* ----------------------------------------------------------------
+   * Sections
+   * ---------------------------------------------------------------- */
+  .modal__header {
+    padding: var(--paul-spacing-6);
+    border-bottom: 1px solid var(--paul-color-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .modal__body {
+    padding: var(--paul-spacing-6);
+  }
+
+  .modal__footer {
+    padding: var(--paul-spacing-4) var(--paul-spacing-6);
+    border-top: 1px solid var(--paul-color-border);
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--paul-spacing-3);
+  }
+
+  /* ----------------------------------------------------------------
+   * Body modifier
+   * ---------------------------------------------------------------- */
+  .modal--open {
+    overflow: hidden;
+  }
+
+  /* ----------------------------------------------------------------
+   * Dark mode
+   * ---------------------------------------------------------------- */
+  [data-theme="dark"] .modal__backdrop {
+    background: rgba(0, 0, 0, 0.7);
+  }
+
+  [data-theme="dark"] .modal__content {
+    border: 1px solid var(--paul-color-neutral-700);
+  }
+
+  [data-theme="dark"] .modal__header {
+    border-bottom-color: var(--paul-color-neutral-700);
+  }
+
+  [data-theme="dark"] .modal__footer {
+    border-top-color: var(--paul-color-neutral-700);
+  }
+
+  /* ----------------------------------------------------------------
+   * Reduced motion
+   * ---------------------------------------------------------------- */
+  @media (prefers-reduced-motion: reduce) {
+    .modal__backdrop {
+      backdrop-filter: none;
+    }
+  }
+}

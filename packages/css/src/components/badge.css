@@ -1,0 +1,73 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * Badge – base
+   * ---------------------------------------------------------------- */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--paul-spacing-0\.5) var(--paul-spacing-2);
+    border-radius: var(--paul-radius-full);
+    font-size: var(--paul-font-size-xs);
+    font-weight: var(--paul-font-weight-medium);
+    line-height: 1;
+  }
+
+  /* ----------------------------------------------------------------
+   * Variants
+   * ---------------------------------------------------------------- */
+  .badge--success {
+    background-color: var(--paul-color-success-100);
+    color: var(--paul-color-success-700);
+  }
+
+  .badge--warning {
+    background-color: var(--paul-color-warning-100);
+    color: var(--paul-color-warning-700);
+  }
+
+  .badge--error {
+    background-color: var(--paul-color-error-100);
+    color: var(--paul-color-error-700);
+  }
+
+  .badge--info {
+    background-color: var(--paul-color-primary-100);
+    color: var(--paul-color-primary-700);
+  }
+
+  /* ----------------------------------------------------------------
+   * Dot variant
+   * ---------------------------------------------------------------- */
+  .badge--dot {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border-radius: var(--paul-radius-full);
+    font-size: 0;
+    overflow: hidden;
+  }
+
+  /* ----------------------------------------------------------------
+   * Dark mode
+   * ---------------------------------------------------------------- */
+  [data-theme="dark"] .badge--success {
+    background-color: var(--paul-color-success-900);
+    color: var(--paul-color-success-200);
+  }
+
+  [data-theme="dark"] .badge--warning {
+    background-color: var(--paul-color-warning-900);
+    color: var(--paul-color-warning-200);
+  }
+
+  [data-theme="dark"] .badge--error {
+    background-color: var(--paul-color-error-900);
+    color: var(--paul-color-error-200);
+  }
+
+  [data-theme="dark"] .badge--info {
+    background-color: var(--paul-color-primary-900);
+    color: var(--paul-color-primary-200);
+  }
+}

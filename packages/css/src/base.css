@@ -1,0 +1,40 @@
+@layer base {
+  :root {
+    font-family: var(--paul-font-family-sans);
+    font-size: var(--paul-font-size-base);
+    line-height: var(--paul-line-height-normal);
+    color: var(--paul-color-foreground);
+    background-color: var(--paul-color-background);
+  }
+
+  h1 { font-size: var(--paul-font-size-4xl); font-weight: var(--paul-font-weight-bold); line-height: var(--paul-line-height-tight); letter-spacing: var(--paul-letter-spacing-tight); }
+  h2 { font-size: var(--paul-font-size-3xl); font-weight: var(--paul-font-weight-bold); line-height: var(--paul-line-height-tight); }
+  h3 { font-size: var(--paul-font-size-2xl); font-weight: var(--paul-font-weight-semibold); line-height: var(--paul-line-height-snug); }
+  h4 { font-size: var(--paul-font-size-xl); font-weight: var(--paul-font-weight-semibold); line-height: var(--paul-line-height-snug); }
+  h5 { font-size: var(--paul-font-size-lg); font-weight: var(--paul-font-weight-medium); }
+  h6 { font-size: var(--paul-font-size-base); font-weight: var(--paul-font-weight-medium); }
+
+  p + p {
+    margin-top: var(--paul-spacing-4);
+  }
+
+  a {
+    color: var(--paul-color-primary-600);
+  }
+
+  a:hover {
+    color: var(--paul-color-primary-700);
+  }
+
+  [data-theme="dark"] a {
+    color: var(--paul-color-primary-400);
+  }
+
+  [data-theme="dark"] a:hover {
+    color: var(--paul-color-primary-300);
+  }
+
+  code, pre {
+    font-family: var(--paul-font-family-mono);
+  }
+}
