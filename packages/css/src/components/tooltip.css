@@ -92,27 +92,25 @@
   }
 
   /* Dark mode */
-  @media (prefers-color-scheme: dark) {
-    .tooltip {
-      background: var(--paul-color-neutral-100);
-      color: var(--paul-color-neutral-900);
-    }
+  [data-theme="dark"] .tooltip {
+    background: var(--paul-color-neutral-100);
+    color: var(--paul-color-neutral-900);
+  }
 
-    .tooltip--top::before {
-      border-top-color: var(--paul-color-neutral-100);
-    }
+  [data-theme="dark"] .tooltip--top::before {
+    border-top-color: var(--paul-color-neutral-100);
+  }
 
-    .tooltip--bottom::before {
-      border-bottom-color: var(--paul-color-neutral-100);
-    }
+  [data-theme="dark"] .tooltip--bottom::before {
+    border-bottom-color: var(--paul-color-neutral-100);
+  }
 
-    .tooltip--left::before {
-      border-left-color: var(--paul-color-neutral-100);
-    }
+  [data-theme="dark"] .tooltip--left::before {
+    border-left-color: var(--paul-color-neutral-100);
+  }
 
-    .tooltip--right::before {
-      border-right-color: var(--paul-color-neutral-100);
-    }
+  [data-theme="dark"] .tooltip--right::before {
+    border-right-color: var(--paul-color-neutral-100);
   }
 
   /* Reduced motion */

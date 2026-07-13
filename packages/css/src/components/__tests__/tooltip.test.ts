@@ -60,4 +60,8 @@ describe('Tooltip CSS component', () => {
   it('has max-width constraint', () => {
     expect(css).toContain('max-width');
   });
+
+  it('supports dark mode via data-theme attribute', () => {
+    expect(css).toContain('[data-theme="dark"]');
+  });
 });
