@@ -27,9 +27,15 @@ jobs:
         run: npm run build-storybook --workspace=packages/storybook
 
       - name: Run Chromatic
+        id: chromatic
         uses: chromaui/action@latest
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           storybookBuildDir: packages/storybook/storybook-static
           autoAcceptChanges: main
           exitZeroOnChanges: true
+
+      # - name: Run interaction tests
+      #   run: npm run test-storybook --workspace=packages/storybook
+      #   env:
+      #     TARGET_URL: ${{ steps.chromatic.outputs.storybookUrl }}

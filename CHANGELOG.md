@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.19] - 2026-07-13
+
+### Added
+- Storybook interaction tests for Button (click, keyboard), Modal (open/close/escape), Input (typing), Tooltip (hover)
+- test-storybook script for headless interaction test running
+- CI workflow step for interaction tests (commented, requires running Storybook)
+
 ## [0.1.18] - 2026-07-13
 
 ### Added

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn, expect, userEvent, within } from '@storybook/test';
 import { Button } from '../../react/src/Button';
 
 const meta = {
@@ -64,4 +65,33 @@ export const Small: Story = {
 
 export const Large: Story = {
   args: { children: 'Large', variant: 'primary', size: 'lg' },
+};
+
+export const ClickTest: Story = {
+  args: {
+    children: 'Click Me',
+    variant: 'primary',
+    onClick: fn(),
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    const button = canvas.getByRole('button');
+    await userEvent.click(button);
+    await expect(args.onClick).toHaveBeenCalledOnce();
+  },
+};
+
+export const KeyboardActivation: Story = {
+  args: {
+    children: 'Press Me',
+    variant: 'primary',
+    onClick: fn(),
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    const button = canvas.getByRole('button');
+    await button.focus();
+    await userEvent.keyboard('{Enter}');
+    await expect(args.onClick).toHaveBeenCalled();
+  },
 };

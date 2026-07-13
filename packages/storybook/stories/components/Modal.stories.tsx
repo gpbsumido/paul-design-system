@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
+import { expect, userEvent, within } from '@storybook/test';
 import { Modal } from '../../react/src/Modal';
 import { Button } from '../../react/src/Button';
 
@@ -48,4 +49,21 @@ export const Default: Story = {
     onClose: () => {},
   },
   render: () => <ModalDemo />,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Click the open button
+    const openButton = canvas.getByRole('button', { name: /open modal/i });
+    await userEvent.click(openButton);
+
+    // Verify dialog is visible
+    const dialog = await canvas.findByRole('dialog');
+    await expect(dialog).toBeVisible();
+
+    // Press Escape to close
+    await userEvent.keyboard('{Escape}');
+
+    // Verify dialog is closed
+    await expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
+  },
 };

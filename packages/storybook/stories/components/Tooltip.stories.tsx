@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { expect, userEvent, within } from '@storybook/test';
 import { Tooltip } from '../../react/src/Tooltip';
 import { Button } from '../../react/src/Button';
 
@@ -30,6 +31,14 @@ export const Top: Story = {
     content: 'Tooltip on top',
     side: 'top',
     children: <Button>Hover me</Button>,
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const trigger = canvas.getByRole('button');
+    await userEvent.hover(trigger);
+    // Tooltip should become visible
+    const tooltip = canvas.getByRole('tooltip');
+    await expect(tooltip).toBeVisible();
   },
 };
 
