@@ -176,4 +176,17 @@
       border-right-color: currentColor;
     }
   }
+
+  /* ----------------------------------------------------------------
+   * High contrast
+   * ---------------------------------------------------------------- */
+  @media (prefers-contrast: more) {
+    .btn {
+      border-width: 2px;
+    }
+    .btn--primary,
+    .btn--danger {
+      border-color: currentColor;
+    }
+  }
 }

@@ -13,4 +13,11 @@
   [data-theme="dark"] .focus-ring-inset:focus-visible {
     outline-color: var(--paul-color-primary-400);
   }
+
+  @media (prefers-contrast: more) {
+    .focus-ring:focus-visible,
+    .focus-ring-inset:focus-visible {
+      outline-width: 3px;
+    }
+  }
 }
