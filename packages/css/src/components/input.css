@@ -125,4 +125,13 @@
   [data-theme="dark"] .input__helper {
     color: var(--paul-color-neutral-400);
   }
+
+  /* ----------------------------------------------------------------
+   * High contrast
+   * ---------------------------------------------------------------- */
+  @media (prefers-contrast: more) {
+    .input {
+      border-width: 2px;
+    }
+  }
 }

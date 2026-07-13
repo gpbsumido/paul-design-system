@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.20] - 2026-07-13
+
+### Added
+- axe-core accessibility tests for all React components (10 tests, zero violations)
+- prefers-reduced-motion support for button, modal, and card transitions
+- prefers-contrast (high contrast) support for focus rings, buttons, and inputs
+- WCAG 2.1 AA contrast ratio documentation for all token color combinations
+
 ## [0.1.19] - 2026-07-13
 
 ### Added

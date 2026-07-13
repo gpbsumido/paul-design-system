@@ -162,4 +162,26 @@
   [data-theme="dark"] .btn--outline:hover {
     background-color: var(--paul-color-neutral-800);
   }
+
+  /* ----------------------------------------------------------------
+   * Reduced motion
+   * ---------------------------------------------------------------- */
+  @media (prefers-reduced-motion: reduce) {
+    .btn {
+      transition: none;
+    }
+  }
+
+  /* ----------------------------------------------------------------
+   * High contrast
+   * ---------------------------------------------------------------- */
+  @media (prefers-contrast: more) {
+    .btn {
+      border-width: 2px;
+    }
+    .btn--primary,
+    .btn--danger {
+      border-color: currentColor;
+    }
+  }
 }
