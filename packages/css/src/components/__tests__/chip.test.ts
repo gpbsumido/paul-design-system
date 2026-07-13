@@ -42,4 +42,8 @@ describe('Chip CSS component', () => {
   it('uses design tokens', () => {
     expect(css).toContain('--paul-');
   });
+
+  it('respects prefers-reduced-motion', () => {
+    expect(css).toContain('prefers-reduced-motion');
+  });
 });
