@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.11] - 2026-07-13
+
+### Added
+- Input React component with label, error, helper text, size variants, and aria-describedby
+- Chip React component with clickable/removable modes
+- Card React compound component (Card.Header, Card.Body, Card.Footer)
+
 ## [0.1.10] - 2026-07-13
 
 ### Added

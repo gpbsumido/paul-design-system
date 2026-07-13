@@ -1,6 +1,6 @@
 {
   "name": "@paul/react",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "description": "React components for the Paul Design System",
   "license": "MIT",
   "main": "./dist/index.js",
