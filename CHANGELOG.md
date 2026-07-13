@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.9] - 2026-07-13
+
+### Added
+- Tooltip CSS component with top/bottom/left/right positioning
+- CSS triangle arrows via pseudo-elements
+- prefers-reduced-motion support for tooltip transitions
+- Dark mode tooltip color inversion
+
 ## [0.1.8] - 2026-07-13
 
 ### Added
