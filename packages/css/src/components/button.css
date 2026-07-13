@@ -162,4 +162,18 @@
   [data-theme="dark"] .btn--outline:hover {
     background-color: var(--paul-color-neutral-800);
   }
+
+  /* ----------------------------------------------------------------
+   * Reduced motion
+   * ---------------------------------------------------------------- */
+  @media (prefers-reduced-motion: reduce) {
+    .btn {
+      transition: none;
+    }
+
+    .btn[aria-busy="true"]::after {
+      animation: none;
+      border-right-color: currentColor;
+    }
+  }
 }

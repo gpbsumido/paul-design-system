@@ -58,4 +58,8 @@ describe('Button CSS component', () => {
   it('uses design tokens for styling', () => {
     expect(css).toContain('--paul-');
   });
+
+  it('respects prefers-reduced-motion', () => {
+    expect(css).toContain('prefers-reduced-motion');
+  });
 });
