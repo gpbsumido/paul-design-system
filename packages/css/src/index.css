@@ -1,3 +1,8 @@
 /* @paul/css - Framework-agnostic CSS components */
-/* Layers: reset < tokens < base < components < utilities */
 @layer reset, tokens, base, components, utilities;
+
+@import './reset.css';
+@import './base.css';
+@import './utilities/focus-ring.css';
+@import './utilities/sr-only.css';
+@import './utilities/visually-hidden.css';

@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.1.4] - 2026-07-13
+
+### Added
+- CSS reset with modern defaults
+- Base typography styles using design tokens
+- Focus ring utility (.focus-ring, .focus-ring-inset) with dark mode support
+- Screen-reader-only utility (.sr-only)
+- Visually hidden utility (.visually-hidden)
+- CSS layer ordering: reset < tokens < base < components < utilities
+
 ## [0.1.3] - 2026-07-13
 
 ### Added
