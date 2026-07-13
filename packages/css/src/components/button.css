@@ -1,0 +1,165 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * Button – base
+   * ---------------------------------------------------------------- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--paul-spacing-2);
+    padding: var(--paul-spacing-2) var(--paul-spacing-4);
+    border-radius: var(--paul-radius-md);
+    font-weight: var(--paul-font-weight-medium);
+    font-size: var(--paul-font-size-sm);
+    line-height: var(--paul-line-height-tight);
+    cursor: pointer;
+    transition:
+      background-color var(--paul-duration-fast) var(--paul-easing-default),
+      color var(--paul-duration-fast) var(--paul-easing-default),
+      border-color var(--paul-duration-fast) var(--paul-easing-default),
+      box-shadow var(--paul-duration-fast) var(--paul-easing-default);
+    border: 1px solid transparent;
+    text-decoration: none;
+  }
+
+  /* ----------------------------------------------------------------
+   * Focus
+   * ---------------------------------------------------------------- */
+  .btn:focus-visible {
+    outline: 2px solid var(--paul-color-primary-600);
+    outline-offset: 2px;
+  }
+
+  /* ----------------------------------------------------------------
+   * Variants
+   * ---------------------------------------------------------------- */
+  .btn--primary {
+    background-color: var(--paul-color-primary-600);
+    color: #fff;
+  }
+
+  .btn--primary:hover {
+    background-color: var(--paul-color-primary-700);
+  }
+
+  .btn--secondary {
+    background-color: var(--paul-color-primary-50);
+    color: var(--paul-color-primary-700);
+  }
+
+  .btn--secondary:hover {
+    background-color: var(--paul-color-primary-100);
+  }
+
+  .btn--outline {
+    border-color: var(--paul-color-border);
+    color: var(--paul-color-foreground);
+  }
+
+  .btn--outline:hover {
+    background-color: var(--paul-color-neutral-50);
+  }
+
+  .btn--ghost {
+    color: var(--paul-color-foreground);
+  }
+
+  .btn--ghost:hover {
+    background-color: var(--paul-color-neutral-100);
+  }
+
+  .btn--danger {
+    background-color: var(--paul-color-error-600);
+    color: #fff;
+  }
+
+  .btn--danger:hover {
+    background-color: var(--paul-color-error-700);
+  }
+
+  /* ----------------------------------------------------------------
+   * Sizes
+   * ---------------------------------------------------------------- */
+  .btn--xs {
+    padding: var(--paul-spacing-1) var(--paul-spacing-2);
+    font-size: var(--paul-font-size-xs);
+  }
+
+  .btn--sm {
+    padding: var(--paul-spacing-1\.5) var(--paul-spacing-3);
+    font-size: var(--paul-font-size-sm);
+  }
+
+  .btn--md {
+    /* Default – matches base .btn sizing */
+  }
+
+  .btn--lg {
+    padding: var(--paul-spacing-3) var(--paul-spacing-6);
+    font-size: var(--paul-font-size-base);
+  }
+
+  /* ----------------------------------------------------------------
+   * States
+   * ---------------------------------------------------------------- */
+  .btn[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .btn[aria-busy="true"] {
+    position: relative;
+    color: transparent;
+    pointer-events: none;
+  }
+
+  .btn[aria-busy="true"]::after {
+    content: "";
+    position: absolute;
+    width: 1em;
+    height: 1em;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: btn-spin 0.6s linear infinite;
+    /* restore color so the spinner is visible */
+    color: inherit;
+    filter: brightness(1);
+  }
+
+  @keyframes btn-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* ----------------------------------------------------------------
+   * Icon-only
+   * ---------------------------------------------------------------- */
+  .btn--icon-only {
+    padding: var(--paul-spacing-2);
+    aspect-ratio: 1;
+  }
+
+  /* ----------------------------------------------------------------
+   * Dark mode adjustments
+   * ---------------------------------------------------------------- */
+  [data-theme="dark"] .btn--secondary {
+    background-color: var(--paul-color-primary-950);
+    color: var(--paul-color-primary-200);
+  }
+
+  [data-theme="dark"] .btn--secondary:hover {
+    background-color: var(--paul-color-primary-900);
+  }
+
+  [data-theme="dark"] .btn--outline {
+    border-color: var(--paul-color-neutral-700);
+    color: var(--paul-color-neutral-100);
+  }
+
+  [data-theme="dark"] .btn--outline:hover {
+    background-color: var(--paul-color-neutral-800);
+  }
+}

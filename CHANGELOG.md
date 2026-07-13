@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.5] - 2026-07-13
+
+### Added
+- Button CSS component with variants (primary, secondary, outline, ghost, danger)
+- Button sizes (xs, sm, md, lg) and icon-only variant
+- Button states: disabled, loading (aria-busy), focus-visible ring
+- Dark mode button adjustments
+
 ## [0.1.4] - 2026-07-13
 
 ### Added

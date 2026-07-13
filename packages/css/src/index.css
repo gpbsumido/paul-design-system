@@ -5,4 +5,5 @@
 @import './base.css';
 @import './utilities/focus-ring.css';
 @import './utilities/sr-only.css';
+@import './components/button.css';
 @import './utilities/visually-hidden.css';
