@@ -6,4 +6,5 @@
 @import './utilities/focus-ring.css';
 @import './utilities/sr-only.css';
 @import './components/button.css';
+@import './components/input.css';
 @import './utilities/visually-hidden.css';

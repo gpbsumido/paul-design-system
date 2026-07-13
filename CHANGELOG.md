@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.6] - 2026-07-13
+
+### Added
+- Input CSS component with validation states (error via aria-invalid)
+- Input sizes (sm, md) and wrapper/label/helper layout
+- Textarea component extending input styles
+- Dark mode input adjustments
+
 ## [0.1.5] - 2026-07-13
 
 ### Added
