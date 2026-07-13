@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.1.10] - 2026-07-13
+
+### Added
+- React package scaffold with vitest + Testing Library + jsdom
+- Button React component with variant/size/loading/disabled/href props
+- forwardRef support on Button
+- Polymorphic rendering (button or anchor) based on href prop
+- cx() classname utility
+- Vitest workspace config for monorepo-wide testing
+
 ## [0.1.9] - 2026-07-13
 
 ### Added
