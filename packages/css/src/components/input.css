@@ -125,4 +125,14 @@
   [data-theme="dark"] .input__helper {
     color: var(--paul-color-neutral-400);
   }
+
+  /* ----------------------------------------------------------------
+   * Reduced motion
+   * ---------------------------------------------------------------- */
+  @media (prefers-reduced-motion: reduce) {
+    .input,
+    .textarea {
+      transition: none;
+    }
+  }
 }
