@@ -1,0 +1,138 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * Input – base
+   * ---------------------------------------------------------------- */
+  .input {
+    width: 100%;
+    padding: var(--paul-spacing-2) var(--paul-spacing-3);
+    border: 1px solid var(--paul-color-border);
+    border-radius: var(--paul-radius-md);
+    background-color: var(--paul-color-surface);
+    color: var(--paul-color-foreground);
+    font-size: var(--paul-font-size-sm);
+    line-height: var(--paul-line-height-normal);
+    transition:
+      border-color var(--paul-duration-fast) var(--paul-easing-default),
+      box-shadow var(--paul-duration-fast) var(--paul-easing-default);
+  }
+
+  /* ----------------------------------------------------------------
+   * Focus
+   * ---------------------------------------------------------------- */
+  .input:focus-visible {
+    outline: 2px solid var(--paul-color-primary-600);
+    outline-offset: 2px;
+  }
+
+  /* ----------------------------------------------------------------
+   * Error state
+   * ---------------------------------------------------------------- */
+  .input--error,
+  .input[aria-invalid="true"] {
+    border-color: var(--paul-color-error-600);
+  }
+
+  /* ----------------------------------------------------------------
+   * Size variants
+   * ---------------------------------------------------------------- */
+  .input--sm {
+    padding: var(--paul-spacing-1) var(--paul-spacing-2);
+    font-size: var(--paul-font-size-xs);
+  }
+
+  .input--md {
+    /* Default – matches base .input sizing */
+  }
+
+  /* ----------------------------------------------------------------
+   * Wrapper
+   * ---------------------------------------------------------------- */
+  .input__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--paul-spacing-1\.5);
+  }
+
+  /* ----------------------------------------------------------------
+   * Label
+   * ---------------------------------------------------------------- */
+  .input__label {
+    font-size: var(--paul-font-size-sm);
+    font-weight: var(--paul-font-weight-medium);
+    color: var(--paul-color-foreground);
+  }
+
+  /* ----------------------------------------------------------------
+   * Helper text
+   * ---------------------------------------------------------------- */
+  .input__helper {
+    font-size: var(--paul-font-size-xs);
+    color: var(--paul-color-muted);
+  }
+
+  .input__helper--error {
+    color: var(--paul-color-error-600);
+  }
+
+  /* ----------------------------------------------------------------
+   * Textarea
+   * ---------------------------------------------------------------- */
+  .textarea {
+    width: 100%;
+    padding: var(--paul-spacing-2) var(--paul-spacing-3);
+    border: 1px solid var(--paul-color-border);
+    border-radius: var(--paul-radius-md);
+    background-color: var(--paul-color-surface);
+    color: var(--paul-color-foreground);
+    font-size: var(--paul-font-size-sm);
+    line-height: var(--paul-line-height-normal);
+    transition:
+      border-color var(--paul-duration-fast) var(--paul-easing-default),
+      box-shadow var(--paul-duration-fast) var(--paul-easing-default);
+    min-height: 80px;
+    resize: vertical;
+  }
+
+  .textarea:focus-visible {
+    outline: 2px solid var(--paul-color-primary-600);
+    outline-offset: 2px;
+  }
+
+  /* ----------------------------------------------------------------
+   * Dark mode adjustments
+   * ---------------------------------------------------------------- */
+  [data-theme="dark"] .input {
+    background-color: var(--paul-color-neutral-900);
+    border-color: var(--paul-color-neutral-700);
+    color: var(--paul-color-neutral-100);
+  }
+
+  [data-theme="dark"] .input--error,
+  [data-theme="dark"] .input[aria-invalid="true"] {
+    border-color: var(--paul-color-error-600);
+  }
+
+  [data-theme="dark"] .textarea {
+    background-color: var(--paul-color-neutral-900);
+    border-color: var(--paul-color-neutral-700);
+    color: var(--paul-color-neutral-100);
+  }
+
+  [data-theme="dark"] .input__label {
+    color: var(--paul-color-neutral-100);
+  }
+
+  [data-theme="dark"] .input__helper {
+    color: var(--paul-color-neutral-400);
+  }
+
+  /* ----------------------------------------------------------------
+   * Reduced motion
+   * ---------------------------------------------------------------- */
+  @media (prefers-reduced-motion: reduce) {
+    .input,
+    .textarea {
+      transition: none;
+    }
+  }
+}

@@ -1,0 +1,75 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * Card – base
+   * ---------------------------------------------------------------- */
+  .card {
+    border: 1px solid var(--paul-color-border);
+    border-radius: var(--paul-radius-lg);
+    background: var(--paul-color-surface);
+    overflow: hidden;
+  }
+
+  /* ----------------------------------------------------------------
+   * Variants
+   * ---------------------------------------------------------------- */
+  .card--elevated {
+    box-shadow: var(--paul-shadow-md);
+  }
+
+  .card--interactive {
+    cursor: pointer;
+    transition:
+      box-shadow var(--paul-duration-fast) var(--paul-easing-default),
+      transform var(--paul-duration-fast) var(--paul-easing-default);
+  }
+
+  .card--interactive:hover {
+    box-shadow: var(--paul-shadow-lg);
+    transform: translateY(-1px);
+  }
+
+  /* ----------------------------------------------------------------
+   * Sections
+   * ---------------------------------------------------------------- */
+  .card__header {
+    padding: var(--paul-spacing-4) var(--paul-spacing-6);
+    border-bottom: 1px solid var(--paul-color-border);
+  }
+
+  .card__body {
+    padding: var(--paul-spacing-4) var(--paul-spacing-6);
+  }
+
+  .card__footer {
+    padding: var(--paul-spacing-4) var(--paul-spacing-6);
+    border-top: 1px solid var(--paul-color-border);
+  }
+
+  /* ----------------------------------------------------------------
+   * Dark mode
+   * ---------------------------------------------------------------- */
+  [data-theme="dark"] .card {
+    border-color: var(--paul-color-neutral-700);
+  }
+
+  [data-theme="dark"] .card__header {
+    border-bottom-color: var(--paul-color-neutral-700);
+  }
+
+  [data-theme="dark"] .card__footer {
+    border-top-color: var(--paul-color-neutral-700);
+  }
+
+  /* ----------------------------------------------------------------
+   * Reduced motion
+   * ---------------------------------------------------------------- */
+  @media (prefers-reduced-motion: reduce) {
+    .card--interactive {
+      transition: none;
+    }
+
+    .card--interactive:hover {
+      transform: none;
+    }
+  }
+}
