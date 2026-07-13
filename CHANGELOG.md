@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.1.12] - 2026-07-13
+
+### Added
+- Modal React component with portal, backdrop click, Escape key, focus trap, aria-modal
+- Tooltip React component with hover trigger, side positioning, aria-describedby
+- Avatar React component with image/fallback modes and size variants
+- Badge React component with success/warning/error/info variants and dot mode
+- Skeleton React component with text/circle/rect variants and CSS variable sizing
+- VisuallyHidden React component wrapping .visually-hidden
+
 ## [0.1.11] - 2026-07-13
 
 ### Added
