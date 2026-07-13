@@ -75,4 +75,13 @@
   [data-theme="dark"] .chip__remove:hover {
     background-color: var(--paul-color-neutral-700);
   }
+
+  /* ----------------------------------------------------------------
+   * Reduced motion
+   * ---------------------------------------------------------------- */
+  @media (prefers-reduced-motion: reduce) {
+    .chip--clickable {
+      transition: none;
+    }
+  }
 }
