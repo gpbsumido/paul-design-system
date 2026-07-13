@@ -170,6 +170,11 @@
     .btn {
       transition: none;
     }
+
+    .btn[aria-busy="true"]::after {
+      animation: none;
+      border-right-color: currentColor;
+    }
   }
 
   /* ----------------------------------------------------------------
