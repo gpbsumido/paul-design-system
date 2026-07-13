@@ -1,0 +1,60 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Tokens/Colors" />
+
+# Color Palette
+
+The design system uses a comprehensive color palette with semantic aliases for light and dark modes.
+
+## Primary (Blue)
+
+| Shade | Value | Preview |
+|-------|-------|---------|
+| 50 | `#eff6ff` | <div style={{width: 40, height: 24, backgroundColor: '#eff6ff', border: '1px solid #e5e7eb', borderRadius: 4}} /> |
+| 100 | `#dbeafe` | <div style={{width: 40, height: 24, backgroundColor: '#dbeafe', borderRadius: 4}} /> |
+| 200 | `#bfdbfe` | <div style={{width: 40, height: 24, backgroundColor: '#bfdbfe', borderRadius: 4}} /> |
+| 300 | `#93c5fd` | <div style={{width: 40, height: 24, backgroundColor: '#93c5fd', borderRadius: 4}} /> |
+| 400 | `#60a5fa` | <div style={{width: 40, height: 24, backgroundColor: '#60a5fa', borderRadius: 4}} /> |
+| 500 | `#3b82f6` | <div style={{width: 40, height: 24, backgroundColor: '#3b82f6', borderRadius: 4}} /> |
+| 600 | `#2563eb` | <div style={{width: 40, height: 24, backgroundColor: '#2563eb', borderRadius: 4}} /> |
+| 700 | `#1d4ed8` | <div style={{width: 40, height: 24, backgroundColor: '#1d4ed8', borderRadius: 4}} /> |
+| 800 | `#1e40af` | <div style={{width: 40, height: 24, backgroundColor: '#1e40af', borderRadius: 4}} /> |
+| 900 | `#1e3a8a` | <div style={{width: 40, height: 24, backgroundColor: '#1e3a8a', borderRadius: 4}} /> |
+| 950 | `#172554` | <div style={{width: 40, height: 24, backgroundColor: '#172554', borderRadius: 4}} /> |
+
+## Secondary (Violet)
+
+| Shade | Value | Preview |
+|-------|-------|---------|
+| 50 | `#f5f3ff` | <div style={{width: 40, height: 24, backgroundColor: '#f5f3ff', border: '1px solid #e5e7eb', borderRadius: 4}} /> |
+| 500 | `#8b5cf6` | <div style={{width: 40, height: 24, backgroundColor: '#8b5cf6', borderRadius: 4}} /> |
+| 600 | `#7c3aed` | <div style={{width: 40, height: 24, backgroundColor: '#7c3aed', borderRadius: 4}} /> |
+| 700 | `#6d28d9` | <div style={{width: 40, height: 24, backgroundColor: '#6d28d9', borderRadius: 4}} /> |
+
+## Status Colors
+
+| Color | Shade | Value | Preview |
+|-------|-------|-------|---------|
+| Success | 600 | `#16a34a` | <div style={{width: 40, height: 24, backgroundColor: '#16a34a', borderRadius: 4}} /> |
+| Warning | 600 | `#d97706` | <div style={{width: 40, height: 24, backgroundColor: '#d97706', borderRadius: 4}} /> |
+| Error | 600 | `#dc2626` | <div style={{width: 40, height: 24, backgroundColor: '#dc2626', borderRadius: 4}} /> |
+
+## Semantic Aliases
+
+| Token | Light | Dark |
+|-------|-------|------|
+| `--paul-color-foreground` | neutral-950 | neutral-50 |
+| `--paul-color-background` | #ffffff | neutral-950 |
+| `--paul-color-surface` | neutral-50 | neutral-900 |
+| `--paul-color-border` | neutral-200 | neutral-800 |
+| `--paul-color-muted` | neutral-500 | neutral-400 |
+
+## Usage
+
+```css
+.my-element {
+  color: var(--paul-color-primary-600);
+  background: var(--paul-color-surface);
+  border: 1px solid var(--paul-color-border);
+}
+```

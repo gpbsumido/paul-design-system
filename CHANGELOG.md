@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.16] - 2026-07-13
+
+### Added
+- Storybook 8 setup with React Vite framework
+- Theme switcher addon (light/dark via data-theme)
+- Accessibility addon for inline a11y checks
+- Token documentation: Colors, Spacing, Typography MDX pages
+
 ## [0.1.15] - 2026-07-13
 
 ### Added

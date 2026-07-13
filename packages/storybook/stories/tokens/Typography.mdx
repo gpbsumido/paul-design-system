@@ -1,0 +1,55 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Tokens/Typography" />
+
+# Typography
+
+## Font Sizes
+
+| Token | Value | Example |
+|-------|-------|---------|
+| `--paul-font-size-xs` | 0.75rem | <span style={{fontSize: '0.75rem'}}>The quick brown fox</span> |
+| `--paul-font-size-sm` | 0.875rem | <span style={{fontSize: '0.875rem'}}>The quick brown fox</span> |
+| `--paul-font-size-base` | 1rem | <span style={{fontSize: '1rem'}}>The quick brown fox</span> |
+| `--paul-font-size-lg` | 1.125rem | <span style={{fontSize: '1.125rem'}}>The quick brown fox</span> |
+| `--paul-font-size-xl` | 1.25rem | <span style={{fontSize: '1.25rem'}}>The quick brown fox</span> |
+| `--paul-font-size-2xl` | 1.5rem | <span style={{fontSize: '1.5rem'}}>The quick brown fox</span> |
+| `--paul-font-size-3xl` | 1.875rem | <span style={{fontSize: '1.875rem'}}>The quick brown fox</span> |
+| `--paul-font-size-4xl` | 2.25rem | <span style={{fontSize: '2.25rem'}}>The quick brown fox</span> |
+| `--paul-font-size-5xl` | 3rem | <span style={{fontSize: '3rem'}}>The quick brown fox</span> |
+
+## Font Weights
+
+| Token | Value | Example |
+|-------|-------|---------|
+| `--paul-font-weight-normal` | 400 | <span style={{fontWeight: 400}}>Normal weight text</span> |
+| `--paul-font-weight-medium` | 500 | <span style={{fontWeight: 500}}>Medium weight text</span> |
+| `--paul-font-weight-semibold` | 600 | <span style={{fontWeight: 600}}>Semibold weight text</span> |
+| `--paul-font-weight-bold` | 700 | <span style={{fontWeight: 700}}>Bold weight text</span> |
+
+## Line Heights
+
+| Token | Value |
+|-------|-------|
+| `--paul-line-height-tight` | 1.25 |
+| `--paul-line-height-snug` | 1.375 |
+| `--paul-line-height-normal` | 1.5 |
+| `--paul-line-height-relaxed` | 1.625 |
+| `--paul-line-height-loose` | 2 |
+
+## Font Families
+
+| Token | Value |
+|-------|-------|
+| `--paul-font-family-sans` | Inter, system-ui, -apple-system, sans-serif |
+| `--paul-font-family-mono` | JetBrains Mono, Fira Code, monospace |
+
+## Usage
+
+```css
+h1 {
+  font-size: var(--paul-font-size-4xl);
+  font-weight: var(--paul-font-weight-bold);
+  line-height: var(--paul-line-height-tight);
+}
+```
