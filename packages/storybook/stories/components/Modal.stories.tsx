@@ -11,6 +11,10 @@ const meta = {
     open: { control: 'boolean' },
     title: { control: 'text' },
   },
+  parameters: {
+    // Modal uses createPortal to document.body, so Chromatic needs full-page snapshots
+    chromatic: { delay: 300, diffThreshold: 0.3 },
+  },
 } satisfies Meta<typeof Modal>;
 
 export default meta;
@@ -48,6 +52,10 @@ export const Default: Story = {
     onClose: () => {},
   },
   render: () => <ModalDemo />,
+  parameters: {
+    // Skip the interactive story in Chromatic since the portal renders outside #storybook-root
+    chromatic: { disableSnapshot: true },
+  },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
@@ -55,14 +63,34 @@ export const Default: Story = {
     const openButton = canvas.getByRole('button', { name: /open modal/i });
     await userEvent.click(openButton);
 
-    // Verify dialog is visible
-    const dialog = await canvas.findByRole('dialog');
+    // Verify dialog is visible — portal renders to document.body, not canvasElement
+    const dialog = await within(document.body).findByRole('dialog');
     await expect(dialog).toBeVisible();
 
     // Press Escape to close
     await userEvent.keyboard('{Escape}');
 
     // Verify dialog is closed
-    await expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
+    await expect(within(document.body).queryByRole('dialog')).not.toBeInTheDocument();
+  },
+};
+
+/** Static open state for Chromatic visual regression snapshots */
+export const Open: Story = {
+  args: {
+    open: true,
+    title: 'Example Modal',
+    onClose: () => {},
+    children: (
+      <>
+        <Modal.Body>
+          This is the modal content. Press Escape or click outside to close.
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary">Cancel</Button>
+          <Button variant="primary">Confirm</Button>
+        </Modal.Footer>
+      </>
+    ),
   },
 };
