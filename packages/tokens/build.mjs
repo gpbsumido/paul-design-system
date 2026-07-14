@@ -260,9 +260,10 @@ function generateCSS() {
     lines.push(`  --paul-color-${name}: ${value};`);
   }
 
-  // Spacing
+  // Spacing (replace dots with underscores for valid CSS identifiers)
   for (const [key, value] of Object.entries(spacing)) {
-    lines.push(`  --paul-spacing-${key}: ${value};`);
+    const cssKey = String(key).replace('.', '_');
+    lines.push(`  --paul-spacing-${cssKey}: ${value};`);
   }
 
   // Typography - font size
@@ -357,10 +358,11 @@ function generateSCSS() {
 
   lines.push('');
 
-  // Spacing
+  // Spacing (replace dots with underscores for valid identifiers)
   lines.push('// Spacing');
   for (const [key, value] of Object.entries(spacing)) {
-    addVar(`spacing-${key}`, value);
+    const safeKey = String(key).replace('.', '_');
+    addVar(`spacing-${safeKey}`, value);
   }
 
   lines.push('');

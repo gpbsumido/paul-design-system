@@ -3,7 +3,7 @@
 A framework-agnostic design system built on design tokens and CSS custom properties, with first-class React and Angular component libraries.
 
 ![Build Status](https://img.shields.io/github/actions/workflow/status/gpbsumido/paul-design-system/ci.yml?branch=main)
-![npm version](https://img.shields.io/npm/v/@paul/tokens)
+![npm version](https://img.shields.io/npm/v/@paul-portfolio/tokens)
 ![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)
 
 ---
@@ -16,25 +16,25 @@ Paul Design System provides a complete UI foundation that works with any web fra
 
 | Package | Description | Status |
 |---------|-------------|--------|
-| `@paul/tokens` | Design tokens: colors, spacing, typography, shadows, motion, radii, z-index | Ready |
-| `@paul/css` | Framework-agnostic CSS components using CSS layers | Ready |
-| `@paul/react` | React component library (10 components) | Ready |
-| `@paul/angular` | Angular component library (16 standalone components) | Ready |
+| `@paul-portfolio/tokens` | Design tokens: colors, spacing, typography, shadows, motion, radii, z-index | Ready |
+| `@paul-portfolio/css` | Framework-agnostic CSS components using CSS layers | Ready |
+| `@paul-portfolio/react` | React component library (10 components) | Ready |
+| `@paul-portfolio/angular` | Angular component library (16 standalone components) | Ready |
 
 ## Dependency graph
 
 ```
-  @paul/tokens
+  @paul-portfolio/tokens
   (colors, spacing, typography, shadows, motion, radii, z-index)
        |
        v
-  @paul/css
+  @paul-portfolio/css
   (button, input, chip, card, modal, tooltip, avatar, badge, skeleton)
        |
        +------------------+
        |                  |
        v                  v
-  @paul/react        @paul/angular
+  @paul-portfolio/react        @paul-portfolio/angular
   (10 components)    (16 standalone components)
 ```
 
@@ -47,11 +47,11 @@ Tokens flow downward. Each layer builds on the one below it. Consumers pick the 
 For projects that need raw token values (e.g., a Node service generating emails, a design tool plugin):
 
 ```bash
-npm install @paul/tokens
+npm install @paul-portfolio/tokens
 ```
 
 ```ts
-import { colors, spacing, typography } from '@paul/tokens';
+import { colors, spacing, typography } from '@paul-portfolio/tokens';
 ```
 
 ### Vanilla HTML/CSS
@@ -59,11 +59,11 @@ import { colors, spacing, typography } from '@paul/tokens';
 For projects using plain HTML and CSS without a framework:
 
 ```bash
-npm install @paul/tokens @paul/css
+npm install @paul-portfolio/tokens @paul-portfolio/css
 ```
 
 ```html
-<link rel="stylesheet" href="node_modules/@paul/css/src/index.css" />
+<link rel="stylesheet" href="node_modules/@paul-portfolio/css/src/index.css" />
 
 <button class="paul-btn paul-btn--primary paul-btn--md">Save</button>
 ```
@@ -71,11 +71,11 @@ npm install @paul/tokens @paul/css
 ### React
 
 ```bash
-npm install @paul/tokens @paul/css @paul/react
+npm install @paul-portfolio/tokens @paul-portfolio/css @paul-portfolio/react
 ```
 
 ```tsx
-import { Button, Card, Input, Modal } from '@paul/react';
+import { Button, Card, Input, Modal } from '@paul-portfolio/react';
 
 function App() {
   return (
@@ -90,11 +90,11 @@ function App() {
 ### Angular
 
 ```bash
-npm install @paul/tokens @paul/css @paul/angular
+npm install @paul-portfolio/tokens @paul-portfolio/css @paul-portfolio/angular
 ```
 
 ```typescript
-import { PaulButtonComponent, PaulCardComponent } from '@paul/angular';
+import { PaulButtonComponent, PaulCardComponent } from '@paul-portfolio/angular';
 
 @Component({
   standalone: true,
@@ -209,8 +209,8 @@ npm run build --workspace=packages/react
 npm run build --workspace=packages/angular
 ```
 
-1. `@paul/tokens` -- must build first
-2. `@paul/css`, `@paul/react`, `@paul/angular` -- can build in parallel after tokens
+1. `@paul-portfolio/tokens` -- must build first
+2. `@paul-portfolio/css`, `@paul-portfolio/react`, `@paul-portfolio/angular` -- can build in parallel after tokens
 
 ### Testing
 
@@ -251,7 +251,7 @@ This eliminates specificity conflicts between resets, token declarations, compon
 
 ### Thin framework wrappers
 
-React and Angular packages wrap the CSS components. They do not reimplement styles. This guarantees visual consistency across frameworks and keeps the wrapper packages small and easy to maintain. A bug fix in `@paul/css` automatically fixes both React and Angular.
+React and Angular packages wrap the CSS components. They do not reimplement styles. This guarantees visual consistency across frameworks and keeps the wrapper packages small and easy to maintain. A bug fix in `@paul-portfolio/css` automatically fixes both React and Angular.
 
 ## License
 

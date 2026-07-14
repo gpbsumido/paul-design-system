@@ -13,6 +13,7 @@ type BaseProps = {
   variant?: ButtonVariant;
   size?: ButtonSize;
   loading?: boolean;
+  disabled?: boolean;
   children: ReactNode;
 };
 

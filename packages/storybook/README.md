@@ -1,4 +1,4 @@
-# @paul/storybook
+# @paul-portfolio/storybook
 
 Storybook documentation and visual regression testing for the Paul Design System.
 

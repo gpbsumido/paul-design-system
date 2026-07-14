@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Chip } from '../../react/src/Chip';
+import { Chip } from '@paul-portfolio/react';
 
 const meta = {
   title: 'Components/Chip',

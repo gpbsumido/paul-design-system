@@ -1,4 +1,4 @@
-// @paul/angular - Angular component wrappers for the Paul Design System
+// @paul-portfolio/angular - Angular component wrappers for the Paul Design System
 
 export { PaulButtonComponent } from './button';
 
