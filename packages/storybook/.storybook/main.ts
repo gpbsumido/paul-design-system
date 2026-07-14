@@ -18,6 +18,11 @@ const config: StorybookConfig = {
       ...config.resolve.alias,
       '@paul-portfolio/react': path.resolve(__dirname, '../../react/src'),
     };
+    // Use automatic JSX runtime so source TSX files don't need `import React`
+    config.esbuild = {
+      ...config.esbuild,
+      jsx: 'automatic',
+    };
     return config;
   },
 };
