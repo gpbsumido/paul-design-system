@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect, userEvent, within } from '@storybook/test';
-import { Modal } from '../../react/src/Modal';
-import { Button } from '../../react/src/Button';
+import { Modal, Button } from '@paul-portfolio/react';
 
 const meta = {
   title: 'Components/Modal',

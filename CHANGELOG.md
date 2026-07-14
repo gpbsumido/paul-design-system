@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.23] - 2026-07-14
+
+### Fixed
+- Storybook stories now import from `@paul-portfolio/react` package instead of relative paths into `../../react/src/` — relative imports broke in CI where the react package hadn't been built yet
+- Storybook preview imports `@paul-portfolio/css` by package name instead of relative path
+- Added `@paul-portfolio/css` and `@paul-portfolio/react` as storybook devDependencies so workspace resolution works
+
 ## [0.1.22] - 2026-07-14
 
 ### Changed

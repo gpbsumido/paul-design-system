@@ -2,7 +2,7 @@ import type { Preview } from '@storybook/react';
 import { withThemeByDataAttribute } from '@storybook/addon-themes';
 
 // Import the CSS package for global styles
-import '../../css/src/index.css';
+import '@paul-portfolio/css/index.css';
 
 const preview: Preview = {
   parameters: {

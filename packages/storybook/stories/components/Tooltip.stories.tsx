@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect, userEvent, within } from '@storybook/test';
-import { Tooltip } from '../../react/src/Tooltip';
-import { Button } from '../../react/src/Button';
+import { Tooltip, Button } from '@paul-portfolio/react';
 
 const meta = {
   title: 'Components/Tooltip',
