@@ -4,10 +4,10 @@
 
 All four packages are implemented and feature-complete:
 
-- `@paul/tokens` -- Design tokens (colors, spacing, typography, shadows, motion, radii, z-index)
-- `@paul/css` -- 9 CSS components + 4 utilities (focus-ring, sr-only, visually-hidden, contrast-notes)
-- `@paul/react` -- 10 React components with full test coverage including axe-core a11y tests
-- `@paul/angular` -- 16 standalone Angular components (compound components for Card and Modal)
+- `@paul-portfolio/tokens` -- Design tokens (colors, spacing, typography, shadows, motion, radii, z-index)
+- `@paul-portfolio/css` -- 9 CSS components + 4 utilities (focus-ring, sr-only, visually-hidden, contrast-notes)
+- `@paul-portfolio/react` -- 10 React components with full test coverage including axe-core a11y tests
+- `@paul-portfolio/angular` -- 16 standalone Angular components (compound components for Card and Modal)
 - `packages/storybook` -- Storybook stories for all components + token documentation pages, Chromatic configured
 
 ## Development rules

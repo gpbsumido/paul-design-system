@@ -1,4 +1,4 @@
-/* @paul/css - Framework-agnostic CSS components */
+/* @paul-portfolio/css - Framework-agnostic CSS components */
 @layer reset, tokens, base, components, utilities;
 
 @import './reset.css';

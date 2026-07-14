@@ -1,6 +1,6 @@
 {
-  "name": "@paul/angular",
-  "version": "0.1.15",
+  "name": "@paul-portfolio/angular",
+  "version": "0.1.16",
   "description": "Angular components for the Paul Design System",
   "license": "MIT",
   "main": "./dist/index.js",
@@ -14,8 +14,8 @@
   },
   "files": ["dist/"],
   "peerDependencies": {
-    "@paul/tokens": ">=0.1.0",
-    "@paul/css": ">=0.1.0",
+    "@paul-portfolio/tokens": ">=0.1.0",
+    "@paul-portfolio/css": ">=0.1.0",
     "@angular/core": ">=19.0.0"
   },
   "sideEffects": false,
