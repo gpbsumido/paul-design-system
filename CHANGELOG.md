@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.1.22] - 2026-07-14
+
+### Changed
+- Renamed npm scope from `@paul/*` to `@paul-portfolio/*` across all packages
+- Fixed spacing token CSS custom property names: dots replaced with underscores (`--paul-spacing-0_5` instead of `--paul-spacing-0.5`) to avoid CSS parsing errors in Next.js/SWC and other strict parsers
+- Fixed React and Angular package builds: excluded `__tests__` from tsconfig compilation so dist/ contains actual component output
+- Added `disabled` to React Button's `BaseProps` to fix TypeScript union type error
+- Bumped tokens to 0.1.4, css to 0.1.10, react to 0.1.13, angular to 0.1.16
+
+### Lessons learned
+- CSS custom property names cannot contain dots — they break SWC's CSS parser even though some browsers tolerate them. Always use underscores or hyphens for fractional token names
+- Test files must be excluded from tsconfig when the build script is `tsc` — otherwise `__tests__/` directories end up in dist/ and test-only type augmentations (vitest matchers) cause compilation errors
+- Discriminated union types in React components (ButtonAsButton | ButtonAsAnchor) require shared props to be in the base type, not just in one branch of the union
+
 ## [0.1.21] - 2026-07-13
 
 ### Changed
@@ -176,4 +190,4 @@
 
 ### Added
 - Initial monorepo scaffold with workspace config
-- Four package stubs: @paul/tokens, @paul/css, @paul/react, @paul/angular
+- Four package stubs: @paul-portfolio/tokens, @paul-portfolio/css, @paul-portfolio/react, @paul-portfolio/angular
