@@ -2,6 +2,10 @@
 
 ## [0.1.23] - 2026-07-14
 
+- Updating version to test auto-publish to NPM
+
+## [0.1.23] - 2026-07-14
+
 - Added Chromatic as dependency
 
 ## [0.1.23] - 2026-07-14

@@ -21,7 +21,7 @@ type Story = StoryObj<typeof meta>;
 
 export const WithImage: Story = {
   args: {
-    src: 'https://i.pravatar.cc/100',
+    src: 'https://i.pravatar.cc/100?u=storybook',
     alt: 'User avatar',
   },
 };
@@ -35,14 +35,14 @@ export const Fallback: Story = {
 export const Sizes: Story = {
   render: () => (
     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-      <Avatar src="https://i.pravatar.cc/100?u=sm" alt="Small" size="sm" />
-      <Avatar src="https://i.pravatar.cc/100?u=md" alt="Medium" size="md" />
-      <Avatar src="https://i.pravatar.cc/100?u=lg" alt="Large" size="lg" />
-      <Avatar src="https://i.pravatar.cc/100?u=xl" alt="Extra Large" size="xl" />
+      <Avatar src="https://i.pravatar.cc/100?u=storybook?u=sm" alt="Small" size="sm" />
+      <Avatar src="https://i.pravatar.cc/100?u=storybook?u=md" alt="Medium" size="md" />
+      <Avatar src="https://i.pravatar.cc/100?u=storybook?u=lg" alt="Large" size="lg" />
+      <Avatar src="https://i.pravatar.cc/100?u=storybook?u=xl" alt="Extra Large" size="xl" />
     </div>
   ),
   args: {
-    src: 'https://i.pravatar.cc/100',
+    src: 'https://i.pravatar.cc/100?u=storybook',
     alt: 'Avatar',
   },
 };
