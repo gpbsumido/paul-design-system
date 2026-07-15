@@ -1,12 +1,13 @@
 {
   "name": "@paul-portfolio/css",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "description": "Framework-agnostic CSS components for the Paul Design System",
   "license": "MIT",
   "main": "./src/index.css",
   "exports": {
     ".": "./src/index.css",
-    "./index.css": "./src/index.css"
+    "./index.css": "./src/index.css",
+    "./components.css": "./src/components.css"
   },
   "files": [
     "src/"
