@@ -50,7 +50,7 @@
   .input__wrapper {
     display: flex;
     flex-direction: column;
-    gap: var(--paul-spacing-1\.5);
+    gap: var(--paul-spacing-1_5);
   }
 
   /* ----------------------------------------------------------------

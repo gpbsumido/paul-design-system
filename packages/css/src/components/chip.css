@@ -19,7 +19,7 @@
    * Sizes
    * ---------------------------------------------------------------- */
   .chip--sm {
-    padding: var(--paul-spacing-0\.5) var(--paul-spacing-1\.5);
+    padding: var(--paul-spacing-0_5) var(--paul-spacing-1_5);
     font-size: var(--paul-font-size-xs);
   }
 
