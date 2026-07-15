@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.26] - 2026-07-15
+
+### Fixed
+
+- CSS component spacing tokens were referencing the old dot-based names (`--paul-spacing-1\.5`) while the tokens package had already renamed them to underscores (`--paul-spacing-1_5`). This caused missing padding on buttons (sm), chips (sm), badges, tooltips, and missing gap on input wrappers.
+- Affected files: button.css, input.css, chip.css, badge.css, tooltip.css
+
+### Added
+
+- `components.css` entry point for `@paul-portfolio/css` — imports all component and utility styles without the reset/base layers. Tailwind consumers use this instead of `index.css` to avoid CSS reset conflicts with preflight.
+- New package.json export: `"./components.css": "./src/components.css"`
+
 ## [0.1.23] - 2026-07-14
 
 - Updating version to test auto-publish to NPM

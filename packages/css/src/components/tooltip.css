@@ -4,7 +4,7 @@
     background: var(--paul-color-neutral-900);
     color: white;
     font-size: var(--paul-font-size-xs);
-    padding: var(--paul-spacing-1\.5) var(--paul-spacing-3);
+    padding: var(--paul-spacing-1_5) var(--paul-spacing-3);
     border-radius: var(--paul-radius-sm);
     z-index: var(--paul-z-popover);
     pointer-events: none;

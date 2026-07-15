@@ -6,7 +6,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: var(--paul-spacing-0\.5) var(--paul-spacing-2);
+    padding: var(--paul-spacing-0_5) var(--paul-spacing-2);
     border-radius: var(--paul-radius-full);
     font-size: var(--paul-font-size-xs);
     font-weight: var(--paul-font-weight-medium);

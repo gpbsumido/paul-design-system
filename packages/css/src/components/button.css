@@ -86,7 +86,7 @@
   }
 
   .btn--sm {
-    padding: var(--paul-spacing-1\.5) var(--paul-spacing-3);
+    padding: var(--paul-spacing-1_5) var(--paul-spacing-3);
     font-size: var(--paul-font-size-sm);
   }
 
