@@ -87,6 +87,14 @@ function App() {
 }
 ```
 
+> **Using Tailwind?** Import `@paul-portfolio/css/components.css` instead of the
+> default entry point. It ships only the component styles (no reset, no base) so
+> it won't conflict with Tailwind's preflight.
+>
+> ```css
+> @import "@paul-portfolio/css/components.css";
+> ```
+
 ### Angular
 
 ```bash
