@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.2.0] - 2026-07-16
+
+- testing auto publish
+
 ## [0.1.29] - 2026-07-16
 
 - update the publish workflow
