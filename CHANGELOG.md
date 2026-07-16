@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.1.29] - 2026-07-16
+
+- update the publish workflow
+
 ## [0.1.28] - 2026-07-16
 
 ### Added
