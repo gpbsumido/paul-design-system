@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1] - 2026-07-16
+
+### Fixed
+
+- Added job-level `id-token: write` permission to publish workflow for reliable OIDC token minting
+- Normalized `repository.url` format with `git+https://` prefix across all packages
+
 ## [0.2.0] - 2026-07-16
 
 - testing auto publish
