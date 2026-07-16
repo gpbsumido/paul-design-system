@@ -1,21 +1,24 @@
-name: Publish to npm
+name: Publish
 
 on:
   push:
-    branches: [main]
+    tags:
+      - 'v*'
+
+permissions:
+  id-token: write   # required for OIDC token minting
+  contents: read
 
 jobs:
   publish:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
-          registry-url: https://registry.npmjs.org
+          node-version: 22
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
         run: npm ci
@@ -30,19 +33,18 @@ jobs:
         run: npm run build --workspace=packages/angular
 
       - name: Publish packages
+        # no NPM_TOKEN needed -- npm CLI exchanges the OIDC token
+        # for temporary registry credentials automatically
         run: |
           for pkg in tokens css react angular; do
             cd packages/$pkg
-            # Check if this version is already published
             PACKAGE_NAME=$(node -p "require('./package.json').name")
             PACKAGE_VERSION=$(node -p "require('./package.json').version")
             if npm view "${PACKAGE_NAME}@${PACKAGE_VERSION}" version 2>/dev/null; then
               echo "Skipping ${PACKAGE_NAME}@${PACKAGE_VERSION} — already published"
             else
               echo "Publishing ${PACKAGE_NAME}@${PACKAGE_VERSION}"
-              npm publish --access public
+              npm publish --access public --provenance
             fi
             cd ../..
           done
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

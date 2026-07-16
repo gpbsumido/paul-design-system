@@ -1,9 +1,14 @@
 {
   "name": "@paul-portfolio/storybook",
-  "version": "0.1.16",
+  "version": "0.1.17",
   "private": true,
   "description": "Storybook for the Paul Design System",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gpbsumido/paul-design-system.git",
+    "directory": "packages/storybook"
+  },
   "scripts": {
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
