@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.28] - 2026-07-16
+
+### Added
+
+- `repository.url` field to all package.json files pointing to `https://github.com/gpbsumido/paul-design-system.git` with per-package `directory` paths
+
 ## [0.1.26] - 2026-07-15
 
 ### Fixed
