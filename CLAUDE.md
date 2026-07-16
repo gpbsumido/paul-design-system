@@ -20,7 +20,7 @@ All four packages are implemented and feature-complete:
 ## Versioning
 
 - Each commit bumps the patch version and updates CHANGELOG.md.
-- Current version: 0.2.1
+- Current version: 0.2.2
 
 ## Tokens
 

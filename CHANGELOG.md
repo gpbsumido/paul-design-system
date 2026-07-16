@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.2] - 2026-07-16
+
+### Fixed
+
+- Upgrade publish workflow to Node 24 (npm 11.5.1+) required for OIDC trusted publishing
+- Remove `registry-url` from setup-node to prevent `.npmrc` `_authToken` line from overriding OIDC
+
 ## [0.2.1] - 2026-07-16
 
 ### Fixed
