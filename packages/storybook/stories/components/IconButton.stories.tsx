@@ -1,57 +1,41 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Button } from '@paul-portfolio/react';
+import { IconButton } from '@paul-portfolio/react';
 
 const meta = {
   title: 'Components/IconButton',
-  component: Button,
+  component: IconButton,
   tags: ['autodocs'],
   argTypes: {
-    variant: {
-      control: 'select',
-      options: ['primary', 'secondary', 'outline', 'ghost', 'danger'],
-    },
     size: {
       control: 'select',
-      options: ['xs', 'sm', 'md', 'lg'],
+      options: ['sm', 'md'],
     },
     disabled: { control: 'boolean' },
   },
-} satisfies Meta<typeof Button>;
+} satisfies Meta<typeof IconButton>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    children: '\u2715',
-    className: 'btn--icon',
-    'aria-label': 'Close',
-  },
-};
-
-export const Primary: Story = {
-  args: {
-    children: '\u2715',
-    variant: 'primary',
-    className: 'btn--icon',
-    'aria-label': 'Close',
-  },
-};
-
-export const Ghost: Story = {
-  args: {
-    children: '\u2715',
-    variant: 'ghost',
-    className: 'btn--icon',
+    children: '✕',
     'aria-label': 'Close',
   },
 };
 
 export const Small: Story = {
   args: {
-    children: '\u2715',
+    children: '✕',
     size: 'sm',
-    className: 'btn--icon',
+    'aria-label': 'Close',
+  },
+};
+
+export const Disabled: Story = {
+  args: {
+    children: '✕',
+    disabled: true,
     'aria-label': 'Close',
   },
 };

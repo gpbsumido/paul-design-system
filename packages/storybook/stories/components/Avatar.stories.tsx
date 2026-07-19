@@ -23,6 +23,7 @@ export const WithImage: Story = {
   args: {
     src: 'https://i.pravatar.cc/100?u=storybook',
     alt: 'User avatar',
+    size: 'lg',
   },
 };
 

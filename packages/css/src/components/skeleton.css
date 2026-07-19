@@ -42,6 +42,10 @@
 
   .skeleton--circle {
     border-radius: var(--paul-radius-full);
+    /* Size from the width prop, default to an avatar-ish 40px. Without a
+       width a block skeleton fills its container, and aspect-ratio then
+       turns that full width into a giant circle. */
+    width: var(--skeleton-w, 40px);
     aspect-ratio: 1;
   }
 

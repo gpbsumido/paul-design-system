@@ -9,7 +9,7 @@ type SkeletonProps = {
 
 export function Skeleton({ variant, width, height }: SkeletonProps) {
   const style: CSSProperties | undefined =
-    variant === 'rect'
+    width || height
       ? ({
           '--skeleton-w': width,
           '--skeleton-h': height,
