@@ -1,6 +1,6 @@
 {
   "name": "@paul-portfolio/css",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Framework-agnostic CSS components for the Paul Design System",
   "license": "MIT",
   "repository": {

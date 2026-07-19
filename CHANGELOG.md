@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.10] - 2026-07-19
+
+### Fixed
+
+- `index.css` was missing the newer components (icon-button, textarea, switch, spinner, info-tip, divider) — it kept its own duplicate import list that never got the additions, so consumers of the full entry point (and Storybook) got no styles for those. `index.css` now imports `components.css` directly, so the two entry points can't drift again.
+
 ## [0.2.9] - 2026-07-19
 
 ### Fixed
