@@ -1,6 +1,6 @@
 {
   "name": "paul-design-system",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "private": true,
   "description": "Framework-agnostic design system with tokens, CSS primitives, and React/Angular wrappers",
   "workspaces": [

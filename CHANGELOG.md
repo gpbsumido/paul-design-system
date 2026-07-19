@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.7] - 2026-07-19
+
+### Fixed
+
+- Tooltip Storybook interaction test: waits for the tooltip with `findByRole` now that it appears after a show-delay, instead of reading it synchronously right after hover (which failed to render under Chromatic UI Tests).
+
 ## [0.2.6] - 2026-07-19
 
 ### Added

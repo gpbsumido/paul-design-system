@@ -35,8 +35,9 @@ export const Top: Story = {
     const canvas = within(canvasElement);
     const trigger = canvas.getByRole('button');
     await userEvent.hover(trigger);
-    // Tooltip should become visible
-    const tooltip = canvas.getByRole('tooltip');
+    // The tooltip appears after a short show-delay, so wait for it rather than
+    // reading synchronously.
+    const tooltip = await canvas.findByRole('tooltip', undefined, { timeout: 2000 });
     await expect(tooltip).toBeVisible();
   },
 };
