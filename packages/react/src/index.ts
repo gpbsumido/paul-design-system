@@ -3,6 +3,7 @@ export { IconButton } from './IconButton';
 export { Card } from './Card';
 export { Chip } from './Chip';
 export { Input } from './Input';
+export { Textarea } from './Textarea';
 export { Modal } from './Modal';
 export { Tooltip } from './Tooltip';
 export { Avatar } from './Avatar';

@@ -5,6 +5,7 @@ import * as matchers from 'vitest-axe/matchers';
 import { Button } from '../Button';
 import { IconButton } from '../IconButton';
 import { Input } from '../Input';
+import { Textarea } from '../Textarea';
 import { Chip } from '../Chip';
 import { Card } from '../Card';
 import { Badge } from '../Badge';
@@ -41,6 +42,12 @@ describe('Accessibility', () => {
 
   it('Input with error has no a11y violations', async () => {
     const { container } = render(<Input label="Email" error="Required field" />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it('Textarea with label has no a11y violations', async () => {
+    const { container } = render(<Textarea label="Bio" />);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
