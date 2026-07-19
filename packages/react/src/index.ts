@@ -1,11 +1,17 @@
 export { Button } from './Button';
+export { IconButton } from './IconButton';
 export { Card } from './Card';
 export { Chip } from './Chip';
 export { Input } from './Input';
+export { Textarea } from './Textarea';
+export { Switch } from './Switch';
 export { Modal } from './Modal';
 export { Tooltip } from './Tooltip';
+export { InfoTip } from './InfoTip';
 export { Avatar } from './Avatar';
 export { Badge } from './Badge';
 export { Skeleton } from './Skeleton';
+export { Spinner } from './Spinner';
+export { Divider } from './Divider';
 export { VisuallyHidden } from './VisuallyHidden';
 export { cx } from './cx';
