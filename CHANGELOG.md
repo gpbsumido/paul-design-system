@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.2.8] - 2026-07-19
+
+### Added
+
+- Storybook stories for Textarea, InfoTip, Switch, Spinner, and Divider, which had none, so the whole component set is documented and covered by Chromatic.
+
+### Fixed
+
+- IconButton story now renders the real IconButton component instead of a Button with a non-existent `btn--icon` class.
+
 ## [0.2.7] - 2026-07-19
 
 ### Fixed
