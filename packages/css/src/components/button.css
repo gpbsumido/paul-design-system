@@ -114,18 +114,24 @@
     pointer-events: none;
   }
 
+  /* The label is hidden with color:transparent, which also zeroes out
+     currentColor — so the spinner needs an explicit color. Default to the
+     foreground (visible on light fills), and go white on the solid variants. */
   .btn[aria-busy="true"]::after {
     content: "";
     position: absolute;
     width: 1em;
     height: 1em;
-    border: 2px solid currentColor;
+    border: 2px solid var(--paul-color-foreground);
     border-right-color: transparent;
     border-radius: 50%;
     animation: btn-spin 0.6s linear infinite;
-    /* restore color so the spinner is visible */
-    color: inherit;
-    filter: brightness(1);
+  }
+
+  .btn--primary[aria-busy="true"]::after,
+  .btn--danger[aria-busy="true"]::after {
+    border-color: #fff;
+    border-right-color: transparent;
   }
 
   @keyframes btn-spin {

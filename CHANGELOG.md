@@ -1,5 +1,119 @@
 # Changelog
 
+## [0.2.18] - 2026-07-19
+
+### Fixed
+
+- Disabled Input and Textarea were indistinguishable from the enabled state — there were no disabled styles at all, so they kept the normal surface background and full-strength text. They now use a grayer fill, muted text, and a `not-allowed` cursor, in both light and dark themes.
+
+### Changed
+
+- Input stories now render at a realistic field width (20rem) instead of stretching edge to edge. A full-bleed input made the focus ring look like a line across the top rather than a ring around the field.
+
+## [0.2.17] - 2026-07-19
+
+### Fixed
+
+- Skeleton circle rendered enormous — `.skeleton--circle` set `aspect-ratio: 1` but no width, so a block-level skeleton filled its container and the aspect ratio turned that full width into a giant circle. It now defaults to 40px, and the React `width`/`height` props apply to the circle (and any variant), not just `rect`.
+
+## [0.2.16] - 2026-07-19
+
+### Fixed
+
+- Removable Chip had no visible close affordance — the React `.chip__remove` button rendered empty (the "×" was never in the markup, unlike the Angular component), so it was a blank clickable square. It now renders an `aria-hidden` "×" glyph, sized up a little so it reads clearly.
+
+## [0.2.15] - 2026-07-19
+
+### Changed
+
+- Avatar "WithImage" story now renders at `lg`. With the new `md` size default an unsized image avatar dropped from its old raw-image dimensions to 32px, which looked cramped in the showcase; `lg` shows the image avatar clearly.
+
+## [0.2.14] - 2026-07-19
+
+### Fixed
+
+- Modal panel rendered with no surface: the React component put the dialog styles on `.modal` and the title on `.modal__title`, but the CSS (and the Angular component) style `.modal__content` and `.modal__header`. The panel is now `.modal__content` and the title renders in `.modal__header`, so the dialog gets its background, radius, shadow, and header divider.
+- Avatar collapsed when no `size` was given — the size only came from a modifier class, so an unsized avatar had no dimensions. `size` now defaults to `md`. The fallback initials also fill the whole circle instead of hugging the text.
+
+## [0.2.13] - 2026-07-19
+
+### Fixed
+
+- Button loading spinner was invisible: `aria-busy` sets `color: transparent` to hide the label, which also zeroed out the `currentColor` the spinner border relied on. The spinner now uses an explicit color — the foreground on light fills, white on the solid primary/danger variants.
+- Badge dot was washed out — the 8px dot reused the pale text-badge background (e.g. `success-100`), which is nearly invisible at that size. Dots now use the saturated `-500` fills.
+
+## [0.2.12] - 2026-07-19
+
+### Changed
+
+- Spinner story: replaced the "CustomLabel" story (visually identical to Default, since `label` is only the accessible name) with a "WithText" story that pairs the spinner with matching visible text, so there's something distinct to see and it shows the real usage.
+
+## [0.2.11] - 2026-07-19
+
+### Fixed
+
+- Storybook was never importing `@paul-portfolio/tokens/tokens.css`, so every `--paul-*` custom property resolved to empty and all component styles fell back to nothing (backgrounds transparent, borders gone). Components with literal text colors looked "sort of there"; token-only ones like Tooltip (white text on white) and Spinner were invisible. The preview now imports the tokens before the css, so everything renders styled — and Chromatic baselines are finally meaningful.
+
+## [0.2.10] - 2026-07-19
+
+### Fixed
+
+- `index.css` was missing the newer components (icon-button, textarea, switch, spinner, info-tip, divider) — it kept its own duplicate import list that never got the additions, so consumers of the full entry point (and Storybook) got no styles for those. `index.css` now imports `components.css` directly, so the two entry points can't drift again.
+
+## [0.2.9] - 2026-07-19
+
+### Fixed
+
+- Tooltip and InfoTip stories now hover to reveal the bubble before Chromatic snapshots, so the baselines actually show the tooltip/popover instead of just the bare trigger. Added an explicit trigger-only InfoTip story for the resting state.
+
+## [0.2.8] - 2026-07-19
+
+### Added
+
+- Storybook stories for Textarea, InfoTip, Switch, Spinner, and Divider, which had none, so the whole component set is documented and covered by Chromatic.
+
+### Fixed
+
+- IconButton story now renders the real IconButton component instead of a Button with a non-existent `btn--icon` class.
+
+## [0.2.7] - 2026-07-19
+
+### Fixed
+
+- Tooltip Storybook interaction test: waits for the tooltip with `findByRole` now that it appears after a show-delay, instead of reading it synchronously right after hover (which failed to render under Chromatic UI Tests).
+
+## [0.2.6] - 2026-07-19
+
+### Added
+
+- Modal: `aria-label`, `aria-labelledby`, and `aria-describedby` passthrough (so it can be labelled without a visible title), a `className`, and a focus trap that moves focus into the dialog on open, cycles Tab within it, and restores focus to the opener on close.
+
+### Notes
+
+- With this, `@paul-portfolio/react` and `/css` are cut to 0.3.0 for the Textarea / Tooltip / InfoTip / Chip / Modal enhancements in this batch.
+
+## [0.2.5] - 2026-07-19
+
+### Added
+
+- Chip: a `color` prop (background color with white text), `fullWidth` to stretch inside a container, and a `title`. When given an `onClick` the label becomes a real focusable button (with the remove button as a sibling, so no button-in-button), and the remove button now names itself "Remove <label>".
+
+## [0.2.4] - 2026-07-19
+
+### Changed
+
+- Tooltip now renders at a fixed screen position instead of absolute, so it's never clipped by an `overflow:hidden` ancestor (grids, cards, chips) and needs no portal. Shows on hover and focus after a `delay`, dismissible with Escape. `content` now accepts rich nodes, plus a `maxWidth`.
+
+### Added
+
+- InfoTip accepts rich `ReactNode` content and a `maxWidth`, built on the fixed-position Tooltip. Brings it to parity with the hand-rolled popover in consuming apps.
+
+## [0.2.3] - 2026-07-19
+
+### Added
+
+- Textarea: `hideLabel` (visually hide the label but keep it accessible), a `required` marker, and an optional live character counter (`showCount` with `maxLength`). Brings it to parity with the richer hand-rolled Textarea in consuming apps so they can back onto it.
+
 ## [0.2.2] - 2026-07-16
 
 ### Fixed

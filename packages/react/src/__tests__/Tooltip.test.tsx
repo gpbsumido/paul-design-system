@@ -1,67 +1,76 @@
-import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { describe, it, expect, afterEach, vi } from 'vitest';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 import { Tooltip } from '../Tooltip';
 
+afterEach(() => vi.useRealTimers());
+
+/** Hover the anchor and let the show-delay elapse. */
+function hover(el: HTMLElement, ms = 500) {
+  fireEvent.mouseEnter(el);
+  act(() => vi.advanceTimersByTime(ms));
+}
+
 describe('Tooltip', () => {
-  it('hidden by default', () => {
+  it('is not rendered until shown', () => {
     render(
       <Tooltip content="Tip text">
         <button>Hover me</button>
       </Tooltip>,
     );
-    const tooltip = screen.getByRole('tooltip');
-    expect(tooltip).not.toHaveClass('tooltip--visible');
+    expect(screen.queryByRole('tooltip')).toBeNull();
   });
 
-  it('visible on hover', async () => {
-    const user = userEvent.setup();
+  it('appears on hover after the delay and carries role + describedby', () => {
+    vi.useFakeTimers();
     render(
-      <Tooltip content="Tip text">
+      <Tooltip content="Tip text" delay={500}>
         <button>Hover me</button>
       </Tooltip>,
     );
-    await user.hover(screen.getByText('Hover me'));
-    const tooltip = screen.getByRole('tooltip');
-    expect(tooltip).toHaveClass('tooltip--visible');
+    const anchor = screen.getByText('Hover me').parentElement!;
+    fireEvent.mouseEnter(anchor);
+    // not yet — still within the delay
+    expect(screen.queryByRole('tooltip')).toBeNull();
+    act(() => vi.advanceTimersByTime(500));
+    const tip = screen.getByRole('tooltip');
+    expect(tip).toHaveTextContent('Tip text');
+    expect(anchor).toHaveAttribute('aria-describedby', tip.id);
   });
 
-  it('has role="tooltip"', () => {
+  it('appears on focus and hides on Escape', () => {
+    vi.useFakeTimers();
     render(
-      <Tooltip content="Tip text">
-        <button>Hover me</button>
+      <Tooltip content="Tip">
+        <button>Focus me</button>
       </Tooltip>,
     );
+    const anchor = screen.getByText('Focus me').parentElement!;
+    fireEvent.focus(anchor);
+    act(() => vi.advanceTimersByTime(500));
     expect(screen.getByRole('tooltip')).toBeInTheDocument();
+    fireEvent.keyDown(anchor, { key: 'Escape' });
+    expect(screen.queryByRole('tooltip')).toBeNull();
   });
 
-  it('side prop applies correct position class', () => {
-    const { rerender } = render(
-      <Tooltip content="Tip" side="top">
-        <button>Hover</button>
-      </Tooltip>,
-    );
-    expect(screen.getByRole('tooltip')).toHaveClass('tooltip--top');
-
-    rerender(
+  it('applies the side class', () => {
+    vi.useFakeTimers();
+    render(
       <Tooltip content="Tip" side="bottom">
-        <button>Hover</button>
+        <button>Hover me</button>
       </Tooltip>,
     );
-    expect(screen.getByRole('tooltip')).toHaveClass('tooltip--bottom');
+    hover(screen.getByText('Hover me').parentElement!);
+    expect(screen.getByRole('tooltip')).toHaveClass('tooltip', 'tooltip--bottom');
+  });
 
-    rerender(
-      <Tooltip content="Tip" side="left">
-        <button>Hover</button>
+  it('renders rich node content', () => {
+    vi.useFakeTimers();
+    render(
+      <Tooltip content={<strong>Bold tip</strong>}>
+        <button>Hover me</button>
       </Tooltip>,
     );
-    expect(screen.getByRole('tooltip')).toHaveClass('tooltip--left');
-
-    rerender(
-      <Tooltip content="Tip" side="right">
-        <button>Hover</button>
-      </Tooltip>,
-    );
-    expect(screen.getByRole('tooltip')).toHaveClass('tooltip--right');
+    hover(screen.getByText('Hover me').parentElement!);
+    expect(screen.getByRole('tooltip')).toHaveTextContent('Bold tip');
   });
 });

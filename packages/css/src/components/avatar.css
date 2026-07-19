@@ -48,6 +48,13 @@
    * Fallback (initials)
    * ---------------------------------------------------------------- */
   .avatar--fallback {
+    /* Fill the circle so the initials sit on a full tinted disc rather than a
+       small pill hugging the text. */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
     background-color: var(--paul-color-primary-100);
     color: var(--paul-color-primary-700);
     font-weight: var(--paul-font-weight-medium);

@@ -22,6 +22,11 @@ describe('Avatar', () => {
     expect(document.querySelector('.avatar')).toHaveClass('avatar--xl');
   });
 
+  it('defaults to the md size so it always has dimensions', () => {
+    render(<Avatar alt="User" />);
+    expect(document.querySelector('.avatar')).toHaveClass('avatar--md');
+  });
+
   it('renders image when src provided', () => {
     render(<Avatar src="/photo.jpg" alt="Jane Doe" />);
     const img = screen.getByRole('img', { name: 'Jane Doe' });

@@ -16,6 +16,16 @@ const meta = {
     },
     disabled: { control: 'boolean' },
   },
+  decorators: [
+    // Inputs are full-width by design; constrain the story so it renders at a
+    // realistic field width instead of stretching edge to edge (which makes the
+    // focus ring look like a line across the top rather than a ring).
+    (Story) => (
+      <div style={{ maxWidth: '20rem' }}>
+        <Story />
+      </div>
+    ),
+  ],
 } satisfies Meta<typeof Input>;
 
 export default meta;

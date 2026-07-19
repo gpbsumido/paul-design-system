@@ -24,4 +24,11 @@ describe('Skeleton', () => {
     expect(el).toHaveClass('skeleton--rect');
     expect(el).toHaveStyle({ '--skeleton-w': '100px', '--skeleton-h': '50px' });
   });
+
+  it('circle variant can be sized via width', () => {
+    render(<Skeleton variant="circle" width="64px" />);
+    expect(document.querySelector('.skeleton')).toHaveStyle({
+      '--skeleton-w': '64px',
+    });
+  });
 });
