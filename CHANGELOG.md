@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.13] - 2026-07-19
+
+### Fixed
+
+- Button loading spinner was invisible: `aria-busy` sets `color: transparent` to hide the label, which also zeroed out the `currentColor` the spinner border relied on. The spinner now uses an explicit color — the foreground on light fills, white on the solid primary/danger variants.
+- Badge dot was washed out — the 8px dot reused the pale text-badge background (e.g. `success-100`), which is nearly invisible at that size. Dots now use the saturated `-500` fills.
+
 ## [0.2.12] - 2026-07-19
 
 ### Changed
