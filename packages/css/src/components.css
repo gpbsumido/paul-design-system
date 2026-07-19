@@ -5,6 +5,7 @@
 @import './utilities/focus-ring.css';
 @import './utilities/sr-only.css';
 @import './components/button.css';
+@import './components/icon-button.css';
 @import './components/input.css';
 @import './components/chip.css';
 @import './components/badge.css';

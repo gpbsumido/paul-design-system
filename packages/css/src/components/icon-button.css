@@ -1,0 +1,43 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * Icon button – a square button that holds a single icon or glyph.
+   * Shares the visual language of .btn but sized for an icon.
+   * ---------------------------------------------------------------- */
+  .icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 2rem;
+    width: 2rem;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: var(--paul-radius-md);
+    color: var(--paul-color-neutral-500);
+    background-color: transparent;
+    cursor: pointer;
+    transition:
+      background-color var(--paul-duration-fast) var(--paul-easing-default),
+      color var(--paul-duration-fast) var(--paul-easing-default);
+  }
+
+  .icon-btn:hover {
+    color: var(--paul-color-neutral-900);
+    background-color: var(--paul-color-neutral-100);
+  }
+
+  .icon-btn:focus-visible {
+    outline: 2px solid var(--paul-color-primary-600);
+    outline-offset: 2px;
+  }
+
+  .icon-btn:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  /* Small size */
+  .icon-btn--sm {
+    height: 1.75rem;
+    width: 1.75rem;
+  }
+}

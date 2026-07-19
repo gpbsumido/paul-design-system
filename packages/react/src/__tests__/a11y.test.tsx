@@ -3,6 +3,7 @@ import { render } from '@testing-library/react';
 import { axe } from 'vitest-axe';
 import * as matchers from 'vitest-axe/matchers';
 import { Button } from '../Button';
+import { IconButton } from '../IconButton';
 import { Input } from '../Input';
 import { Chip } from '../Chip';
 import { Card } from '../Card';
@@ -22,6 +23,12 @@ describe('Accessibility', () => {
 
   it('Button disabled has no a11y violations', async () => {
     const { container } = render(<Button variant="primary" disabled>Disabled</Button>);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it('IconButton has no a11y violations', async () => {
+    const { container } = render(<IconButton aria-label="Close">✕</IconButton>);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
