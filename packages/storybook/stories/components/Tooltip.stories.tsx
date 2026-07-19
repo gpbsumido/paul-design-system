@@ -25,21 +25,21 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/** Hover the trigger and wait out the show-delay so the tooltip is captured. */
+const revealTooltip: Story['play'] = async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+  await userEvent.hover(canvas.getByRole('button'));
+  const tooltip = await canvas.findByRole('tooltip', undefined, { timeout: 2000 });
+  await expect(tooltip).toBeVisible();
+};
+
 export const Top: Story = {
   args: {
     content: 'Tooltip on top',
     side: 'top',
     children: <Button>Hover me</Button>,
   },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const trigger = canvas.getByRole('button');
-    await userEvent.hover(trigger);
-    // The tooltip appears after a short show-delay, so wait for it rather than
-    // reading synchronously.
-    const tooltip = await canvas.findByRole('tooltip', undefined, { timeout: 2000 });
-    await expect(tooltip).toBeVisible();
-  },
+  play: revealTooltip,
 };
 
 export const Bottom: Story = {
@@ -48,6 +48,7 @@ export const Bottom: Story = {
     side: 'bottom',
     children: <Button>Hover me</Button>,
   },
+  play: revealTooltip,
 };
 
 export const Left: Story = {
@@ -56,6 +57,7 @@ export const Left: Story = {
     side: 'left',
     children: <Button>Hover me</Button>,
   },
+  play: revealTooltip,
 };
 
 export const Right: Story = {
@@ -64,4 +66,5 @@ export const Right: Story = {
     side: 'right',
     children: <Button>Hover me</Button>,
   },
+  play: revealTooltip,
 };

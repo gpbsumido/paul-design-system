@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.9] - 2026-07-19
+
+### Fixed
+
+- Tooltip and InfoTip stories now hover to reveal the bubble before Chromatic snapshots, so the baselines actually show the tooltip/popover instead of just the bare trigger. Added an explicit trigger-only InfoTip story for the resting state.
+
 ## [0.2.8] - 2026-07-19
 
 ### Added
