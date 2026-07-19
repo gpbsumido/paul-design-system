@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.11] - 2026-07-19
+
+### Fixed
+
+- Storybook was never importing `@paul-portfolio/tokens/tokens.css`, so every `--paul-*` custom property resolved to empty and all component styles fell back to nothing (backgrounds transparent, borders gone). Components with literal text colors looked "sort of there"; token-only ones like Tooltip (white text on white) and Spinner were invisible. The preview now imports the tokens before the css, so everything renders styled — and Chromatic baselines are finally meaningful.
+
 ## [0.2.10] - 2026-07-19
 
 ### Fixed

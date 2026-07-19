@@ -1,6 +1,9 @@
 import type { Preview } from '@storybook/react';
 import { withThemeByDataAttribute } from '@storybook/addon-themes';
 
+// Tokens define the --paul-* custom properties everything else reads, so they
+// must load first. Without them all the component styles resolve to empty.
+import '@paul-portfolio/tokens/tokens.css';
 // Import the CSS package for global styles
 import '@paul-portfolio/css/index.css';
 
