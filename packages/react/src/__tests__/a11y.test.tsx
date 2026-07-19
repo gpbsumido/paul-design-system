@@ -9,6 +9,7 @@ import { Textarea } from '../Textarea';
 import { InfoTip } from '../InfoTip';
 import { Switch } from '../Switch';
 import { Spinner } from '../Spinner';
+import { Divider } from '../Divider';
 import { Chip } from '../Chip';
 import { Card } from '../Card';
 import { Badge } from '../Badge';
@@ -69,6 +70,12 @@ describe('Accessibility', () => {
 
   it('Spinner has no a11y violations', async () => {
     const { container } = render(<Spinner />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it('Divider has no a11y violations', async () => {
+    const { container } = render(<Divider />);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

@@ -1,0 +1,20 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * Divider – a thin rule separating content. Horizontal by default,
+   * vertical for use inside a flex row.
+   * ---------------------------------------------------------------- */
+  .divider {
+    border: none;
+    margin: 0;
+    height: 1px;
+    width: 100%;
+    background-color: var(--paul-color-border);
+    flex-shrink: 0;
+  }
+
+  .divider--vertical {
+    height: auto;
+    width: 1px;
+    align-self: stretch;
+  }
+}
