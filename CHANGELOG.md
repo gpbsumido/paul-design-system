@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.19] - 2026-07-19
+
+### Changed
+
+- Bumped the publishable packages so the enhancement work can actually ship: `@paul-portfolio/react` 0.3.0 → 0.4.0 and `@paul-portfolio/css` 0.3.1 → 0.4.0. Those exact versions were already on npm, so the component enhancements and audit fixes (Modal, Avatar, Chip, Skeleton, Input, Button, Badge, Tooltip, etc.) had no new version to publish under. `@paul-portfolio/tokens` is unchanged at 0.1.9.
+
 ## [0.2.18] - 2026-07-19
 
 ### Fixed
