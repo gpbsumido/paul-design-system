@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.2.6] - 2026-07-19
+
+### Added
+
+- Modal: `aria-label`, `aria-labelledby`, and `aria-describedby` passthrough (so it can be labelled without a visible title), a `className`, and a focus trap that moves focus into the dialog on open, cycles Tab within it, and restores focus to the opener on close.
+
+### Notes
+
+- With this, `@paul-portfolio/react` and `/css` are cut to 0.3.0 for the Textarea / Tooltip / InfoTip / Chip / Modal enhancements in this batch.
+
 ## [0.2.5] - 2026-07-19
 
 ### Added
