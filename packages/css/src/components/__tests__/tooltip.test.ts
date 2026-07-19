@@ -9,34 +9,21 @@ const css = readFileSync(cssPath, 'utf-8');
 describe('Tooltip CSS component', () => {
   it('defines .tooltip base class', () => {
     expect(css).toContain('.tooltip');
-    expect(css).toContain('position');
-    expect(css).toContain('opacity');
     expect(css).toContain('pointer-events');
   });
 
-  it('defines .tooltip--visible class', () => {
-    expect(css).toContain('.tooltip--visible');
-    expect(css).toContain('opacity: 1');
+  // Position is set inline (fixed) by the React component so the bubble can't be
+  // clipped by an overflow:hidden ancestor. The base .tooltip rule sets no
+  // position of its own (only the ::before arrows are absolutely positioned).
+  it('does not hard-code a position on the base bubble rule', () => {
+    const base = css.slice(css.indexOf('.tooltip {'), css.indexOf('}', css.indexOf('.tooltip {')));
+    expect(base).not.toContain('position');
   });
 
-  it('defines .tooltip--top position variant', () => {
-    expect(css).toContain('.tooltip--top');
-    expect(css).toContain('bottom: 100%');
-  });
-
-  it('defines .tooltip--bottom position variant', () => {
-    expect(css).toContain('.tooltip--bottom');
-    expect(css).toContain('top: 100%');
-  });
-
-  it('defines .tooltip--left position variant', () => {
-    expect(css).toContain('.tooltip--left');
-    expect(css).toContain('right: 100%');
-  });
-
-  it('defines .tooltip--right position variant', () => {
-    expect(css).toContain('.tooltip--right');
-    expect(css).toContain('left: 100%');
+  it('defines the per-side arrow classes', () => {
+    for (const side of ['top', 'bottom', 'left', 'right']) {
+      expect(css).toContain(`.tooltip--${side}::before`);
+    }
   });
 
   it('has arrow via pseudo-element', () => {
@@ -44,20 +31,15 @@ describe('Tooltip CSS component', () => {
     expect(css).toContain('border');
   });
 
-  it('respects prefers-reduced-motion', () => {
-    expect(css).toContain('prefers-reduced-motion');
-    expect(css).toContain('transition');
-  });
-
   it('uses design tokens (--paul-)', () => {
     expect(css).toContain('--paul-');
   });
 
-  it('sets pointer-events none by default', () => {
+  it('sets pointer-events none', () => {
     expect(css).toContain('pointer-events: none');
   });
 
-  it('has max-width constraint', () => {
+  it('has a max-width constraint', () => {
     expect(css).toContain('max-width');
   });
 

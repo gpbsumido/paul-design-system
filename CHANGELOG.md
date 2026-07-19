@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.2.4] - 2026-07-19
+
+### Changed
+
+- Tooltip now renders at a fixed screen position instead of absolute, so it's never clipped by an `overflow:hidden` ancestor (grids, cards, chips) and needs no portal. Shows on hover and focus after a `delay`, dismissible with Escape. `content` now accepts rich nodes, plus a `maxWidth`.
+
+### Added
+
+- InfoTip accepts rich `ReactNode` content and a `maxWidth`, built on the fixed-position Tooltip. Brings it to parity with the hand-rolled popover in consuming apps.
+
 ## [0.2.3] - 2026-07-19
 
 ### Added
