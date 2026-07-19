@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.5] - 2026-07-19
+
+### Added
+
+- Chip: a `color` prop (background color with white text), `fullWidth` to stretch inside a container, and a `title`. When given an `onClick` the label becomes a real focusable button (with the remove button as a sibling, so no button-in-button), and the remove button now names itself "Remove <label>".
+
 ## [0.2.4] - 2026-07-19
 
 ### Changed

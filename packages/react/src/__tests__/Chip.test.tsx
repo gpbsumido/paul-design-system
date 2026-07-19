@@ -17,14 +17,23 @@ describe('Chip', () => {
     expect(container.firstElementChild).toHaveClass('chip');
   });
 
-  it('clickable variant fires onClick', async () => {
+  it('clickable variant renders a label button and fires onClick', async () => {
     const user = userEvent.setup();
     const handleClick = vi.fn();
-    render(<Chip label="Tag" clickable onClick={handleClick} />);
-    const chip = screen.getByText('Tag').closest('.chip');
-    expect(chip).toHaveClass('chip--clickable');
-    await user.click(chip!);
+    render(<Chip label="Tag" onClick={handleClick} />);
+    expect(screen.getByText('Tag').closest('.chip')).toHaveClass('chip--clickable');
+    // the label is a real, focusable button
+    const labelBtn = screen.getByRole('button', { name: 'Tag' });
+    expect(labelBtn).toHaveClass('chip__label');
+    await user.click(labelBtn);
     expect(handleClick).toHaveBeenCalledTimes(1);
+  });
+
+  it('color sets the background and full-width stretches', () => {
+    const { container } = render(<Chip label="Tag" color="#3b82f6" fullWidth />);
+    const chip = container.firstElementChild as HTMLElement;
+    expect(chip).toHaveClass('chip--full-width');
+    expect(chip.style.backgroundColor).not.toBe('');
   });
 
   it('removable variant shows close button and fires onRemove', async () => {
@@ -33,7 +42,7 @@ describe('Chip', () => {
     render(<Chip label="Tag" removable onRemove={handleRemove} />);
     const chip = screen.getByText('Tag').closest('.chip');
     expect(chip).toHaveClass('chip--removable');
-    const removeBtn = screen.getByRole('button', { name: 'Remove' });
+    const removeBtn = screen.getByRole('button', { name: 'Remove Tag' });
     expect(removeBtn).toHaveClass('chip__remove');
     await user.click(removeBtn);
     expect(handleRemove).toHaveBeenCalledTimes(1);
