@@ -54,7 +54,9 @@ export function Chip({
         e.stopPropagation();
         onRemove?.();
       }}
-    />
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
   ) : null;
 
   // A clickable chip puts the label in its own button so it's keyboard

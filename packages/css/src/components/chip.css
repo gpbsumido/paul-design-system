@@ -82,6 +82,8 @@
     color: var(--paul-color-foreground);
     cursor: pointer;
     flex-shrink: 0;
+    font-size: 15px;
+    line-height: 1;
   }
 
   .chip__remove:hover {

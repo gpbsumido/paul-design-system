@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.16] - 2026-07-19
+
+### Fixed
+
+- Removable Chip had no visible close affordance — the React `.chip__remove` button rendered empty (the "×" was never in the markup, unlike the Angular component), so it was a blank clickable square. It now renders an `aria-hidden` "×" glyph, sized up a little so it reads clearly.
+
 ## [0.2.15] - 2026-07-19
 
 ### Changed

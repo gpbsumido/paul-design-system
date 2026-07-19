@@ -44,6 +44,8 @@ describe('Chip', () => {
     expect(chip).toHaveClass('chip--removable');
     const removeBtn = screen.getByRole('button', { name: 'Remove Tag' });
     expect(removeBtn).toHaveClass('chip__remove');
+    // A visible × glyph, so the button isn't a blank clickable square.
+    expect(removeBtn).toHaveTextContent('×');
     await user.click(removeBtn);
     expect(handleRemove).toHaveBeenCalledTimes(1);
   });
