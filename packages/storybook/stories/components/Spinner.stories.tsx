@@ -27,6 +27,15 @@ export const Large: Story = {
   args: { size: 'lg' },
 };
 
-export const CustomLabel: Story = {
-  args: { label: 'Fetching results' },
+// `label` is the accessible name (aria-label), not visible text, so on its own
+// it looks identical to the default. Here it's paired with matching visible
+// text — the usual "loading…" pattern — so there's actually something to see.
+export const WithText: Story = {
+  args: { label: 'Loading results' },
+  render: (args) => (
+    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
+      <Spinner {...args} />
+      <span>Loading results…</span>
+    </span>
+  ),
 };

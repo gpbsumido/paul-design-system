@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.12] - 2026-07-19
+
+### Changed
+
+- Spinner story: replaced the "CustomLabel" story (visually identical to Default, since `label` is only the accessible name) with a "WithText" story that pairs the spinner with matching visible text, so there's something distinct to see and it shows the real usage.
+
 ## [0.2.11] - 2026-07-19
 
 ### Fixed
