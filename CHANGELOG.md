@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.15] - 2026-07-19
+
+### Changed
+
+- Avatar "WithImage" story now renders at `lg`. With the new `md` size default an unsized image avatar dropped from its old raw-image dimensions to 32px, which looked cramped in the showcase; `lg` shows the image avatar clearly.
+
 ## [0.2.14] - 2026-07-19
 
 ### Fixed
