@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.2.18] - 2026-07-19
+
+### Fixed
+
+- Disabled Input and Textarea were indistinguishable from the enabled state — there were no disabled styles at all, so they kept the normal surface background and full-strength text. They now use a grayer fill, muted text, and a `not-allowed` cursor, in both light and dark themes.
+
+### Changed
+
+- Input stories now render at a realistic field width (20rem) instead of stretching edge to edge. A full-bleed input made the focus ring look like a line across the top rather than a ring around the field.
+
 ## [0.2.17] - 2026-07-19
 
 ### Fixed
