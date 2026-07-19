@@ -29,4 +29,11 @@
   .textarea[aria-invalid="true"] {
     border-color: var(--paul-color-error-600);
   }
+
+  /* Live character count shown alongside a maxLength */
+  .textarea__count {
+    text-align: right;
+    font-size: var(--paul-font-size-xs);
+    color: var(--paul-color-neutral-500);
+  }
 }

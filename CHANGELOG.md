@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.3] - 2026-07-19
+
+### Added
+
+- Textarea: `hideLabel` (visually hide the label but keep it accessible), a `required` marker, and an optional live character counter (`showCount` with `maxLength`). Brings it to parity with the richer hand-rolled Textarea in consuming apps so they can back onto it.
+
 ## [0.2.2] - 2026-07-16
 
 ### Fixed
