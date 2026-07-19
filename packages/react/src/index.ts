@@ -4,6 +4,7 @@ export { Card } from './Card';
 export { Chip } from './Chip';
 export { Input } from './Input';
 export { Textarea } from './Textarea';
+export { Switch } from './Switch';
 export { Modal } from './Modal';
 export { Tooltip } from './Tooltip';
 export { InfoTip } from './InfoTip';

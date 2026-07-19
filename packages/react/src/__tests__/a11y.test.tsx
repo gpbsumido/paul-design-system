@@ -7,6 +7,7 @@ import { IconButton } from '../IconButton';
 import { Input } from '../Input';
 import { Textarea } from '../Textarea';
 import { InfoTip } from '../InfoTip';
+import { Switch } from '../Switch';
 import { Chip } from '../Chip';
 import { Card } from '../Card';
 import { Badge } from '../Badge';
@@ -55,6 +56,12 @@ describe('Accessibility', () => {
 
   it('InfoTip has no a11y violations', async () => {
     const { container } = render(<InfoTip content="More detail here" />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it('Switch has no a11y violations', async () => {
+    const { container } = render(<Switch checked aria-label="Notifications" />);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

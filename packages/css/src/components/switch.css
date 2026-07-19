@@ -1,0 +1,47 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * Switch – an on/off toggle. A pill track with a sliding thumb.
+   * ---------------------------------------------------------------- */
+  .switch {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    height: 1.25rem;
+    width: 2.25rem;
+    flex-shrink: 0;
+    padding: 0;
+    border: none;
+    border-radius: var(--paul-radius-full);
+    background-color: var(--paul-color-neutral-300);
+    cursor: pointer;
+    transition: background-color var(--paul-duration-fast) var(--paul-easing-default);
+  }
+
+  .switch:focus-visible {
+    outline: 2px solid var(--paul-color-primary-600);
+    outline-offset: 2px;
+  }
+
+  .switch:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .switch--on {
+    background-color: var(--paul-color-primary-600);
+  }
+
+  .switch__thumb {
+    position: absolute;
+    left: 2px;
+    height: 1rem;
+    width: 1rem;
+    border-radius: var(--paul-radius-full);
+    background-color: #fff;
+    transition: transform var(--paul-duration-fast) var(--paul-easing-default);
+  }
+
+  .switch--on .switch__thumb {
+    transform: translateX(1rem);
+  }
+}
