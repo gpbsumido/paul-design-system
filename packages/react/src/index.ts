@@ -11,5 +11,6 @@ export { InfoTip } from './InfoTip';
 export { Avatar } from './Avatar';
 export { Badge } from './Badge';
 export { Skeleton } from './Skeleton';
+export { Spinner } from './Spinner';
 export { VisuallyHidden } from './VisuallyHidden';
 export { cx } from './cx';

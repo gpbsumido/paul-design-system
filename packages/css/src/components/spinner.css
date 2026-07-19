@@ -1,0 +1,38 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * Spinner – an indeterminate loading indicator.
+   * ---------------------------------------------------------------- */
+  .spinner {
+    display: inline-block;
+    height: 1.25rem;
+    width: 1.25rem;
+    border: 2px solid var(--paul-color-neutral-200);
+    border-top-color: var(--paul-color-primary-600);
+    border-radius: var(--paul-radius-full);
+    animation: paul-spinner-rotate 0.6s linear infinite;
+  }
+
+  .spinner--sm {
+    height: 1rem;
+    width: 1rem;
+    border-width: 2px;
+  }
+
+  .spinner--lg {
+    height: 2rem;
+    width: 2rem;
+    border-width: 3px;
+  }
+
+  @keyframes paul-spinner-rotate {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .spinner {
+      animation-duration: 1.5s;
+    }
+  }
+}

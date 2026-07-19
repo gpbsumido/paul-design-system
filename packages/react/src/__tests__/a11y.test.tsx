@@ -8,6 +8,7 @@ import { Input } from '../Input';
 import { Textarea } from '../Textarea';
 import { InfoTip } from '../InfoTip';
 import { Switch } from '../Switch';
+import { Spinner } from '../Spinner';
 import { Chip } from '../Chip';
 import { Card } from '../Card';
 import { Badge } from '../Badge';
@@ -62,6 +63,12 @@ describe('Accessibility', () => {
 
   it('Switch has no a11y violations', async () => {
     const { container } = render(<Switch checked aria-label="Notifications" />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it('Spinner has no a11y violations', async () => {
+    const { container } = render(<Spinner />);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
