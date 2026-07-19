@@ -97,11 +97,11 @@ export function Modal({
         aria-labelledby={labelledby}
         aria-describedby={ariaDescribedby}
         tabIndex={-1}
-        className={cx('modal', className)}
+        className={cx('modal__content', className)}
         onClick={(e) => e.stopPropagation()}
       >
         {title && (
-          <div id={titleId} className="modal__title">
+          <div id={titleId} className="modal__header">
             {title}
           </div>
         )}

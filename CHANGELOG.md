@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.14] - 2026-07-19
+
+### Fixed
+
+- Modal panel rendered with no surface: the React component put the dialog styles on `.modal` and the title on `.modal__title`, but the CSS (and the Angular component) style `.modal__content` and `.modal__header`. The panel is now `.modal__content` and the title renders in `.modal__header`, so the dialog gets its background, radius, shadow, and header divider.
+- Avatar collapsed when no `size` was given — the size only came from a modifier class, so an unsized avatar had no dimensions. `size` now defaults to `md`. The fallback initials also fill the whole circle instead of hugging the text.
+
 ## [0.2.13] - 2026-07-19
 
 ### Fixed

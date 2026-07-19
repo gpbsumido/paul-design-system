@@ -46,6 +46,15 @@ describe('Modal', () => {
     expect(titleEl).toHaveTextContent('My Title');
   });
 
+  it('renders the title prop inside the styled header', () => {
+    render(
+      <Modal open={true} onClose={() => {}} title="My Title">
+        <p>Content</p>
+      </Modal>,
+    );
+    expect(screen.getByText('My Title').closest('.modal__header')).toBeInTheDocument();
+  });
+
   it('Escape key calls onClose', async () => {
     const user = userEvent.setup();
     const onClose = vi.fn();
@@ -101,7 +110,7 @@ describe('Modal', () => {
     );
     const dialog = screen.getByRole('dialog');
     expect(dialog).toHaveAttribute('aria-describedby', 'desc');
-    expect(dialog).toHaveClass('modal', 'wide');
+    expect(dialog).toHaveClass('modal__content', 'wide');
   });
 
   it('moves focus into the dialog and traps Tab', () => {

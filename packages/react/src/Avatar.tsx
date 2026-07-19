@@ -7,7 +7,7 @@ type AvatarProps = {
   fallback?: string;
 };
 
-export function Avatar({ src, alt, size, fallback }: AvatarProps) {
+export function Avatar({ src, alt, size = 'md', fallback }: AvatarProps) {
   return (
     <div className={cx('avatar', size && `avatar--${size}`)}>
       {src ? (
