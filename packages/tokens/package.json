@@ -1,6 +1,6 @@
 {
   "name": "@paul-portfolio/tokens",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Design tokens for the Paul Design System",
   "license": "MIT",
   "repository": {
@@ -21,7 +21,9 @@
     "./tokens.scss": "./build/tokens.scss",
     "./tokens.json": "./build/tokens.json"
   },
-  "files": ["build/"],
+  "files": [
+    "build/"
+  ],
   "scripts": {
     "build": "node build.mjs",
     "prepublishOnly": "npm run build",

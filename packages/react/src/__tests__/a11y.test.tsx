@@ -3,7 +3,13 @@ import { render } from '@testing-library/react';
 import { axe } from 'vitest-axe';
 import * as matchers from 'vitest-axe/matchers';
 import { Button } from '../Button';
+import { IconButton } from '../IconButton';
 import { Input } from '../Input';
+import { Textarea } from '../Textarea';
+import { InfoTip } from '../InfoTip';
+import { Switch } from '../Switch';
+import { Spinner } from '../Spinner';
+import { Divider } from '../Divider';
 import { Chip } from '../Chip';
 import { Card } from '../Card';
 import { Badge } from '../Badge';
@@ -26,6 +32,12 @@ describe('Accessibility', () => {
     expect(results).toHaveNoViolations();
   });
 
+  it('IconButton has no a11y violations', async () => {
+    const { container } = render(<IconButton aria-label="Close">✕</IconButton>);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
   it('Input with label has no a11y violations', async () => {
     const { container } = render(<Input label="Email" />);
     const results = await axe(container);
@@ -34,6 +46,36 @@ describe('Accessibility', () => {
 
   it('Input with error has no a11y violations', async () => {
     const { container } = render(<Input label="Email" error="Required field" />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it('Textarea with label has no a11y violations', async () => {
+    const { container } = render(<Textarea label="Bio" />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it('InfoTip has no a11y violations', async () => {
+    const { container } = render(<InfoTip content="More detail here" />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it('Switch has no a11y violations', async () => {
+    const { container } = render(<Switch checked aria-label="Notifications" />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it('Spinner has no a11y violations', async () => {
+    const { container } = render(<Spinner />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it('Divider has no a11y violations', async () => {
+    const { container } = render(<Divider />);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
