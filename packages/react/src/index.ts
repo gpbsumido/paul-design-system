@@ -6,6 +6,7 @@ export { Input } from './Input';
 export { Textarea } from './Textarea';
 export { Modal } from './Modal';
 export { Tooltip } from './Tooltip';
+export { InfoTip } from './InfoTip';
 export { Avatar } from './Avatar';
 export { Badge } from './Badge';
 export { Skeleton } from './Skeleton';

@@ -15,4 +15,5 @@
 @import './components/skeleton.css';
 @import './components/modal.css';
 @import './components/tooltip.css';
+@import './components/info-tip.css';
 @import './utilities/visually-hidden.css';
