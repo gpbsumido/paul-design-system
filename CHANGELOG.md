@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.17] - 2026-07-19
+
+### Fixed
+
+- Skeleton circle rendered enormous — `.skeleton--circle` set `aspect-ratio: 1` but no width, so a block-level skeleton filled its container and the aspect ratio turned that full width into a giant circle. It now defaults to 40px, and the React `width`/`height` props apply to the circle (and any variant), not just `rect`.
+
 ## [0.2.16] - 2026-07-19
 
 ### Fixed
