@@ -169,6 +169,13 @@
     background-color: var(--paul-color-neutral-800);
   }
 
+  /* The base ghost hover fills with a light neutral, which hides the
+     foreground-colored label on a dark surface. Fill with a dark neutral so
+     the label keeps contrast. */
+  [data-theme="dark"] .btn--ghost:hover {
+    background-color: var(--paul-color-neutral-800);
+  }
+
   /* ----------------------------------------------------------------
    * Reduced motion
    * ---------------------------------------------------------------- */

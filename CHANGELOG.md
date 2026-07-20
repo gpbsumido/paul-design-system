@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.20] - 2026-07-20
+
+### Fixed
+
+- Ghost button label vanished on hover in dark mode. `.btn--ghost:hover` filled with a light neutral that never flipped for dark mode, so the foreground-colored label washed out against it. Added a dark-mode hover background (matching the outline variant) so the label keeps contrast. Bumps `@paul-portfolio/css` 0.4.0 → 0.4.1.
+
 ## [0.2.19] - 2026-07-19
 
 ### Changed
