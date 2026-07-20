@@ -62,4 +62,8 @@ describe('Button CSS component', () => {
   it('respects prefers-reduced-motion', () => {
     expect(css).toContain('prefers-reduced-motion');
   });
+
+  it('gives the ghost hover a dark-mode background so the label keeps contrast', () => {
+    expect(css).toContain('[data-theme="dark"] .btn--ghost:hover');
+  });
 });
