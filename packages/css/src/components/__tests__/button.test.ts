@@ -31,6 +31,10 @@ describe('Button CSS component', () => {
     expect(css).toContain('.btn--danger');
   });
 
+  it('defines gel variant', () => {
+    expect(css).toContain('.btn--gel');
+  });
+
   it('defines size variants', () => {
     expect(css).toContain('.btn--xs');
     expect(css).toContain('.btn--sm');
