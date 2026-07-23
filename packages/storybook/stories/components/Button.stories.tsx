@@ -9,7 +9,7 @@ const meta = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['primary', 'secondary', 'outline', 'ghost', 'danger'],
+      options: ['primary', 'secondary', 'outline', 'ghost', 'danger', 'gel'],
     },
     size: {
       control: 'select',
@@ -45,6 +45,10 @@ export const Ghost: Story = {
 
 export const Danger: Story = {
   args: { children: 'Danger', variant: 'danger' },
+};
+
+export const Gel: Story = {
+  args: { children: 'Gel', variant: 'gel' },
 };
 
 export const Loading: Story = {

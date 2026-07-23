@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.21] - 2026-07-23
+
+### Added
+
+- New `gel` button variant: a glossy gradient fill with a hard offset shadow, harvested from the ketsup redesign. It is theme-agnostic — the gradient is built from the primary tokens and the gloss is a background layer (not a pseudo-element), so it takes on whatever palette the consumer themes and never sits over the label. Added to `@paul-portfolio/css` (`.btn--gel`) and the React `Button` variant union, with a Storybook story and CSS + React tests. Bumps `@paul-portfolio/css` 0.4.1 → 0.4.2 and `@paul-portfolio/react` 0.4.0 → 0.4.1.
+
 ## [0.2.20] - 2026-07-20
 
 ### Fixed

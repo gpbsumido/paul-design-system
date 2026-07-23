@@ -19,6 +19,11 @@ describe('Button', () => {
     expect(screen.getByRole('button')).toHaveClass('btn--secondary');
   });
 
+  it('applies gel variant class', () => {
+    render(<Button variant="gel">Gel</Button>);
+    expect(screen.getByRole('button')).toHaveClass('btn', 'btn--gel');
+  });
+
   it('applies size class', () => {
     render(<Button size="lg">Large</Button>);
     expect(screen.getByRole('button')).toHaveClass('btn--lg');
