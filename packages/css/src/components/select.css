@@ -1,0 +1,178 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * Select – a labelled dropdown that matches the .input styling but
+   * hides the native chevron and paints its own, so it reads as part
+   * of the same field family across browsers.
+   * ---------------------------------------------------------------- */
+  .select {
+    width: 100%;
+    padding: var(--paul-spacing-2) var(--paul-spacing-3);
+    /* Room on the right for the chevron so long option text never sits
+       under it. */
+    padding-right: var(--paul-spacing-8);
+    border: 1px solid var(--paul-color-border);
+    border-radius: var(--paul-radius-md);
+    background-color: var(--paul-color-surface);
+    color: var(--paul-color-foreground);
+    font-size: var(--paul-font-size-sm);
+    line-height: var(--paul-line-height-normal);
+    cursor: pointer;
+    /* Drop the native arrow so the shared chevron is the only one. */
+    appearance: none;
+    /* Neutral-500 chevron, inlined so the package stays asset-free. */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23737373' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right var(--paul-spacing-3) center;
+    transition:
+      border-color var(--paul-duration-fast) var(--paul-easing-default),
+      box-shadow var(--paul-duration-fast) var(--paul-easing-default);
+  }
+
+  .select:hover:not(:disabled) {
+    border-color: var(--paul-color-foreground);
+  }
+
+  /* ----------------------------------------------------------------
+   * Focus
+   * ---------------------------------------------------------------- */
+  .select:focus-visible {
+    outline: 2px solid var(--paul-color-primary-600);
+    outline-offset: 2px;
+  }
+
+  /* ----------------------------------------------------------------
+   * Error state
+   * ---------------------------------------------------------------- */
+  .select--error,
+  .select[aria-invalid="true"] {
+    border-color: var(--paul-color-error-600);
+  }
+
+  /* ----------------------------------------------------------------
+   * Size variants
+   * ---------------------------------------------------------------- */
+  .select--sm {
+    padding: var(--paul-spacing-1) var(--paul-spacing-2);
+    padding-right: var(--paul-spacing-6);
+    font-size: var(--paul-font-size-xs);
+    background-position: right var(--paul-spacing-2) center;
+  }
+
+  .select--md {
+    /* Default – matches base .select sizing */
+  }
+
+  /* ----------------------------------------------------------------
+   * Disabled – mirror the input's inert fill/cursor.
+   * ---------------------------------------------------------------- */
+  .select:disabled {
+    background-color: var(--paul-color-neutral-200);
+    color: var(--paul-color-muted);
+    cursor: not-allowed;
+  }
+
+  /* ----------------------------------------------------------------
+   * Dark mode – swap fill/border and lighten the chevron so it stays
+   * visible against the dark surface.
+   * ---------------------------------------------------------------- */
+  [data-theme="dark"] .select {
+    background-color: var(--paul-color-neutral-900);
+    border-color: var(--paul-color-neutral-700);
+    color: var(--paul-color-neutral-100);
+    /* Neutral-400 chevron for the dark surface. */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23a3a3a3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  }
+
+  [data-theme="dark"] .select:hover:not(:disabled) {
+    border-color: var(--paul-color-neutral-500);
+  }
+
+  [data-theme="dark"] .select--error,
+  [data-theme="dark"] .select[aria-invalid="true"] {
+    border-color: var(--paul-color-error-600);
+  }
+
+  [data-theme="dark"] .select:disabled {
+    background-color: var(--paul-color-neutral-800);
+    color: var(--paul-color-neutral-500);
+  }
+
+  /* ----------------------------------------------------------------
+   * Reduced motion
+   * ---------------------------------------------------------------- */
+  @media (prefers-reduced-motion: reduce) {
+    .select {
+      transition: none;
+    }
+  }
+
+  /* ----------------------------------------------------------------
+   * High contrast
+   * ---------------------------------------------------------------- */
+  @media (prefers-contrast: more) {
+    .select {
+      border-width: 2px;
+    }
+  }
+
+  /* ----------------------------------------------------------------
+   * Wrapper – stacks the label above the control by default, matching
+   * the input field family.
+   * ---------------------------------------------------------------- */
+  .select__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--paul-spacing-1_5);
+  }
+
+  /* Horizontal: label sits inline to the left of the control, for
+     compact filter rows. The control shrinks to its content instead of
+     filling the row. */
+  .select__wrapper--horizontal {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--paul-spacing-2);
+  }
+
+  .select__wrapper--horizontal .select {
+    width: auto;
+  }
+
+  /* ----------------------------------------------------------------
+   * Label
+   * ---------------------------------------------------------------- */
+  .select__label {
+    font-size: var(--paul-font-size-sm);
+    font-weight: var(--paul-font-weight-medium);
+    color: var(--paul-color-foreground);
+  }
+
+  /* Inline labels read as a quieter caption next to the control. */
+  .select__wrapper--horizontal .select__label {
+    font-size: var(--paul-font-size-xs);
+    font-weight: var(--paul-font-weight-normal);
+    color: var(--paul-color-muted);
+    white-space: nowrap;
+  }
+
+  /* ----------------------------------------------------------------
+   * Helper / error text
+   * ---------------------------------------------------------------- */
+  .select__helper {
+    font-size: var(--paul-font-size-xs);
+    color: var(--paul-color-muted);
+  }
+
+  .select__helper--error {
+    color: var(--paul-color-error-600);
+  }
+
+  [data-theme="dark"] .select__label {
+    color: var(--paul-color-neutral-100);
+  }
+
+  [data-theme="dark"] .select__wrapper--horizontal .select__label,
+  [data-theme="dark"] .select__helper {
+    color: var(--paul-color-neutral-400);
+  }
+}

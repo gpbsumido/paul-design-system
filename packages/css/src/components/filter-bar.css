@@ -1,0 +1,37 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * Filter bar – a labelled region (landmark) holding a wrapping row
+   * of filter controls. Sits under a page's nav; the bottom border
+   * separates it from the content it filters.
+   * ---------------------------------------------------------------- */
+  .filter-bar {
+    border-bottom: 1px solid var(--paul-color-border);
+  }
+
+  /* ----------------------------------------------------------------
+   * Row – a centered, max-width container so the controls line up
+   * with the page content, wrapping onto multiple lines when narrow.
+   * ---------------------------------------------------------------- */
+  .filter-bar__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--paul-spacing-3);
+    max-width: var(--paul-filter-bar-max-width, 64rem);
+    margin-inline: auto;
+    padding: var(--paul-spacing-3) var(--paul-spacing-4);
+  }
+
+  [data-theme="dark"] .filter-bar {
+    border-bottom-color: var(--paul-color-neutral-700);
+  }
+
+  /* ----------------------------------------------------------------
+   * High contrast
+   * ---------------------------------------------------------------- */
+  @media (prefers-contrast: more) {
+    .filter-bar {
+      border-bottom-width: 2px;
+    }
+  }
+}
