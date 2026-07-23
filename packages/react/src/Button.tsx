@@ -6,7 +6,13 @@ import {
 } from 'react';
 import { cx } from './cx';
 
-type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger';
+type ButtonVariant =
+  | 'primary'
+  | 'secondary'
+  | 'outline'
+  | 'ghost'
+  | 'danger'
+  | 'gel';
 type ButtonSize = 'xs' | 'sm' | 'md' | 'lg';
 
 type BaseProps = {
