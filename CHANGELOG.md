@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.22] - 2026-07-23
+
+### Added
+
+- `Select` and `FilterBar` components, generalized from the fantasy filter rows in paul-explore (PR #204). `Select` is a labelled, accessible `<select>` that shares the input field styling, hides the native chevron and paints its own (inlined, asset-free, with a dark-mode variant), and supports `sm`/`md` sizes, `error`/`helper` text, and a `horizontal` orientation for inline filter rows. `FilterBar` is a labelled `<section>` landmark wrapping a centered, wrapping row of controls, so the region + accessible name are built in rather than copy-pasted per page. Added to `@paul-portfolio/css` (`.select`, `.filter-bar`) and the React package, with CSS + React tests (including axe-core a11y) and Storybook stories. Bumps `@paul-portfolio/css` 0.4.2 → 0.4.3 and `@paul-portfolio/react` 0.4.1 → 0.4.2.
+
 ## [0.2.21] - 2026-07-23
 
 ### Added

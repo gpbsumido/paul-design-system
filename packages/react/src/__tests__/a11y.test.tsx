@@ -6,6 +6,8 @@ import { Button } from '../Button';
 import { IconButton } from '../IconButton';
 import { Input } from '../Input';
 import { Textarea } from '../Textarea';
+import { Select } from '../Select';
+import { FilterBar } from '../FilterBar';
 import { InfoTip } from '../InfoTip';
 import { Switch } from '../Switch';
 import { Spinner } from '../Spinner';
@@ -52,6 +54,32 @@ describe('Accessibility', () => {
 
   it('Textarea with label has no a11y violations', async () => {
     const { container } = render(<Textarea label="Bio" />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it('Select with label has no a11y violations', async () => {
+    const { container } = render(
+      <Select label="Team">
+        <option value="a">A</option>
+        <option value="b">B</option>
+      </Select>
+    );
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it('FilterBar with labelled selects has no a11y violations', async () => {
+    const { container } = render(
+      <FilterBar label="Team and season filters">
+        <Select label="Team" orientation="horizontal">
+          <option value="a">A</option>
+        </Select>
+        <Select label="Season" orientation="horizontal">
+          <option value="2024">2024</option>
+        </Select>
+      </FilterBar>
+    );
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
