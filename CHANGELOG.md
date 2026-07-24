@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.25] - 2026-07-24
+
+### Added
+
+- `Ticker`, a horizontal ticker strip, generalized from the tickers in paul-explore and ketsup (which had grown their own). It has two modes: `scroll` (default) is an accessible, real scroll container with an ambient JS auto-scroll that pauses on hover/touch and keeps every item reachable by wheel/trackpad/drag/touch (the trailing copy is aria-hidden and pulled out of the tab order); `marquee` is a decorative, aria-hidden CSS loop for pure flavour. It's content-agnostic (takes children), configurable via `edge`/`direction`/`speed`, and both modes honour `prefers-reduced-motion` — scroll collapses to a plain scrollable row, marquee goes static. Added to `@paul-portfolio/css` (`.ticker`, `.ticker--marquee`, `.ticker--top`/`--bottom`) and the React package, with CSS + React tests and Storybook stories. Angular deferred, same as Select/FilterBar. Bumps `@paul-portfolio/css` 0.4.4 → 0.4.5 and `@paul-portfolio/react` 0.4.3 → 0.4.4.
+
 ## [0.2.24] - 2026-07-24
 
 ### Added
