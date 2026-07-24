@@ -85,4 +85,61 @@
     background-color: var(--paul-color-primary-900);
     color: var(--paul-color-primary-200);
   }
+
+  /* ----------------------------------------------------------------
+   * Starburst variant
+   * A spiky seal shape for "new"/"beta" flags. Fixed square, clipped to a
+   * burst, with a light-to-saturated radial fill. Colour follows the same
+   * variant classes; primary is the default. Reads the same in light and dark
+   * (it's a bright sticker), so it needs no dark-mode override.
+   * ---------------------------------------------------------------- */
+  .badge--starburst {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border-radius: 0;
+    font-size: 10px;
+    font-weight: var(--paul-font-weight-bold);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--paul-color-primary-900);
+    background: radial-gradient(
+      circle at 40% 35%,
+      var(--paul-color-primary-100),
+      var(--paul-color-primary-400)
+    );
+    clip-path: polygon(
+      50% 0%, 58% 10%, 69% 3%, 71% 16%, 84% 12%, 82% 25%, 96% 27%, 88% 38%,
+      100% 45%, 89% 54%, 98% 66%, 84% 68%, 88% 82%, 74% 79%, 73% 93%, 61% 85%,
+      55% 98%, 47% 85%, 37% 96%, 33% 82%, 20% 88%, 22% 74%, 8% 74%, 17% 63%,
+      4% 56%, 16% 47%, 4% 38%, 18% 34%, 11% 22%, 25% 23%, 24% 9%, 37% 15%
+    );
+  }
+
+  .badge--starburst.badge--success {
+    color: var(--paul-color-success-900);
+    background: radial-gradient(
+      circle at 40% 35%,
+      var(--paul-color-success-100),
+      var(--paul-color-success-400)
+    );
+  }
+
+  .badge--starburst.badge--warning {
+    color: var(--paul-color-warning-900);
+    background: radial-gradient(
+      circle at 40% 35%,
+      var(--paul-color-warning-100),
+      var(--paul-color-warning-400)
+    );
+  }
+
+  .badge--starburst.badge--error {
+    color: var(--paul-color-error-900);
+    background: radial-gradient(
+      circle at 40% 35%,
+      var(--paul-color-error-100),
+      var(--paul-color-error-400)
+    );
+  }
 }
