@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.24] - 2026-07-24
+
+### Added
+
+- Hard offset elevation on `@paul-portfolio/tokens`: `--paul-shadow-offset-sm`, `--paul-shadow-offset-md`, and `--paul-shadow-offset-lg` — solid, un-blurred drop shadows (2/6/9px) for retro / neo-brutalist surfaces that want a crisp edge instead of a soft blur. Harvested from ketsup's Kinetic x Dusk theme. Also adds the tokens package's first vitest test. Bumps `@paul-portfolio/tokens` 0.1.9 → 0.1.10.
+
 ## [0.2.23] - 2026-07-24
 
 ### Added
