@@ -5,6 +5,16 @@ const meta = {
   title: 'Components/Ticker',
   component: Ticker,
   tags: ['autodocs'],
+  // Constrain the width so the content actually overflows the strip — scroll
+  // mode is a scroll container, so it only moves when there's somewhere to
+  // scroll. In a full-width canvas the sample content fits and looks static.
+  decorators: [
+    (Story) => (
+      <div style={{ maxWidth: 420, border: '1px dashed #ccc' }}>
+        <Story />
+      </div>
+    ),
+  ],
   argTypes: {
     label: { control: 'text' },
     mode: { control: 'inline-radio', options: ['scroll', 'marquee'] },
@@ -17,7 +27,18 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const items = ['Alpha', 'Bravo', 'Charlie', 'Delta', 'Echo', 'Foxtrot'];
+const items = [
+  'Alpha',
+  'Bravo',
+  'Charlie',
+  'Delta',
+  'Echo',
+  'Foxtrot',
+  'Golf',
+  'Hotel',
+  'India',
+  'Juliet',
+];
 
 export const Scroll: Story = {
   args: {
