@@ -1,0 +1,74 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * Ticker – base (scroll mode)
+   * A horizontal strip. In scroll mode it's a real scroll container, so every
+   * item stays reachable by wheel / trackpad / drag / touch; the scrollbar is
+   * hidden but scrolling is not. The ambient auto-scroll loop is driven in JS
+   * (see @paul-portfolio/react Ticker), which keeps the painted content aligned
+   * with the scroll extent so there's never empty space to scroll into.
+   * ---------------------------------------------------------------- */
+  .ticker {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    background-color: var(--paul-color-surface);
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* old Edge */
+  }
+
+  .ticker::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+  }
+
+  .ticker--top {
+    border-bottom: 1px solid var(--paul-color-border);
+  }
+
+  .ticker--bottom {
+    border-top: 1px solid var(--paul-color-border);
+  }
+
+  .ticker__track {
+    display: flex;
+    width: max-content;
+  }
+
+  .ticker__group {
+    display: flex;
+    width: max-content;
+    align-items: center;
+    gap: var(--paul-spacing-2);
+    padding: var(--paul-spacing-2) var(--paul-spacing-4);
+  }
+
+  /* ----------------------------------------------------------------
+   * Marquee mode (decorative)
+   * A CSS-animated loop instead of a scroll container. The whole strip is
+   * aria-hidden in this mode (see the React component), and the content is
+   * rendered twice so translateX(-50%) loops seamlessly. The animation is gated
+   * behind prefers-reduced-motion; reduced motion leaves the strip static.
+   * ---------------------------------------------------------------- */
+  .ticker--marquee {
+    overflow: hidden;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .ticker--marquee .ticker__track {
+      animation: paul-ticker-marquee var(--paul-ticker-duration, 24s) linear
+        infinite;
+    }
+
+    .ticker--marquee[data-direction='right'] .ticker__track {
+      animation-direction: reverse;
+    }
+  }
+
+  @keyframes paul-ticker-marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+}

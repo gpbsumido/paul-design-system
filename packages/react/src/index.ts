@@ -15,5 +15,6 @@ export { Badge } from './Badge';
 export { Skeleton } from './Skeleton';
 export { Spinner } from './Spinner';
 export { Divider } from './Divider';
+export { Ticker } from './Ticker';
 export { VisuallyHidden } from './VisuallyHidden';
 export { cx } from './cx';
