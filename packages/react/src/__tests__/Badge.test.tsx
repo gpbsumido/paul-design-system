@@ -27,6 +27,22 @@ describe('Badge', () => {
     expect(document.querySelector('.badge')).toHaveClass('badge--dot');
   });
 
+  it('starburst variant', () => {
+    render(<Badge starburst>Beta</Badge>);
+    expect(screen.getByText('Beta')).toHaveClass('badge--starburst');
+  });
+
+  it('starburst composes with a color variant', () => {
+    render(
+      <Badge starburst variant="warning">
+        New
+      </Badge>,
+    );
+    const el = screen.getByText('New');
+    expect(el).toHaveClass('badge--starburst');
+    expect(el).toHaveClass('badge--warning');
+  });
+
   it('renders children text', () => {
     render(<Badge>Hello Badge</Badge>);
     expect(screen.getByText('Hello Badge')).toBeInTheDocument();

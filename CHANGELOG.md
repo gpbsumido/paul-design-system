@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.23] - 2026-07-24
+
+### Added
+
+- `starburst` variant on `Badge`, harvested from the BETA seal in ketsup. It's a spiky seal shape (a fixed square clipped to a burst with a light-to-saturated radial fill) for "new"/"beta" flags, and it composes with the existing colour variants (`starburst` + `warning`, etc.), defaulting to primary. It reads the same in light and dark, so it needs no dark-mode override. Added to `@paul-portfolio/css` (`.badge--starburst`), the React package (`starburst` prop), and Angular (`starburst` input), with CSS + React tests and Storybook stories. Bumps `@paul-portfolio/css` 0.4.3 → 0.4.4, `@paul-portfolio/react` 0.4.2 → 0.4.3, and `@paul-portfolio/angular` 0.1.20 → 0.1.21.
+
 ## [0.2.22] - 2026-07-23
 
 ### Added
