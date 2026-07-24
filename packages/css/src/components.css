@@ -8,6 +8,8 @@
 @import './components/icon-button.css';
 @import './components/input.css';
 @import './components/textarea.css';
+@import './components/select.css';
+@import './components/filter-bar.css';
 @import './components/switch.css';
 @import './components/chip.css';
 @import './components/badge.css';
