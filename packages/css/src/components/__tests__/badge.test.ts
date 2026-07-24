@@ -36,6 +36,11 @@ describe('Badge CSS component', () => {
     expect(css).toContain('8px');
   });
 
+  it('defines .badge--starburst variant', () => {
+    expect(css).toContain('.badge--starburst');
+    expect(css).toContain('clip-path');
+  });
+
   it('uses design tokens', () => {
     expect(css).toContain('--paul-');
   });

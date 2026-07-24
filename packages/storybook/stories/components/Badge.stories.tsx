@@ -11,6 +11,7 @@ const meta = {
       options: ['success', 'warning', 'error', 'info'],
     },
     dot: { control: 'boolean' },
+    starburst: { control: 'boolean' },
     children: { control: 'text' },
   },
 } satisfies Meta<typeof Badge>;
@@ -36,4 +37,12 @@ export const Info: Story = {
 
 export const Dot: Story = {
   args: { dot: true, variant: 'success' },
+};
+
+export const Starburst: Story = {
+  args: { starburst: true, children: 'beta' },
+};
+
+export const StarburstWarning: Story = {
+  args: { starburst: true, variant: 'warning', children: 'new' },
 };
