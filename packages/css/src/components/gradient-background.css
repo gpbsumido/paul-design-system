@@ -1,0 +1,40 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * GradientBackground – a flowing multi-stop gradient surface.
+   * Decorative wrapper: children render on top and carry the real content. The
+   * gradient image and its flow duration come from custom properties the React
+   * component sets (--paul-gradient-image / --paul-gradient-duration), falling
+   * back to token colours here so the plain CSS class is useful on its own. The
+   * ambient flow only runs when motion is allowed and data-animate is on.
+   * ---------------------------------------------------------------- */
+  .gradient-bg {
+    position: relative;
+    background-image: var(
+      --paul-gradient-image,
+      linear-gradient(
+        120deg,
+        var(--paul-color-primary-500),
+        var(--paul-color-secondary-500),
+        var(--paul-color-primary-700)
+      )
+    );
+    background-size: 200% 200%;
+    background-position: 0% 50%;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .gradient-bg[data-animate='true'] {
+      animation: paul-gradient-flow var(--paul-gradient-duration, 12s)
+        var(--paul-easing-in-out) infinite alternate;
+    }
+  }
+
+  @keyframes paul-gradient-flow {
+    from {
+      background-position: 0% 50%;
+    }
+    to {
+      background-position: 100% 50%;
+    }
+  }
+}

@@ -1,0 +1,58 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * TiltCard – an interactive 3D tilt surface.
+   * The wrapper holds the perspective; the inner layer rotates toward the
+   * pointer via the --paul-tilt-x / --paul-tilt-y custom properties, which the
+   * React component sets on pointer move (see @paul-portfolio/react TiltCard).
+   * A radial glare tracks the cursor with --paul-glare-x / --paul-glare-y.
+   * The tilt is decorative: content stays flat and fully readable, and the
+   * whole effect collapses under prefers-reduced-motion.
+   * ---------------------------------------------------------------- */
+  .tilt-card {
+    perspective: 800px;
+  }
+
+  .tilt-card__inner {
+    position: relative;
+    transform: rotateX(var(--paul-tilt-x, 0deg)) rotateY(var(--paul-tilt-y, 0deg));
+    transform-style: preserve-3d;
+    /* Ease back to flat when the pointer leaves; while active we follow the
+       pointer directly (transition removed below) so it doesn't feel laggy. */
+    transition: transform var(--paul-duration-slow) var(--paul-easing-out);
+    will-change: transform;
+  }
+
+  .tilt-card__inner[data-active] {
+    transition: none;
+  }
+
+  /* Decorative sheen that follows the cursor across the surface. */
+  .tilt-card__glare {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--paul-duration-normal) var(--paul-easing-default);
+    background: radial-gradient(
+      circle at var(--paul-glare-x, 50%) var(--paul-glare-y, 50%),
+      rgb(255 255 255 / 0.35),
+      transparent 45%
+    );
+  }
+
+  .tilt-card__inner[data-active] .tilt-card__glare {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tilt-card__inner {
+      transform: none;
+      transition: none;
+    }
+
+    .tilt-card__glare {
+      display: none;
+    }
+  }
+}

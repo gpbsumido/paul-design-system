@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.2.26] - 2026-07-26
+
+### Added
+
+- Three motion-driven "showcase" components in `@paul-portfolio/css` and `@paul-portfolio/react`, all decorative wrappers that stay content-agnostic (take `children`), are SSR-stable, and honour `prefers-reduced-motion`:
+  - `TiltCard` — a surface that tilts in 3D toward the pointer with a cursor-tracking glare. Pointer-driven only (keyboard users are unaffected) and it collapses to a flat, static card under reduced motion. Configurable via `maxTilt` and `glare`. CSS: `.tilt-card`, `.tilt-card__inner`, `.tilt-card__glare`, driven by the `--paul-tilt-x` / `--paul-tilt-y` / `--paul-glare-x` / `--paul-glare-y` custom properties.
+  - `GradientBackground` — a flowing multi-stop gradient surface. The ambient flow is pure CSS gated behind `prefers-reduced-motion`, so it goes static with no JS. Configurable via `colors`, `angle`, `speed`, and `animate`, falling back to the token brand palette. CSS: `.gradient-bg` with the `paul-gradient-flow` keyframe.
+  - `Spotlight` — an interactive background with a soft radial glow that follows the cursor; under reduced motion the glow is pinned to the centre and stops tracking. Configurable via `size` and `color`. CSS: `.spotlight`, `.spotlight__glow`, `.spotlight__content`, driven by the `--paul-spotlight-x` / `--paul-spotlight-y` / `--paul-spotlight-size` / `--paul-spotlight-color` custom properties.
+- Extracted `usePrefersReducedMotion` into a shared hook (now exported from `@paul-portfolio/react`) and refactored `Ticker` to use it, so every motion component reads the preference identically.
+- Each component ships with CSS + React tests, an axe a11y test, and Storybook stories. Angular deferred, same as Select/FilterBar/Ticker. Bumps `@paul-portfolio/css` 0.4.5 → 0.4.6 and `@paul-portfolio/react` 0.4.4 → 0.4.5.
+
 ## [0.2.25] - 2026-07-24
 
 ### Added
