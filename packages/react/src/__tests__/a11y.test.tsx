@@ -19,6 +19,7 @@ import { Avatar } from '../Avatar';
 import { Skeleton } from '../Skeleton';
 import { TiltCard } from '../TiltCard';
 import { GradientBackground } from '../GradientBackground';
+import { Spotlight } from '../Spotlight';
 import { VisuallyHidden } from '../VisuallyHidden';
 
 expect.extend(matchers);
@@ -162,6 +163,16 @@ describe('Accessibility', () => {
       <GradientBackground>
         <p>Content on a gradient</p>
       </GradientBackground>
+    );
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it('Spotlight has no a11y violations', async () => {
+    const { container } = render(
+      <Spotlight>
+        <p>Content under a spotlight</p>
+      </Spotlight>
     );
     const results = await axe(container);
     expect(results).toHaveNoViolations();

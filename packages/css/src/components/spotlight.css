@@ -1,0 +1,43 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * Spotlight – an interactive background glow that follows the cursor.
+   * The glow layer is painted with a radial gradient positioned by the
+   * --paul-spotlight-x / --paul-spotlight-y custom properties, which the React
+   * component updates on pointer move (see @paul-portfolio/react Spotlight).
+   * The glow is decorative and clipped to the container; content sits in its
+   * own layer above it. Under reduced motion the React component pins the glow
+   * to the centre and stops tracking, so there's no cursor-driven movement.
+   * ---------------------------------------------------------------- */
+  .spotlight {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .spotlight__glow {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--paul-duration-normal) var(--paul-easing-default);
+    background: radial-gradient(
+      circle var(--paul-spotlight-size, 350px) at
+        var(--paul-spotlight-x, 50%) var(--paul-spotlight-y, 50%),
+      var(--paul-spotlight-color, rgb(59 130 246 / 0.25)),
+      transparent 100%
+    );
+  }
+
+  .spotlight[data-active] .spotlight__glow {
+    opacity: 1;
+  }
+
+  .spotlight__content {
+    position: relative;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .spotlight__glow {
+      transition: none;
+    }
+  }
+}
