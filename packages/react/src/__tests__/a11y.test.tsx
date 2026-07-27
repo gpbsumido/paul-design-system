@@ -17,6 +17,7 @@ import { Card } from '../Card';
 import { Badge } from '../Badge';
 import { Avatar } from '../Avatar';
 import { Skeleton } from '../Skeleton';
+import { TiltCard } from '../TiltCard';
 import { VisuallyHidden } from '../VisuallyHidden';
 
 expect.extend(matchers);
@@ -139,6 +140,18 @@ describe('Accessibility', () => {
 
   it('Skeleton has no a11y violations', async () => {
     const { container } = render(<Skeleton variant="text" />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it('TiltCard has no a11y violations', async () => {
+    const { container } = render(
+      <TiltCard>
+        <Card>
+          <Card.Body>Tilt me</Card.Body>
+        </Card>
+      </TiltCard>
+    );
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });

@@ -16,6 +16,7 @@ export { Skeleton } from './Skeleton';
 export { Spinner } from './Spinner';
 export { Divider } from './Divider';
 export { Ticker } from './Ticker';
+export { TiltCard } from './TiltCard';
 export { VisuallyHidden } from './VisuallyHidden';
 export { usePrefersReducedMotion } from './usePrefersReducedMotion';
 export { cx } from './cx';
