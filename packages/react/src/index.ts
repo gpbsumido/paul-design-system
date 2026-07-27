@@ -17,6 +17,7 @@ export { Spinner } from './Spinner';
 export { Divider } from './Divider';
 export { Ticker } from './Ticker';
 export { TiltCard } from './TiltCard';
+export { GradientBackground } from './GradientBackground';
 export { VisuallyHidden } from './VisuallyHidden';
 export { usePrefersReducedMotion } from './usePrefersReducedMotion';
 export { cx } from './cx';
