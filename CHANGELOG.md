@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.27] - 2026-08-02
+
+### Added
+
+- Framework-agnostic chart primitives, so the charts I keep re-drawing in paul-explore (operator dashboard, web-vitals sparklines, the work-portfolio gallery) can be reused everywhere instead of living as one-off recharts/unovis components. They compute all their geometry in a pure, dependency-free `chartGeometry` core and render plain SVG, so React and Angular draw identical output and neither published package gains a charting runtime dependency:
+  - `Sparkline` — a compact, axis-free trend line, `line` or `area` variant. Backs the vitals sparklines and KPI trend cards.
+  - `BarChart` — a categorical bar chart, vertical or horizontal, with an optional per-bar palette. Backs retention/session/region bars and the operator inventory comparison.
+  - `DonutChart` — a ring chart with an optional legend. Backs fleet-health and revenue-mix breakdowns.
+  - All three render `role="img"` with a data summary as the accessible name (colour is never the only signal), and ship with unit tests for the geometry, Testing Library tests, and axe a11y tests. New CSS lives in `@paul-portfolio/css` as `.paul-chart*` with a token-driven `--paul-chart-1..6` palette a consumer can override.
+- Started closing the React → Angular parity gap: `PaulSparkline`, `PaulBarChart`, and `PaulDonutChart`, plus Angular twins of four existing React components whose CSS already shipped — `PaulDivider`, `PaulSpinner`, `PaulIconButton`, `PaulSwitch`. Added a `vitest` config to the Angular package and unit tests for its copy of `chartGeometry`, which guard the two copies against drifting.
+- Deferred (follow-ups): the specialty chart types from the 17-type gallery (funnel, radar, scatter, cohort heatmap, pareto, radial gauge, word cloud, stacked/multi-series line); multi-series line for `Sparkline`; the remaining React → Angular ports (Textarea, Select, FilterBar, InfoTip, Ticker, TiltCard, GradientBackground, Spotlight); and Angular TestBed render tests (the package has no TestBed infra yet — the shared geometry is unit-tested and React is the tested reference for the rendered contract).
+- Bumps `@paul-portfolio/css` 0.4.6 → 0.4.7, `@paul-portfolio/react` 0.4.5 → 0.4.6, and `@paul-portfolio/angular` 0.1.21 → 0.1.22.
+
 ## [0.2.26] - 2026-07-26
 
 ### Added
