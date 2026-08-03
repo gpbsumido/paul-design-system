@@ -151,23 +151,23 @@ labels, one series gets neither (the title names it).
 
 <Section id="tests" title="Tests, RED first">
   <Tests>
-    <Test name="validator: the new palette passes all six checks, light and dark">a script in the repo, not a one-off — the palette can regress</Test>
-    <Test name="funnelStages: widths narrow monotonically and dropOff matches the previous stage">the number the chart exists to show</Test>
-    <Test name="radarPolygon: N values close into N points on the shared radius">geometry agreement with radarAxes</Test>
-    <Test name="scatterPoints: an explicit domain overrides the data extent">so small multiples can share a scale</Test>
-    <Test name="heatmapCells: intensity is 0..1 against the matrix max">the sequential mapping, not a categorical one</Test>
-    <Test name="paretoLayout: bars and cumulative share one 0–100 scale and cumulative ends at 100">the no-dual-axis rule, pinned</Test>
-    <Test name="gaugeArc: value below min and above max clamp, not overflow">degenerate input</Test>
-    <Test name="wordCloudLayout: same input renders identical positions twice">determinism, or SSR and Chromatic both break</Test>
-    <Test name="wordCloudLayout: no two placed rectangles overlap">the packing actually packs</Test>
-    <Test name="stackedSeries: series share one y-domain">otherwise the comparison is a lie</Test>
-    <Test name="every geometry function returns [] for empty input, no NaN">the whole degenerate row</Test>
-    <Test name="Angular and React geometry copies agree">both suites run the same cases</Test>
-    <Test name="React: each chart renders role=img with a data summary">8 tests</Test>
-    <Test name="React: legend present for ≥2 series, absent for one">the identity rule</Test>
-    <Test name="Angular: each chart matches its React DOM">8 TestBed tests</Test>
-    <Test name="axe: no violations for all 8, both frameworks">extends both a11y suites</Test>
-    <Test name="Sparkline: series renders one path per series over a shared domain, data still works">the additive change</Test>
+    <Test status="green" name="validator: the new palette passes all six checks, light and dark">a script in the repo, not a one-off — the palette can regress</Test>
+    <Test status="green" name="funnelStages: widths narrow monotonically and dropOff matches the previous stage">the number the chart exists to show</Test>
+    <Test status="green" name="radarPolygon: N values close into N points on the shared radius">geometry agreement with radarAxes</Test>
+    <Test status="green" name="scatterPoints: an explicit domain overrides the data extent">so small multiples can share a scale</Test>
+    <Test status="green" name="heatmapCells: intensity is 0..1 against the matrix max">the sequential mapping, not a categorical one</Test>
+    <Test status="green" name="paretoLayout: bars and cumulative share one 0–100 scale and cumulative ends at 100">the no-dual-axis rule, pinned</Test>
+    <Test status="green" name="gaugeArc: value below min and above max clamp, not overflow">degenerate input</Test>
+    <Test status="green" name="wordCloudLayout: same input renders identical positions twice">determinism, or SSR and Chromatic both break</Test>
+    <Test status="green" name="wordCloudLayout: no two placed rectangles overlap">the packing actually packs</Test>
+    <Test status="green" name="stackedSeries: series share one y-domain">otherwise the comparison is a lie</Test>
+    <Test status="green" name="every geometry function returns [] for empty input, no NaN">the whole degenerate row</Test>
+    <Test status="green" name="Angular and React geometry copies agree">both suites run the same cases</Test>
+    <Test status="green" name="React: each chart renders role=img with a data summary">8 tests</Test>
+    <Test status="green" name="React: legend present for ≥2 series, absent for one">the identity rule</Test>
+    <Test status="green" name="Angular: each chart matches its React DOM">8 TestBed tests</Test>
+    <Test status="green" name="axe: no violations for all 8, both frameworks">extends both a11y suites</Test>
+    <Test status="green" name="Sparkline: series renders one path per series over a shared domain, data still works">the additive change</Test>
   </Tests>
 </Section>
 
