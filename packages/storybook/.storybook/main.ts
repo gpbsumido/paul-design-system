@@ -1,10 +1,25 @@
 import path from 'node:path';
+import remarkGfm from 'remark-gfm';
 import type { StorybookConfig } from '@storybook/react-vite';
 
 const config: StorybookConfig = {
   stories: ['../stories/**/*.mdx', '../stories/**/*.stories.@(ts|tsx)'],
   addons: [
-    '@storybook/addon-essentials',
+    // Docs is configured on its own rather than through essentials, because the
+    // MDX compiler options only reach it that way. Without GFM every markdown
+    // table in the token pages renders as a paragraph of literal pipes — which
+    // is exactly what they were doing.
+    { name: '@storybook/addon-essentials', options: { docs: false } },
+    {
+      name: '@storybook/addon-docs',
+      options: {
+        mdxPluginOptions: {
+          mdxCompileOptions: {
+            remarkPlugins: [remarkGfm],
+          },
+        },
+      },
+    },
     '@storybook/addon-a11y',
     '@storybook/addon-themes',
   ],

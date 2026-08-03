@@ -10,7 +10,9 @@
 
 ### Fixed
 
+- Markdown tables in every Storybook docs page rendered as a paragraph of literal pipe characters. The MDX pipeline had no GFM plugin, and the docs options only reach `@storybook/addon-docs` when it is configured directly rather than through `addon-essentials`. This had been broken for the Colors, Spacing and Typography pages the whole time.
 - `DonutChart`'s stories hardcoded hex colours in their default args, which bypassed the token palette — a bad example to set, and after the 0.2.29 recolour it also rendered the old colours beside components using the new ones.
+- Documents the new `cyan` ramp on the Colors page.
 - Bumps `@paul-portfolio/storybook` 0.1.19 → 0.2.0.
 
 ## [0.2.29] - 2026-08-03

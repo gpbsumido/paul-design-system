@@ -31,6 +31,7 @@
     "chromatic": "^18.0.1",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
+    "remark-gfm": "^4.0.1",
     "storybook": "^8.6.18",
     "vite": "^8.1.4"
   }

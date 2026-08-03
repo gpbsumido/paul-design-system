@@ -19,6 +19,10 @@ clean; the workspace suites are unchanged at 615.
       shipped="Rewrote its CustomColors story as PerEntityColors"
       drift="More than planned. It shaded a single series green→amber→red by size, which double-encodes the value as hue and reads as a status signal that isn't in the data. It now demonstrates what per-bar colour is for — one entity per slot — with the reasoning in the story's doc comment. Found while grepping the stories for hex literals." />
     <Row
+      planned="Nothing — the MDX pipeline was assumed to work"
+      shipped="Enabled remark-gfm and moved addon-docs out of addon-essentials"
+      drift="The palette page rendered its tables as paragraphs of literal pipe characters. No GFM plugin was configured, and passing docs options through addon-essentials silently does nothing — @storybook/addon-docs has to be listed directly. Every docs page had this: Colors, Spacing and Typography were rendering the same way and nobody had noticed. Verified with a real browser screenshot rather than the build log this time." />
+    <Row
       planned="Angular stories: deferred"
       shipped="Still deferred"
       drift="none — Storybook here is @storybook/react-vite; adding @storybook/angular means a second builder in CI." />
@@ -99,6 +103,7 @@ does not mean "good".
     <Test status="green" name="storybook builds with no errors">4.24s, all stories and the MDX page compile</Test>
     <Test status="green" name="no new story hardcodes a chart colour">grepped; the only remaining hex literals are the decorative ones in Spotlight and GradientBackground</Test>
     <Test status="green" name="the workspace suites still pass">angular 240, react 321, tokens 54 — unchanged, as expected for a stories-only change</Test>
+    <Test status="green" name="docs pages render real tables">3 tables / 19 rows on the palette page, 4 / 26 on Colors, checked in a headless browser against the built output</Test>
   </Tests>
 
 Chromatic itself hasn't run — it needs `CHROMATIC_PROJECT_TOKEN` in CI. When it
