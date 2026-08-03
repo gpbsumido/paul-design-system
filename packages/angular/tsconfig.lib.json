@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": []
+  },
+  "angularCompilerOptions": {
+    // Partial compilation is what makes the published package usable by any
+    // Angular >= the one it was built with; full mode is dev-only and
+    // ng-packagr blocks publishing it outright.
+    "compilationMode": "partial"
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist", "src/__tests__"]
+}
