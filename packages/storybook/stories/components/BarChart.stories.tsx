@@ -37,8 +37,26 @@ export const Horizontal: Story = {
   },
 };
 
-export const CustomColors: Story = {
+/**
+ * `colors` exists for the case where each bar is a different ENTITY — one bar
+ * per team, per channel, per region — so the slots carry identity.
+ *
+ * It is not for shading a single series green-to-red by size. That double-encodes
+ * the value as hue, spends the one free channel on information the bar length
+ * already carries, and reads as a status signal that isn't there. One series gets
+ * one colour, which is what every other story here shows.
+ */
+export const PerEntityColors: Story = {
   args: {
-    colors: ['#22c55e', '#22c55e', '#f59e0b', '#ef4444', '#ef4444'],
+    data: [3800, 2600, 1900, 1200, 700],
+    labels: ['NA', 'EU', 'APAC', 'LATAM', 'MEA'],
+    label: 'Users by region',
+    colors: [
+      'var(--paul-chart-1)',
+      'var(--paul-chart-2)',
+      'var(--paul-chart-3)',
+      'var(--paul-chart-4)',
+      'var(--paul-chart-5)',
+    ],
   },
 };

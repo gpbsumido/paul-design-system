@@ -11,9 +11,9 @@ const meta = {
   },
   args: {
     data: [
-      { label: 'Online', value: 18, color: '#22c55e' },
-      { label: 'Degraded', value: 5, color: '#f59e0b' },
-      { label: 'Offline', value: 2, color: '#ef4444' },
+      { label: 'Online', value: 18 },
+      { label: 'Degraded', value: 5 },
+      { label: 'Offline', value: 2 },
     ],
     label: 'Fleet health',
   },

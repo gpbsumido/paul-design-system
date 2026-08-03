@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.30] - 2026-08-03
+
+### Added
+
+- Storybook coverage for the eight specialty chart forms — `FunnelChart`, `RadarChart`, `ScatterPlot`, `HeatmapChart`, `ParetoChart`, `GaugeChart`, `WordCloud`, `StackedLineChart` — each with controls and its empty state, plus a multi-series `Sparkline` story.
+- `Charts/Gallery`, a single story putting all eleven chart forms on one page. It is the story to look at after a palette or geometry change: one Chromatic snapshot that catches a regression across the whole set, where the per-chart stories localise it. Switching the theme toolbar to dark is also the first rendered look at the dark palette steps.
+- `Tokens/Chart palette`, documenting the six categorical slots and the five sequential steps in both modes, the validated numbers behind them, and the rules that keep them honest: slot order is the contract, past six series fold into "Other", colour follows the entity rather than its rank, and status colours are not series colours.
+
+### Fixed
+
+- `DonutChart`'s stories hardcoded hex colours in their default args, which bypassed the token palette — a bad example to set, and after the 0.2.29 recolour it also rendered the old colours beside components using the new ones.
+- Bumps `@paul-portfolio/storybook` 0.1.19 → 0.2.0.
+
 ## [0.2.29] - 2026-08-03
 
 ### Fixed
