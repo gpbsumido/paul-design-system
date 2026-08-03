@@ -25,6 +25,26 @@ type RadarChartProps = Omit<HTMLAttributes<HTMLDivElement>, 'children'> & {
 /** At most three series — a fourth overlapping polygon stops being readable. */
 const MAX_SERIES = 3;
 
+/**
+ * Warn once per offending call when series are dropped.
+ *
+ * Truncating is the right call — a fourth overlapping polygon is unreadable —
+ * but doing it silently means a caller passing five series sees three and has no
+ * way to find out why. Dev-only: production builds strip it.
+ */
+declare const process: { env?: { NODE_ENV?: string } } | undefined;
+
+function warnTruncated(count: number, label: string): void {
+  // Declared locally rather than pulling @types/node into a browser package.
+  if (typeof process !== 'undefined' && process?.env?.NODE_ENV === 'production') return;
+  // eslint-disable-next-line no-console
+  console.warn(
+    `RadarChart ("${label}"): ${count} series given, ${MAX_SERIES} drawn. ` +
+      'Overlapping polygons stop being readable past three — facet into small ' +
+      'multiples, or fold the tail into one series, rather than relying on this cap.',
+  );
+}
+
 /** Series colour comes from the CATEGORICAL palette: series are identities. */
 const seriesColor = (i: number) => `var(--paul-chart-${i + 1})`;
 
@@ -53,6 +73,7 @@ export function RadarChart({
   ...props
 }: RadarChartProps) {
   const series = data.slice(0, MAX_SERIES);
+  if (data.length > MAX_SERIES) warnTruncated(data.length, label);
   const box = { width: size, height: size, padding: 18 };
   const empty = series.length === 0 || axes.length === 0;
   const geo = radarAxes(Math.max(axes.length, 1), box);

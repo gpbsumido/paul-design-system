@@ -2,11 +2,23 @@ import { type HTMLAttributes } from 'react';
 import { cx } from './cx';
 import { heatmapCells } from './chartGeometry';
 
+export type HeatmapRow = {
+  /** Rendered down the left gutter. */
+  label: string;
+  /** One value per column. */
+  values: number[];
+};
+
 type HeatmapChartProps = Omit<HTMLAttributes<HTMLDivElement>, 'children'> & {
-  /** Row-major grid of values. `matrix[row][col]`. */
-  matrix: number[][];
-  /** One label per row, rendered down the left gutter. */
-  rowLabels: string[];
+  /**
+   * One entry per row, each carrying its own label.
+   *
+   * A row and its label travel together on purpose: as separate `matrix` and
+   * `rowLabels` arrays a length mismatch is representable, and it degrades
+   * quietly — the label for the missing row just vanishes and every other row
+   * still looks right.
+   */
+  rows: HeatmapRow[];
   /** One label per column, rendered across the top gutter. */
   colLabels: string[];
   /** Accessible name for the chart. Required. */
@@ -52,8 +64,7 @@ const valueColor = (intensity: number) =>
  * colour thrown away entirely.
  */
 export function HeatmapChart({
-  matrix,
-  rowLabels,
+  rows,
   colLabels,
   label,
   showValues = true,
@@ -62,6 +73,7 @@ export function HeatmapChart({
   className,
   ...props
 }: HeatmapChartProps) {
+  const matrix = rows.map((row) => row.values);
   const cells = heatmapCells(matrix, {
     width: width - ROW_GUTTER,
     height: height - COL_GUTTER,
@@ -70,9 +82,7 @@ export function HeatmapChart({
   const min = values.length > 0 ? Math.min(...values) : 0;
   const max = values.length > 0 ? Math.max(...values) : 0;
 
-  const summary = matrix
-    .map((row, r) => `${rowLabels[r] ?? `Row ${r + 1}`} ${row.join(', ')}`)
-    .join('; ');
+  const summary = rows.map((row) => `${row.label} ${row.values.join(', ')}`).join('; ');
   const name = cells.length > 0 ? `${label}: ${summary}` : label;
 
   // Column and row label positions ride on the cells themselves, so the text
@@ -105,19 +115,19 @@ export function HeatmapChart({
                 </text>
               );
             })}
-            {rowLabels.map((text, r) => {
+            {rows.map((row, r) => {
               const cell = firstInRow(r);
               if (!cell) return null;
               return (
                 <text
-                  key={`row-${text}`}
+                  key={`row-${row.label}`}
                   className="paul-chart__row-label"
                   x={ROW_GUTTER - 5}
                   y={COL_GUTTER + cell.y + cell.height / 2}
                   textAnchor="end"
                   dominantBaseline="middle"
                 >
-                  {text}
+                  {row.label}
                 </text>
               );
             })}

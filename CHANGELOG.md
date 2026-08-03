@@ -8,8 +8,15 @@
 - `Charts/Gallery`, a single story putting all eleven chart forms on one page. It is the story to look at after a palette or geometry change: one Chromatic snapshot that catches a regression across the whole set, where the per-chart stories localise it. Switching the theme toolbar to dark is also the first rendered look at the dark palette steps.
 - `Tokens/Chart palette`, documenting the six categorical slots and the five sequential steps in both modes, the validated numbers behind them, and the rules that keep them honest: slot order is the contract, past six series fold into "Other", colour follows the entity rather than its rank, and status colours are not series colours.
 
+### Changed
+
+- `HeatmapChart` / `PaulHeatmapChart` take `rows: { label, values }[]` instead of parallel `matrix` and `rowLabels`. As separate arrays a length mismatch was representable and degraded quietly — the label for the missing row just vanished and every other row still looked right. A row and its label now travel together.
+- `paretoLayout` takes `{ gap, threshold }` and reports `cutIndex` against the given threshold. Both components were re-deriving the crossing locally for any threshold other than 80, which meant the geometry core and the chart disagreed about what a threshold is.
+- `RadarChart` / `PaulRadarChart` warn in development when they drop series past the cap of three. Truncating is right — a fourth overlapping polygon is unreadable — but doing it silently left a caller with no way to find out why two of their five series vanished.
+
 ### Fixed
 
+- `Ticker` marks its duplicated clone `inert` in the markup rather than sweeping `tabIndex` in an effect. An effect runs after the DOM exists, so between render and that sweep the aria-hidden duplicate held tabbable controls — axe rates that serious, and a keyboard user landing on a control a screen reader insists is absent is worse than not hiding it at all. The effect stays as a fallback for browsers without `inert`.
 - `GaugeChart` / `PaulGaugeChart` captioned a gauge with `of {max}`, ignoring `min`. A dial running 20–60 showing 41.5 read "of 60", inviting the reader to compute 69% where the arc means 54%. It now names both ends of the range whenever `min` isn't zero, in the caption and in the accessible name.
 - Chromatic reported inconsistent renders between runs. Rendering all 132 stories twice and comparing pixels found the cause: animated components (Skeleton, Spinner, Button's loading state, GradientBackground, the marquee Ticker) are mid-animation when the screenshot is taken. CSS animations are now frozen at their end state for Chromatic; the scroll Ticker, whose position comes from a requestAnimationFrame loop that cannot be frozen that way, is excluded from snapshots and stays covered by its unit tests. No chart story was unstable.
 - Markdown tables in every Storybook docs page rendered as a paragraph of literal pipe characters. The MDX pipeline had no GFM plugin, and the docs options only reach `@storybook/addon-docs` when it is configured directly rather than through `addon-essentials`. This had been broken for the Colors, Spacing and Typography pages the whole time.

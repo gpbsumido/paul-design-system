@@ -23,6 +23,7 @@ import {
   type PaulFunnelDatum,
   type PaulRadarSeries,
   type PaulLineSeries,
+  type PaulHeatmapRow,
 } from '@paul-portfolio/angular';
 
 /**
@@ -104,8 +105,7 @@ import {
     <paul-scatter-plot [series]="cloud" label="Load vs latency" [radius]="5" />
 
     <paul-heatmap-chart
-      [matrix]="cohortGrid"
-      [rowLabels]="['Jan', 'Feb']"
+      [rows]="cohortGrid"
       [colLabels]="['W0', 'W1']"
       label="Cohort retention"
     />
@@ -153,9 +153,9 @@ export class ConsumerApp {
       ],
     },
   ];
-  readonly cohortGrid = [
-    [100, 60],
-    [100, 55],
+  readonly cohortGrid: PaulHeatmapRow[] = [
+    { label: 'Jan', values: [100, 60] },
+    { label: 'Feb', values: [100, 55] },
   ];
   readonly defects = [
     { label: 'Scratch', value: 50 },

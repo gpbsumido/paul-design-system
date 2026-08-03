@@ -183,6 +183,17 @@ describe('paretoLayout', () => {
     expect(cutIndex).toBe(1); // 50 + 30 = 80, so the top two items are the cut
   });
 
+  it('reports the cut against a custom threshold', () => {
+    // 50 + 30 = 80, so a 50% rule cuts at the first item and a 95% rule at the
+    // fourth. The component draws its rule from the same number.
+    expect(paretoLayout(values, BOX, { threshold: 50 }).cutIndex).toBe(0);
+    expect(paretoLayout(values, BOX, { threshold: 95 }).cutIndex).toBe(3);
+  });
+
+  it('reports no cut when the threshold is unreachable', () => {
+    expect(paretoLayout(values, BOX, { threshold: 120 }).cutIndex).toBe(-1);
+  });
+
   it('drops non-positive values instead of producing NaN', () => {
     const { bars } = paretoLayout([10, 0, -4], BOX);
     expect(bars).toHaveLength(1);

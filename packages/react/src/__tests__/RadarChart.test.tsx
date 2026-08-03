@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { RadarChart } from '../RadarChart';
 
@@ -114,5 +114,43 @@ describe('RadarChart', () => {
       expect(el.getAttribute('fill')).toBeNull();
       expect(el.getAttribute('stroke')).toBeNull();
     }
+  });
+});
+
+describe('RadarChart series cap', () => {
+  it('warns when it drops series instead of truncating silently', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    render(
+      <RadarChart
+        label="Team profile"
+        axes={['Speed', 'Power']}
+        data={[
+          { label: 'A', values: [1, 2] },
+          { label: 'B', values: [2, 3] },
+          { label: 'C', values: [3, 4] },
+          { label: 'D', values: [4, 5] },
+        ]}
+      />,
+    );
+    expect(warn).toHaveBeenCalledOnce();
+    expect(warn.mock.calls[0][0]).toContain('4 series given, 3 drawn');
+    warn.mockRestore();
+  });
+
+  it('says nothing at or below the cap', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    render(
+      <RadarChart
+        label="Team profile"
+        axes={['Speed', 'Power']}
+        data={[
+          { label: 'A', values: [1, 2] },
+          { label: 'B', values: [2, 3] },
+          { label: 'C', values: [3, 4] },
+        ]}
+      />,
+    );
+    expect(warn).not.toHaveBeenCalled();
+    warn.mockRestore();
   });
 });

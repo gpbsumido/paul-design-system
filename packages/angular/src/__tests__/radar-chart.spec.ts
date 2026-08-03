@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { PaulRadarChartComponent } from '../radar-chart';
 import { renderComponent, host } from './render';
 
@@ -110,5 +110,39 @@ describe('PaulRadarChart', () => {
       expect(el.getAttribute('fill')).toBeNull();
       expect(el.getAttribute('stroke')).toBeNull();
     }
+  });
+});
+
+/** Mirrors the series-cap tests in packages/react/src/__tests__/RadarChart.test.tsx. */
+describe('PaulRadarChart series cap', () => {
+  const axes = ['Speed', 'Power'];
+  const series = (n: number) =>
+    Array.from({ length: n }, (_, i) => ({ label: `S${i}`, values: [i + 1, i + 2] }));
+
+  it('warns when it drops series instead of truncating silently', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    host(
+      renderComponent(PaulRadarChartComponent, {
+        label: 'Team profile',
+        axes,
+        data: series(4),
+      }),
+    );
+    expect(warn).toHaveBeenCalled();
+    expect(String(warn.mock.calls[0][0])).toContain('4 series given, 3 drawn');
+    warn.mockRestore();
+  });
+
+  it('says nothing at or below the cap', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    host(
+      renderComponent(PaulRadarChartComponent, {
+        label: 'Team profile',
+        axes,
+        data: series(3),
+      }),
+    );
+    expect(warn).not.toHaveBeenCalled();
+    warn.mockRestore();
   });
 });

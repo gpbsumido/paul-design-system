@@ -1,6 +1,13 @@
 import { Component, input, computed, ChangeDetectionStrategy } from '@angular/core';
 import { heatmapCells, type HeatmapCell } from './chart-geometry';
 
+export interface PaulHeatmapRow {
+  /** Rendered down the left gutter. */
+  label: string;
+  /** One value per column. */
+  values: number[];
+}
+
 /** Gutter reserved for the row labels, in coordinate units. */
 const ROW_GUTTER = 40;
 /** Gutter reserved for the column labels, in coordinate units. */
@@ -63,7 +70,7 @@ interface PlacedCell extends HeatmapCell {
               {{ col.label }}
             </text>
           }
-          @for (row of rows(); track row.label) {
+          @for (row of rowLabelPositions(); track row.label) {
             <text
               class="paul-chart__row-label"
               [attr.x]="rowGutter - 5"
@@ -121,10 +128,15 @@ interface PlacedCell extends HeatmapCell {
   `,
 })
 export class PaulHeatmapChartComponent {
-  /** Row-major grid of values. `matrix[row][col]`. */
-  readonly matrix = input<number[][]>([]);
-  /** One label per row, rendered down the left gutter. */
-  readonly rowLabels = input<string[]>([]);
+  /**
+   * One entry per row, each carrying its own label.
+   *
+   * A row and its label travel together on purpose: as separate `matrix` and
+   * `rowLabels` inputs a length mismatch is representable, and it degrades
+   * quietly — the label for the missing row just vanishes and every other row
+   * still looks right.
+   */
+  readonly rows = input<PaulHeatmapRow[]>([]);
   /** One label per column, rendered across the top gutter. */
   readonly colLabels = input<string[]>([]);
   readonly label = input.required<string>();
@@ -145,6 +157,8 @@ export class PaulHeatmapChartComponent {
   readonly steps = [1, 2, 3, 4, 5];
 
   readonly viewBox = computed(() => `0 0 ${this.width()} ${this.height()}`);
+
+  private readonly matrix = computed(() => this.rows().map((row) => row.values));
 
   readonly cells = computed<PlacedCell[]>(() =>
     heatmapCells(this.matrix(), {
@@ -170,9 +184,9 @@ export class PaulHeatmapChartComponent {
       .filter((col): col is { label: string; x: number } => col !== null),
   );
 
-  readonly rows = computed(() =>
-    this.rowLabels()
-      .map((label, r) => {
+  readonly rowLabelPositions = computed(() =>
+    this.rows()
+      .map(({ label }, r) => {
         const cell = this.cells().find((cur) => cur.row === r);
         return cell ? { label, y: COL_GUTTER + cell.y + cell.height / 2 } : null;
       })
@@ -185,9 +199,8 @@ export class PaulHeatmapChartComponent {
 
   readonly name = computed(() => {
     if (this.cells().length === 0) return this.label();
-    const labels = this.rowLabels();
-    const summary = this.matrix()
-      .map((row, r) => `${labels[r] ?? `Row ${r + 1}`} ${row.join(', ')}`)
+    const summary = this.rows()
+      .map((row) => `${row.label} ${row.values.join(', ')}`)
       .join('; ');
     return `${this.label()}: ${summary}`;
   });

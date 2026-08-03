@@ -427,13 +427,33 @@ export interface ParetoLayout {
  * and the line is cumulative percent, so both live on the same 0–100 scale and
  * the crossing point means something.
  *
- * Values are sorted descending, as a Pareto requires.
+ * Values are sorted descending, as a Pareto requires. `cutIndex` is the first
+ * item at or past `opts.threshold`, so the reported cut and the rule a component
+ * draws can't disagree.
  */
-export function paretoLayout(values: number[], box: ChartBox, gap = 0.25): ParetoLayout {
+export interface ParetoOptions {
+  /** Fraction of each band left empty as a gap, 0..1. Defaults to 0.25. */
+  gap?: number;
+  /**
+   * The cumulative percentage the cut is measured against. Defaults to 80 —
+   * the "80/20" in Pareto — but a caller drawing a different rule needs
+   * `cutIndex` to agree with the line they drew, so it lives here rather than
+   * being re-derived in each component.
+   */
+  threshold?: number;
+}
+
+export function paretoLayout(
+  values: number[],
+  box: ChartBox,
+  opts: ParetoOptions = {},
+): ParetoLayout {
   const sorted = [...values].filter((v) => v > 0).sort((a, b) => b - a);
   if (sorted.length === 0) return { bars: [], cumulative: [], percents: [], cutIndex: -1 };
 
   const b = inner(box);
+  const gap = opts.gap ?? 0.25;
+  const threshold = opts.threshold ?? 80;
   const total = sorted.reduce((sum, v) => sum + v, 0);
   const percents = sorted.map((v) => round((v / total) * 100));
 
@@ -454,7 +474,7 @@ export function paretoLayout(values: number[], box: ChartBox, gap = 0.25): Paret
   let cutIndex = -1;
   const cumulative = sorted.map((value, i) => {
     running += (value / total) * 100;
-    if (cutIndex === -1 && running >= 80) cutIndex = i;
+    if (cutIndex === -1 && running >= threshold) cutIndex = i;
     return {
       x: round(b.left + band * i + band / 2),
       y: round(b.bottom - running * (b.height / 100)),

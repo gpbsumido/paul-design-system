@@ -9,6 +9,14 @@ export interface PaulRadarSeries {
 
 /** At most three series — a fourth overlapping polygon stops being readable. */
 const MAX_SERIES = 3;
+/**
+ * Warn once per offending render when series are dropped.
+ *
+ * Truncating is the right call — a fourth overlapping polygon is unreadable —
+ * but doing it silently means a caller passing five series sees three and has no
+ * way to find out why. Dev-only: `ngDevMode` is stripped from production builds.
+ */
+declare const ngDevMode: boolean | undefined;
 
 /** Series colour comes from the CATEGORICAL palette: series are identities. */
 function seriesColor(i: number): string {
@@ -101,7 +109,18 @@ export class PaulRadarChartComponent {
   readonly viewBox = computed(() => `0 0 ${this.size()} ${this.size()}`);
 
   /** Extra series are dropped rather than drawn — see the class doc. */
-  readonly series = computed(() => this.data().slice(0, MAX_SERIES));
+  readonly series = computed(() => {
+    const data = this.data();
+    if (data.length > MAX_SERIES && (typeof ngDevMode === 'undefined' || ngDevMode)) {
+      // eslint-disable-next-line no-console
+      console.warn(
+        `PaulRadarChart ("${this.label()}"): ${data.length} series given, ${MAX_SERIES} drawn. ` +
+          'Overlapping polygons stop being readable past three — facet into small ' +
+          'multiples, or fold the tail into one series, rather than relying on this cap.',
+      );
+    }
+    return data.slice(0, MAX_SERIES);
+  });
 
   readonly empty = computed(() => this.series().length === 0 || this.axes().length === 0);
 

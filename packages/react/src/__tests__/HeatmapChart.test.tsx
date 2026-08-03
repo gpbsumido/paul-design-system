@@ -2,18 +2,17 @@ import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { HeatmapChart } from '../HeatmapChart';
 
-const matrix = [
-  [100, 60, 40],
-  [100, 50, 0],
+const rows = [
+  { label: 'Week 0', values: [100, 60, 40] },
+  { label: 'Week 1', values: [100, 50, 0] },
 ];
-const rowLabels = ['Week 0', 'Week 1'];
+const rowLabels = rows.map((r) => r.label);
 const colLabels = ['D0', 'D7', 'D30'];
 
 const setup = (props: Partial<Parameters<typeof HeatmapChart>[0]> = {}) =>
   render(
     <HeatmapChart
-      matrix={matrix}
-      rowLabels={rowLabels}
+      rows={rows}
       colLabels={colLabels}
       label="Cohort retention"
       {...props}
@@ -94,7 +93,7 @@ describe('HeatmapChart', () => {
   });
 
   it('renders an empty state without a chart', () => {
-    const { container } = setup({ matrix: [] });
+    const { container } = setup({ rows: [] });
     expect(screen.getByRole('img').getAttribute('aria-label')).toBe('Cohort retention');
     expect(container.querySelector('svg')).toBeNull();
     expect(container.querySelector('.paul-chart__empty')).toBeInTheDocument();

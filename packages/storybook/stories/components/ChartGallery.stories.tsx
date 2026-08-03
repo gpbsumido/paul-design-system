@@ -143,12 +143,11 @@ function Gallery() {
 
       <Cell title="HeatmapChart · cohorts">
         <HeatmapChart
-          matrix={[
-            [100, 62, 41, 33],
-            [100, 58, 39, 30],
-            [100, 66, 45, 0],
+          rows={[
+            { label: 'Jan', values: [100, 62, 41, 33] },
+            { label: 'Feb', values: [100, 58, 39, 30] },
+            { label: 'Mar', values: [100, 66, 45, 0] },
           ]}
-          rowLabels={['Jan', 'Feb', 'Mar']}
           colLabels={['W0', 'W1', 'W2', 'W3']}
           label="Cohort retention"
         />

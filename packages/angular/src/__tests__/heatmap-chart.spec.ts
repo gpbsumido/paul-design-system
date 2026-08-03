@@ -2,11 +2,11 @@ import { describe, it, expect } from 'vitest';
 import { PaulHeatmapChartComponent } from '../heatmap-chart';
 import { renderComponent, host } from './render';
 
-const matrix = [
-  [100, 60, 40],
-  [100, 50, 0],
+const rows = [
+  { label: 'Week 0', values: [100, 60, 40] },
+  { label: 'Week 1', values: [100, 50, 0] },
 ];
-const rowLabels = ['Week 0', 'Week 1'];
+const rowLabels = rows.map((r) => r.label);
 const colLabels = ['D0', 'D7', 'D30'];
 
 /** Mirrors packages/react/src/__tests__/HeatmapChart.test.tsx. */
@@ -14,8 +14,7 @@ describe('PaulHeatmapChart', () => {
   const render_ = (inputs: Record<string, unknown> = {}) =>
     host(
       renderComponent(PaulHeatmapChartComponent, {
-        matrix,
-        rowLabels,
+        rows,
         colLabels,
         label: 'Cohort retention',
         ...inputs,
@@ -86,7 +85,7 @@ describe('PaulHeatmapChart', () => {
   });
 
   it('renders an empty state without a chart', () => {
-    const el = render_({ matrix: [] });
+    const el = render_({ rows: [] });
     expect(el.querySelector('[role="img"]')?.getAttribute('aria-label')).toBe('Cohort retention');
     expect(el.querySelector('svg')).toBeNull();
     expect(el.querySelector('.paul-chart__empty')).not.toBeNull();

@@ -26,7 +26,7 @@ export { FunnelChart, type FunnelDatum } from './FunnelChart';
 export { ScatterPlot, type ScatterSeries } from './ScatterPlot';
 export { RadarChart, type RadarSeries } from './RadarChart';
 export { ParetoChart, type ParetoDatum } from './ParetoChart';
-export { HeatmapChart } from './HeatmapChart';
+export { HeatmapChart, type HeatmapRow } from './HeatmapChart';
 export { GaugeChart, type GaugeTone } from './GaugeChart';
 export { StackedLineChart, type LineSeries } from './StackedLineChart';
 export { WordCloud, type WordCloudDatum } from './WordCloud';

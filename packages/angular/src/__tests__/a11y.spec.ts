@@ -257,11 +257,10 @@ describe('Accessibility', () => {
     const el = host(
       renderComponent(PaulHeatmapChartComponent, {
         label: 'Cohort retention',
-        matrix: [
-          [100, 60],
-          [100, 55],
+        rows: [
+          { label: 'Jan', values: [100, 60] },
+          { label: 'Feb', values: [100, 55] },
         ],
-        rowLabels: ['Jan', 'Feb'],
         colLabels: ['W0', 'W1'],
       }),
     );

@@ -56,25 +56,13 @@ export function ParetoChart({
 
   const plotHeight = Math.max(0, height - LABEL_BAND);
   const box = { width, height: plotHeight, padding: PADDING };
-  const { bars, cumulative, percents, cutIndex } = paretoLayout(
+  // The geometry takes the threshold too, so the cut it reports and the rule
+  // drawn below are the same number by construction.
+  const { bars, cumulative, percents, cutIndex: cut } = paretoLayout(
     data.map((d) => d.value),
     box,
+    { threshold },
   );
-
-  // `paretoLayout` hardcodes the 80% crossing for `cutIndex`, which is the right
-  // default but not the only threshold worth drawing. Rather than parameterise
-  // the geometry core (shared, and every other chart depends on it), recover the
-  // crossing here from `percents` when the threshold is anything but 80.
-  const cut =
-    threshold === 80
-      ? cutIndex
-      : percents.reduce<{ running: number; index: number }>(
-          (acc, p, i) =>
-            acc.index === -1 && acc.running + p >= threshold
-              ? { running: acc.running + p, index: i }
-              : { running: acc.running + p, index: acc.index },
-          { running: 0, index: -1 },
-        ).index;
 
   // Same mapping the geometry uses for the cumulative points, so the reference
   // line and the line it references are on one scale by construction.

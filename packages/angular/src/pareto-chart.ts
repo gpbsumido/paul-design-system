@@ -121,6 +121,7 @@ export class PaulParetoChartComponent {
     paretoLayout(
       this.data().map((d) => d.value),
       { width: this.width(), height: this.plotHeight(), padding: PADDING },
+      { threshold: this.threshold() },
     ),
   );
 
@@ -134,21 +135,9 @@ export class PaulParetoChartComponent {
       .join(' '),
   );
 
-  // `paretoLayout` hardcodes the 80% crossing for `cutIndex`, which is the right
-  // default but not the only threshold worth drawing. Rather than parameterise
-  // the geometry core (shared, and every other chart depends on it), recover the
-  // crossing here from `percents` when the threshold is anything but 80.
-  readonly cutIndex = computed(() => {
-    const { percents, cutIndex } = this.layout();
-    const threshold = this.threshold();
-    if (threshold === 80) return cutIndex;
-    let running = 0;
-    for (let i = 0; i < percents.length; i += 1) {
-      running += percents[i];
-      if (running >= threshold) return i;
-    }
-    return -1;
-  });
+  // The geometry takes the threshold too, so the cut it reports and the rule
+  // drawn below are the same number by construction.
+  readonly cutIndex = computed(() => this.layout().cutIndex);
 
   readonly cutPoint = computed(() => this.layout().cumulative[this.cutIndex()] ?? null);
 

@@ -68,7 +68,7 @@ export { PaulRadarChartComponent, type PaulRadarSeries } from './radar-chart';
 
 export { PaulParetoChartComponent, type PaulParetoDatum } from './pareto-chart';
 
-export { PaulHeatmapChartComponent } from './heatmap-chart';
+export { PaulHeatmapChartComponent, type PaulHeatmapRow } from './heatmap-chart';
 
 export { PaulGaugeChartComponent, type PaulGaugeTone } from './gauge-chart';
 
