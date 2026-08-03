@@ -7,7 +7,7 @@ All four packages are implemented and feature-complete:
 - `@paul-portfolio/tokens` -- Design tokens (colors, spacing, typography, shadows, motion, radii, z-index)
 - `@paul-portfolio/css` -- 9 CSS components + 4 utilities (focus-ring, sr-only, visually-hidden, contrast-notes)
 - `@paul-portfolio/react` -- 10 React components with full test coverage including axe-core a11y tests
-- `@paul-portfolio/angular` -- 16 standalone Angular components (compound components for Card and Modal)
+- `@paul-portfolio/angular` -- 24 standalone Angular components (compound components for Card and Modal)
 - `packages/storybook` -- Storybook stories for all components + token documentation pages, Chromatic configured
 
 ## Development rules
@@ -20,7 +20,7 @@ All four packages are implemented and feature-complete:
 ## Versioning
 
 - Each commit bumps the patch version and updates CHANGELOG.md.
-- Current version: 0.2.2
+- Current version: 0.2.28
 
 ## Tokens
 
@@ -43,8 +43,10 @@ All four packages are implemented and feature-complete:
 
 ## Angular
 
-- 16 standalone components (Card and Modal have sub-components for header, body, footer).
-- Components: PaulButton, PaulInput, PaulChip, PaulCard (+ header/body/footer), PaulModal (+ header/body/footer), PaulTooltip, PaulAvatar, PaulBadge, PaulSkeleton, PaulVisuallyHidden.
+- 24 standalone components (Card and Modal have sub-components for header, body, footer).
+- Components: PaulButton, PaulIconButton, PaulInput, PaulTextarea, PaulSelect, PaulFilterBar, PaulSwitch, PaulChip, PaulCard (+ header/body/footer), PaulModal (+ header/body/footer), PaulTooltip, PaulInfoTip, PaulAvatar, PaulBadge, PaulSkeleton, PaulSpinner, PaulDivider, PaulTicker, PaulTiltCard, PaulGradientBackground, PaulSpotlight, PaulSparkline, PaulBarChart, PaulDonutChart, PaulVisuallyHidden.
+- Built with ng-packagr in partial compilation mode — never plain `tsc`, which strips the component defs signal inputs need. Published from `packages/angular/dist`.
+- Component render tests run through TestBed (`*.spec.ts`, jsdom); the pure geometry suite stays on node (`*.test.ts`).
 
 ## Monorepo
 

@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.2.28] - 2026-08-03
+
+### Fixed
+
+- `@paul-portfolio/angular` was built with plain `tsc`, so what shipped to npm was raw decorators: no `ɵcmp`/`ɵfac` in the JavaScript, no `ɵɵComponentDeclaration` in the typings. Every component uses signal `input()`, which needs the Angular compiler, so a consumer binding an input got nothing back. The package now builds with `ng-packagr` in partial compilation mode. Two consequences worth knowing: the peer range moves to `@angular/core >=21` (that's the truth about partial-compiled output), and publishing now happens from `packages/angular/dist`, where `ng-packagr` writes the real manifest.
+
+### Added
+
+- Angular render tests. The package had one test file — the pure-TS geometry suite on `node` — and had never rendered a template in CI. `vitest` now runs two projects: the geometry suite stays on `node`, and a new `jsdom` project drives components through `TestBed`, zoneless, with the Angular compiler plugin doing the AOT transform. A shared `renderComponent` helper owns fixture setup.
+- The last eight React → Angular ports, each with a render test mirroring its React counterpart: `PaulTextarea`, `PaulSelect`, `PaulFilterBar`, `PaulInfoTip`, `PaulTicker`, `PaulTiltCard`, `PaulGradientBackground`, `PaulSpotlight`. None adds a stylesheet — all eight reuse CSS that already ships in `@paul-portfolio/css`.
+- `PaulReducedMotion`, the Angular twin of the React `usePrefersReducedMotion` hook, so `PaulTicker`, `PaulTiltCard`, and `PaulSpotlight` share one `matchMedia` listener instead of each attaching its own.
+- Two disclosed API differences from React, both forced by the Angular side: `PaulInfoTip` takes string `content` (React accepts rich nodes) because `PaulTooltip` takes a string, and `PaulTicker` takes its content as an `<ng-template>` rather than projection, because the seamless loop renders the same content twice.
+- Bumps `@paul-portfolio/angular` 0.1.22 → 0.2.0.
+
 ## [0.2.27] - 2026-08-02
 
 ### Added

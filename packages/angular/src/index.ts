@@ -4,6 +4,12 @@ export { PaulButtonComponent } from './button';
 
 export { PaulInputComponent } from './input';
 
+export { PaulTextareaComponent } from './textarea';
+
+export { PaulSelectComponent } from './select';
+
+export { PaulFilterBarComponent } from './filter-bar';
+
 export { PaulChipComponent } from './chip';
 
 export {
@@ -22,6 +28,8 @@ export {
 
 export { PaulTooltipComponent } from './tooltip';
 
+export { PaulInfoTipComponent } from './info-tip';
+
 export { PaulAvatarComponent } from './avatar';
 
 export { PaulBadgeComponent } from './badge';
@@ -35,6 +43,16 @@ export { PaulDividerComponent } from './divider';
 export { PaulIconButtonComponent } from './icon-button';
 
 export { PaulSwitchComponent } from './switch';
+
+export { PaulTickerComponent } from './ticker';
+
+export { PaulTiltCardComponent } from './tilt-card';
+
+export { PaulGradientBackgroundComponent } from './gradient-background';
+
+export { PaulSpotlightComponent } from './spotlight';
+
+export { PaulReducedMotion } from './prefers-reduced-motion';
 
 export { PaulSparklineComponent } from './sparkline';
 
