@@ -31,6 +31,14 @@ clean; the workspace suites are unchanged at 615.
       shipped="Fixed its caption to name both ends of the range"
       drift="Reported by the agent that wrote the stories: a gauge running 20–60 showing 41.5 captioned 'of 60', which reads as 69% when the arc means 54%. The arc knew about min; the caption didn't. Fixed in both frameworks with tests." />
     <Row
+      planned="Nothing — three API smells reported by the agent that wrote the stories"
+      shipped="All three fixed in both frameworks, with tests"
+      drift="HeatmapChart now takes rows: { label, values }[] instead of parallel matrix/rowLabels, so a length mismatch is unrepresentable rather than silently dropping a label. paretoLayout takes the threshold, so cutIndex and the drawn rule are one number instead of two that agreed only at 80. RadarChart warns in dev when it drops series past three. These are API changes to components that only exist in this unmerged stack, so nothing published moves." />
+    <Row
+      planned="Nothing about the Ticker"
+      shipped="Ported the clone's inert fix from Angular to React"
+      drift="The Angular twin had been fixed; the React one still swept tabIndex in an effect, leaving a window where an aria-hidden duplicate held tabbable controls. Parity is the point of this stack, so the twin got the same treatment plus the same test." />
+    <Row
       planned="Angular stories: deferred"
       shipped="Still deferred"
       drift="none — Storybook here is @storybook/react-vite; adding @storybook/angular means a second builder in CI." />
@@ -113,6 +121,9 @@ does not mean "good".
     <Test status="green" name="the workspace suites still pass">angular 240, react 321, tokens 54 — unchanged, as expected for a stories-only change</Test>
     <Test status="green" name="every story renders identically twice">132 stories, two renders each, pixel-compared — the 11 differences are all animation, now handled</Test>
     <Test status="green" name="gauge names both ends of a non-zero range">2 + 2 tests, React and Angular</Test>
+    <Test status="green" name="pareto reports the cut against a custom threshold">2 geometry tests, mirrored in both packages</Test>
+    <Test status="green" name="radar warns when it drops series, and stays quiet at the cap">2 + 2 tests</Test>
+    <Test status="green" name="ticker's clone is inert from first render">1 + 1 tests</Test>
     <Test status="green" name="docs pages render real tables">3 tables / 19 rows on the palette page, 4 / 26 on Colors, checked in a headless browser against the built output</Test>
   </Tests>
 
@@ -127,6 +138,7 @@ not a regression.
 - **Angular stories.** Storybook here is React-only.
 - **`play` interaction tests** for the charts — static SVG, nothing to drive until a hover layer exists.
 - **The hover/tooltip layer and table-view fallbacks**, deferred since PR B and still the biggest open piece of the dataviz guidance.
+- **The spinner still animates under `prefers-reduced-motion`** — `spinner.css` slows it from 0.6s to 1.5s rather than stopping it. Found while diagnosing the Chromatic instability. It looks deliberate, so I left it, but it is the one place in the system where reduced motion doesn't reduce much.
 - **A Chromatic baseline.** The first run after merge will need the recolour accepted deliberately rather than rubber-stamped.
 
 </Section>
