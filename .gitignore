@@ -33,3 +33,6 @@ npm-debug.log*
 
 # Storybook
 storybook-static/
+
+# Harness
+.harness/
