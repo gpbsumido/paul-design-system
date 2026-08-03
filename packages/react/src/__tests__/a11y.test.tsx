@@ -1,6 +1,7 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { render } from '@testing-library/react';
 import { axe } from 'vitest-axe';
+import { Ticker } from '../Ticker';
 import * as matchers from 'vitest-axe/matchers';
 import { Button } from '../Button';
 import { IconButton } from '../IconButton';
@@ -182,5 +183,20 @@ describe('Accessibility', () => {
     const { container } = render(<VisuallyHidden>Screen reader text</VisuallyHidden>);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
+  });
+});
+
+describe('Ticker marquee clone', () => {
+  it('has no aria-hidden-focus violation', async () => {
+    vi.stubGlobal('matchMedia', vi.fn().mockReturnValue({
+      matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn(),
+    }));
+    const { container } = render(
+      <Ticker label="Features" edge="top" direction="left">
+        <button type="button">Chart Library</button>
+      </Ticker>,
+    );
+
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

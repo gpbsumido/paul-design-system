@@ -84,10 +84,22 @@ function ScrollTicker({
     pausedRef.current = paused;
   }, [paused]);
 
-  // The clone fills the trailing half of the loop and stays clickable for
-  // pointer users, so drop its focusables out of the tab order by hand. Paired
-  // with aria-hidden, screen readers and axe never see the duplicate.
+  // The clone used to be de-fanged here, by walking its focusables after render
+  // and setting tabIndex to -1. That left a real gap: an effect runs after
+  // paint, so between mount and this effect the duplicate held tabbable buttons
+  // inside an aria-hidden container, and any re-render reopened the window
+  // until the effect caught up. axe rates that serious and it fired on a live
+  // page. Hiding something from assistive tech while leaving it reachable by
+  // keyboard is worse than not hiding it, because the user lands on a control a
+  // screen reader insists is not there.
+  //
+  // `inert` on the clone says the same thing declaratively, before first paint
+  // and without any window: descendants leave the tab order and the
+  // accessibility tree together, which is exactly the pair that had drifted
+  // apart. The effect below stays only as a fallback for browsers without inert
+  // support, where it is no worse than what it replaced.
   useEffect(() => {
+    if ('inert' in HTMLElement.prototype) return;
     const focusables = cloneRef.current?.querySelectorAll<HTMLElement>(
       'a[href], button, input, select, textarea, [tabindex]',
     );
@@ -155,7 +167,16 @@ function ScrollTicker({
     >
       <div className="ticker__track" data-paused={paused || undefined}>
         <div className="ticker__group">{children}</div>
-        <div ref={cloneRef} aria-hidden="true" className="ticker__group">
+        <div
+          ref={cloneRef}
+          aria-hidden="true"
+          // Spread so this still compiles against React 18 typings, which
+          // predate `inert`. It has to be boolean true, not an empty string:
+          // React 19 treats inert as a real boolean prop and drops falsy
+          // values, so `inert=''` silently renders nothing at all.
+          {...({ inert: true } as { inert?: boolean })}
+          className="ticker__group"
+        >
           {children}
         </div>
       </div>

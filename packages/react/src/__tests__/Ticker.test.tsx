@@ -66,3 +66,39 @@ describe('Ticker', () => {
     await waitFor(() => expect(screen.getAllByText('Solo')).toHaveLength(1));
   });
 });
+
+describe('the marquee clone and the tab order', () => {
+  it('keeps the clone out of the tab order from the very first render', () => {
+    // The clone duplicates real controls so the loop looks seamless. It is
+    // aria-hidden, and an effect used to drop its focusables to tabIndex -1 --
+    // but an effect runs after paint, so between mount and that effect the
+    // duplicate held tabbable buttons inside an aria-hidden container. axe
+    // rates that serious, and it fired on a real page: hiding something from
+    // assistive tech while leaving it tabbable is worse than not hiding it,
+    // because a keyboard user lands on a control a screen reader says is not
+    // there.
+    stubReducedMotion(false);
+    const { container } = render(
+      <Ticker label="Features" edge="top" direction="left">
+        <button type="button">Chart Library</button>
+      </Ticker>,
+    );
+
+    const clone = container.querySelector('[aria-hidden="true"].ticker__group');
+    expect(clone).not.toBeNull();
+    expect(clone?.hasAttribute('inert')).toBe(true);
+  });
+
+  it('leaves the visible copy fully reachable', () => {
+    stubReducedMotion(false);
+    const { container } = render(
+      <Ticker label="Features" edge="top" direction="left">
+        <button type="button">Chart Library</button>
+      </Ticker>,
+    );
+
+    const groups = container.querySelectorAll('.ticker__group');
+    expect(groups[0].hasAttribute('inert')).toBe(false);
+    expect(groups[0].hasAttribute('aria-hidden')).toBe(false);
+  });
+});
