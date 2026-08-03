@@ -65,7 +65,7 @@ const TOUCH_RESUME_MS = 4000;
       >
         <div class="ticker__track" [attr.data-paused]="paused() || null">
           <div class="ticker__group"><ng-container [ngTemplateOutlet]="body()" /></div>
-          <div #clone aria-hidden="true" class="ticker__group">
+          <div #clone aria-hidden="true" inert class="ticker__group">
             <ng-container [ngTemplateOutlet]="body()" />
           </div>
         </div>
@@ -117,11 +117,20 @@ export class PaulTickerComponent {
   }
 
   /**
-   * The clone fills the trailing half of the loop and stays clickable for
-   * pointer users, so drop its focusables out of the tab order by hand. Paired
-   * with aria-hidden, assistive tech never sees the duplicate.
+   * Fallback for browsers without `inert`.
+   *
+   * The clone carries `inert` in the template, which drops its descendants
+   * from the tab order and the accessibility tree together, before first
+   * render. This used to be the only mechanism, and it left a gap: a lifecycle
+   * hook runs after the DOM exists, so between render and this call the
+   * duplicate held tabbable controls inside an aria-hidden container. The React
+   * twin shipped that and axe flagged it on a live page -- hiding something
+   * from assistive tech while leaving it reachable by keyboard is worse than
+   * not hiding it, because the user lands on a control a screen reader insists
+   * is not there.
    */
   private dropCloneFromTabOrder(): void {
+    if ('inert' in HTMLElement.prototype) return;
     const focusables = this.clone()?.nativeElement.querySelectorAll<HTMLElement>(
       'a[href], button, input, select, textarea, [tabindex]',
     );
