@@ -39,6 +39,14 @@ clean; the workspace suites are unchanged at 615.
       shipped="Ported the clone's inert fix from Angular to React"
       drift="The Angular twin had been fixed; the React one still swept tabIndex in an effect, leaving a window where an aria-hidden duplicate held tabbable controls. Parity is the point of this stack, so the twin got the same treatment plus the same test." />
     <Row
+      planned="Nothing — the spinner was flagged and left alone"
+      shipped="Rotation now stops under reduced motion, replaced by an opacity pulse, with a guard over every stylesheet"
+      drift="Found while diagnosing the Chromatic instability and initially left as someone's deliberate choice. It wasn't defensible: the reduced branch slowed the spin from 0.6s to 1.5s, and rotation is the vestibular trigger. Both Spinner components already expose role=status with a name, so nothing is lost for assistive tech." />
+    <Row
+      planned="Nothing — the CSS package was assumed to have no tests"
+      shipped="Gave packages/css a test script; its 21 existing files and 139 assertions now run"
+      drift="They existed all along, along with a vitest config and a css-tree dependency. With no test script in package.json, npm test --workspaces --if-present skipped the package silently. Nobody had noticed because a skipped workspace looks exactly like a passing one." />
+    <Row
       planned="Angular stories: deferred"
       shipped="Still deferred"
       drift="none — Storybook here is @storybook/react-vite; adding @storybook/angular means a second builder in CI." />
@@ -124,6 +132,8 @@ does not mean "good".
     <Test status="green" name="pareto reports the cut against a custom threshold">2 geometry tests, mirrored in both packages</Test>
     <Test status="green" name="radar warns when it drops series, and stays quiet at the cap">2 + 2 tests</Test>
     <Test status="green" name="ticker's clone is inert from first render">1 + 1 tests</Test>
+    <Test status="green" name="every animated stylesheet answers prefers-reduced-motion">and none keeps a rotating keyframe inside it — proven to fail on the old spinner first</Test>
+    <Test status="green" name="the CSS package's 139 assertions run at all">21 files that had never executed</Test>
     <Test status="green" name="docs pages render real tables">3 tables / 19 rows on the palette page, 4 / 26 on Colors, checked in a headless browser against the built output</Test>
   </Tests>
 
@@ -138,7 +148,6 @@ not a regression.
 - **Angular stories.** Storybook here is React-only.
 - **`play` interaction tests** for the charts — static SVG, nothing to drive until a hover layer exists.
 - **The hover/tooltip layer and table-view fallbacks**, deferred since PR B and still the biggest open piece of the dataviz guidance.
-- **The spinner still animates under `prefers-reduced-motion`** — `spinner.css` slows it from 0.6s to 1.5s rather than stopping it. Found while diagnosing the Chromatic instability. It looks deliberate, so I left it, but it is the one place in the system where reduced motion doesn't reduce much.
 - **A Chromatic baseline.** The first run after merge will need the recolour accepted deliberately rather than rubber-stamped.
 
 </Section>
