@@ -80,3 +80,21 @@ describe('GaugeChart', () => {
     );
   });
 });
+
+describe('GaugeChart caption and range', () => {
+  it('names only the maximum when the range starts at zero', () => {
+    render(<GaugeChart label="Disk used" value={62} unit="%" />);
+    expect(screen.getByText('of 100')).toBeInTheDocument();
+    expect(screen.getByRole('img').getAttribute('aria-label')).toContain('62 of 100 (62%)');
+  });
+
+  it('names both ends when the range does not start at zero', () => {
+    // "of 60" would invite the reader to compute 41.5/60 when the arc means
+    // (41.5-20)/(60-20) = 54%.
+    render(<GaugeChart label="Rack temperature" value={41.5} min={20} max={60} />);
+    expect(screen.getByText('of 20 to 60')).toBeInTheDocument();
+    const name = screen.getByRole('img').getAttribute('aria-label') ?? '';
+    expect(name).toContain('41.5 of 20 to 60');
+    expect(name).toContain('(53.75%)');
+  });
+});

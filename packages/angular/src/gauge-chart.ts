@@ -61,7 +61,7 @@ const TONE_COLOR: Record<PaulGaugeTone, string> = {
       @if (toneLabel()) {
         <p class="paul-chart__tone">{{ toneLabel() }}</p>
       }
-      <p class="paul-chart__caption">of {{ max() }}</p>
+      <p class="paul-chart__caption">of {{ range() }}</p>
     </div>
   `,
 })
@@ -94,9 +94,16 @@ export class PaulGaugeChartComponent {
   readonly toneLabel = computed(() => TONE_LABEL[this.tone()]);
   readonly toneColor = computed(() => TONE_COLOR[this.tone()]);
 
+  /**
+   * Name the whole range, not just its top: a gauge running 20–60 that says
+   * "of 60" invites the reader to compute 41.5/60 when the arc means
+   * (41.5-20)/(60-20). Only mention `min` when it isn't the assumed zero.
+   */
+  readonly range = computed(() => (this.min() === 0 ? `${this.max()}` : `${this.min()} to ${this.max()}`));
+
   readonly name = computed(() => {
     const tone = this.toneLabel();
-    const summary = `${this.value()} of ${this.max()} (${this.geometry().percent}%)`;
+    const summary = `${this.value()} of ${this.range()} (${this.geometry().percent}%)`;
     return `${this.label()}: ${summary}${tone ? `, ${tone}` : ''}`;
   });
 }

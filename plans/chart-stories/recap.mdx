@@ -23,6 +23,14 @@ clean; the workspace suites are unchanged at 615.
       shipped="Enabled remark-gfm and moved addon-docs out of addon-essentials"
       drift="The palette page rendered its tables as paragraphs of literal pipe characters. No GFM plugin was configured, and passing docs options through addon-essentials silently does nothing — @storybook/addon-docs has to be listed directly. Every docs page had this: Colors, Spacing and Typography were rendering the same way and nobody had noticed. Verified with a real browser screenshot rather than the build log this time." />
     <Row
+      planned="Nothing — Chromatic was assumed to be a clean run away"
+      shipped="Chromatic flagged inconsistent renders; diagnosed by rendering all 132 stories twice and comparing pixels"
+      drift="Eleven stories differ run to run, all of them animated: Skeleton ×4, Spinner ×4, Button's loading state, GradientBackground's fast variant, the marquee Ticker. Fixed with pauseAnimationAtEnd globally, plus disableSnapshot on the scroll Ticker, whose rAF-driven scrollLeft cannot be frozen that way. None of the eleven chart forms was unstable — the word cloud's determinism held. Two apparent failures (Textarea, the donut) turned out to be races in my measuring harness, not the UI; worth saying because I nearly 'fixed' them." />
+    <Row
+      planned="Nothing about GaugeChart"
+      shipped="Fixed its caption to name both ends of the range"
+      drift="Reported by the agent that wrote the stories: a gauge running 20–60 showing 41.5 captioned 'of 60', which reads as 69% when the arc means 54%. The arc knew about min; the caption didn't. Fixed in both frameworks with tests." />
+    <Row
       planned="Angular stories: deferred"
       shipped="Still deferred"
       drift="none — Storybook here is @storybook/react-vite; adding @storybook/angular means a second builder in CI." />
@@ -103,6 +111,8 @@ does not mean "good".
     <Test status="green" name="storybook builds with no errors">4.24s, all stories and the MDX page compile</Test>
     <Test status="green" name="no new story hardcodes a chart colour">grepped; the only remaining hex literals are the decorative ones in Spotlight and GradientBackground</Test>
     <Test status="green" name="the workspace suites still pass">angular 240, react 321, tokens 54 — unchanged, as expected for a stories-only change</Test>
+    <Test status="green" name="every story renders identically twice">132 stories, two renders each, pixel-compared — the 11 differences are all animation, now handled</Test>
+    <Test status="green" name="gauge names both ends of a non-zero range">2 + 2 tests, React and Angular</Test>
     <Test status="green" name="docs pages render real tables">3 tables / 19 rows on the palette page, 4 / 26 on Colors, checked in a headless browser against the built output</Test>
   </Tests>
 

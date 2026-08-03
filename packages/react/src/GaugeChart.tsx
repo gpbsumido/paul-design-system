@@ -73,7 +73,11 @@ export function GaugeChart({
 }: GaugeChartProps) {
   const geo = gaugeArc(value, { size, thickness, min, max, sweep });
   const toneLabel = TONE_LABEL[tone];
-  const name = `${label}: ${value} of ${max} (${geo.percent}%)${toneLabel ? `, ${toneLabel}` : ''}`;
+  // Name the whole range, not just its top: a gauge running 20–60 that says
+  // "of 60" invites the reader to compute 41.5/60 when the arc means
+  // (41.5-20)/(60-20). Only mention `min` when it isn't the assumed zero.
+  const range = min === 0 ? `${max}` : `${min} to ${max}`;
+  const name = `${label}: ${value} of ${range} (${geo.percent}%)${toneLabel ? `, ${toneLabel}` : ''}`;
 
   return (
     <div className={cx('paul-chart', 'paul-chart--gauge', className)} {...props}>
@@ -97,7 +101,7 @@ export function GaugeChart({
           {unit && <span className="paul-chart__unit">{unit}</span>}
         </p>
         {toneLabel && <p className="paul-chart__tone">{toneLabel}</p>}
-        <p className="paul-chart__caption">of {max}</p>
+        <p className="paul-chart__caption">of {range}</p>
       </div>
     </div>
   );

@@ -83,3 +83,31 @@ describe('PaulGaugeChart', () => {
     expect(el.querySelector('.paul-chart__gauge-track')?.getAttribute('d')).not.toContain('NaN');
   });
 });
+
+/** Mirrors the caption/range tests in packages/react/src/__tests__/GaugeChart.test.tsx. */
+describe('PaulGaugeChart caption and range', () => {
+  it('names only the maximum when the range starts at zero', () => {
+    const el = host(
+      renderComponent(PaulGaugeChartComponent, { label: 'Disk used', value: 62, unit: '%' }),
+    );
+    expect(el.querySelector('.paul-chart__caption')?.textContent?.trim()).toBe('of 100');
+    expect(el.querySelector('[role="img"]')?.getAttribute('aria-label')).toContain(
+      '62 of 100 (62%)',
+    );
+  });
+
+  it('names both ends when the range does not start at zero', () => {
+    const el = host(
+      renderComponent(PaulGaugeChartComponent, {
+        label: 'Rack temperature',
+        value: 41.5,
+        min: 20,
+        max: 60,
+      }),
+    );
+    expect(el.querySelector('.paul-chart__caption')?.textContent?.trim()).toBe('of 20 to 60');
+    const name = el.querySelector('[role="img"]')?.getAttribute('aria-label') ?? '';
+    expect(name).toContain('41.5 of 20 to 60');
+    expect(name).toContain('(53.75%)');
+  });
+});

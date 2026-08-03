@@ -10,6 +10,8 @@
 
 ### Fixed
 
+- `GaugeChart` / `PaulGaugeChart` captioned a gauge with `of {max}`, ignoring `min`. A dial running 20–60 showing 41.5 read "of 60", inviting the reader to compute 69% where the arc means 54%. It now names both ends of the range whenever `min` isn't zero, in the caption and in the accessible name.
+- Chromatic reported inconsistent renders between runs. Rendering all 132 stories twice and comparing pixels found the cause: animated components (Skeleton, Spinner, Button's loading state, GradientBackground, the marquee Ticker) are mid-animation when the screenshot is taken. CSS animations are now frozen at their end state for Chromatic; the scroll Ticker, whose position comes from a requestAnimationFrame loop that cannot be frozen that way, is excluded from snapshots and stays covered by its unit tests. No chart story was unstable.
 - Markdown tables in every Storybook docs page rendered as a paragraph of literal pipe characters. The MDX pipeline had no GFM plugin, and the docs options only reach `@storybook/addon-docs` when it is configured directly rather than through `addon-essentials`. This had been broken for the Colors, Spacing and Typography pages the whole time.
 - `DonutChart`'s stories hardcoded hex colours in their default args, which bypassed the token palette — a bad example to set, and after the 0.2.29 recolour it also rendered the old colours beside components using the new ones.
 - Documents the new `cyan` ramp on the Colors page.
