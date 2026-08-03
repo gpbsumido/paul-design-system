@@ -140,23 +140,23 @@ Written before the components. Each mirrors an assertion that already exists in
 the React suite, so a drift between the twins fails somewhere.
 
   <Tests>
-    <Test name="render.ts mounts a trivial standalone component">proves the TestBed harness itself works before any port depends on it</Test>
-    <Test name="geometry suite still runs on node, not jsdom">the split-project config didn't quietly move the pure-TS suite onto a DOM</Test>
-    <Test name="textarea: label, helper, error wire up aria-describedby / aria-invalid">matches Textarea.test.tsx</Test>
-    <Test name="textarea: showCount renders 'n / max' and updates on input">the derived-count path, the piece most likely to drift from React</Test>
-    <Test name="textarea: hideLabel keeps the label in the a11y tree via sr-only">hiding must not mean removing</Test>
-    <Test name="select: projects options, applies size/error classes, links helper">matches Select.test.tsx</Test>
-    <Test name="select: orientation=horizontal adds the wrapper modifier">the FilterBar-facing case</Test>
-    <Test name="filter-bar: renders a labelled section landmark around its row">matches FilterBar.test.tsx</Test>
-    <Test name="info-tip: trigger exposes role=img with the default 'More information' name">matches InfoTip.test.tsx</Test>
-    <Test name="ticker: marquee mode is aria-hidden and duplicates its content">decorative mode stays out of the a11y tree</Test>
-    <Test name="ticker: scroll mode is a labelled section and clones with tabIndex -1">the clone must never be tabbable</Test>
-    <Test name="ticker: reduced motion renders one group and starts no rAF loop">the branch React tests too</Test>
-    <Test name="tilt-card: pointermove writes tilt + glare custom properties">pins the pointer math, not just the markup</Test>
-    <Test name="tilt-card: reduced motion renders flat with no glare element">matches TiltCard.test.tsx</Test>
-    <Test name="gradient-background: custom colors build the linear-gradient, speed maps to a duration">the colours→CSS-var mapping</Test>
-    <Test name="spotlight: pointermove moves the glow; reduced motion pins it centred and active">matches Spotlight.test.tsx</Test>
-    <Test name="prefers-reduced-motion: false when matchMedia is absent">SSR-safety, same guarantee as the React hook</Test>
+    <Test status="green" name="render.ts mounts a trivial standalone component">proves the TestBed harness itself works before any port depends on it</Test>
+    <Test status="green" name="geometry suite still runs on node, not jsdom">the split-project config didn't quietly move the pure-TS suite onto a DOM</Test>
+    <Test status="green" name="textarea: label, helper, error wire up aria-describedby / aria-invalid">matches Textarea.test.tsx</Test>
+    <Test status="green" name="textarea: showCount renders 'n / max' and updates on input">the derived-count path, the piece most likely to drift from React</Test>
+    <Test status="green" name="textarea: hideLabel keeps the label in the a11y tree via sr-only">hiding must not mean removing</Test>
+    <Test status="green" name="select: projects options, applies size/error classes, links helper">matches Select.test.tsx</Test>
+    <Test status="green" name="select: orientation=horizontal adds the wrapper modifier">the FilterBar-facing case</Test>
+    <Test status="green" name="filter-bar: renders a labelled section landmark around its row">matches FilterBar.test.tsx</Test>
+    <Test status="green" name="info-tip: trigger exposes role=img with the default 'More information' name">matches InfoTip.test.tsx</Test>
+    <Test status="green" name="ticker: marquee mode is aria-hidden and duplicates its content">decorative mode stays out of the a11y tree</Test>
+    <Test status="green" name="ticker: scroll mode is a labelled section and clones with tabIndex -1">the clone must never be tabbable</Test>
+    <Test status="green" name="ticker: reduced motion renders one group and starts no rAF loop">the branch React tests too</Test>
+    <Test status="green" name="tilt-card: pointermove writes tilt + glare custom properties">pins the pointer math, not just the markup</Test>
+    <Test status="green" name="tilt-card: reduced motion renders flat with no glare element">matches TiltCard.test.tsx</Test>
+    <Test status="green" name="gradient-background: custom colors build the linear-gradient, speed maps to a duration">the colours→CSS-var mapping</Test>
+    <Test status="green" name="spotlight: pointermove moves the glow; reduced motion pins it centred and active">matches Spotlight.test.tsx</Test>
+    <Test status="green" name="prefers-reduced-motion: false when matchMedia is absent">SSR-safety, same guarantee as the React hook</Test>
   </Tests>
 
 Not in scope: axe-core a11y tests for the Angular twins. React runs axe over
