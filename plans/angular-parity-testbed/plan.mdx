@@ -1,0 +1,199 @@
+export const meta = {
+  title: "Angular TestBed infra + the last 8 React→Angular ports",
+  goal: "Every React component in the design system has an Angular twin, and the Angular package renders its components in tests instead of only unit-testing pure geometry.",
+};
+
+PR A of a 3-PR stack cut off `ps/all-our-charts-used-paul` (PR #42). This one closes
+the React→Angular gap and gives the Angular package a real render-test harness.
+PR B adds the specialty gallery charts + multi-series `Sparkline`; PR C adds the
+Storybook/Chromatic surface for both.
+
+<Section id="why" title="Why this shape">
+
+The Angular package has 16 components and exactly one test file —
+`packages/angular/src/__tests__/chart-geometry.test.ts`, which runs in
+`environment: 'node'` because the geometry core is pure TS. Nothing has ever
+rendered an Angular template in CI. That was fine while every Angular component
+was a thin class over shared CSS, but four of the eight ports here
+(`Ticker`, `TiltCard`, `Spotlight`, `Textarea`) carry real behaviour — pointer
+math, an rAF scroll loop, a live character count — and shipping those untested
+would put the interesting half of the package on trust.
+
+So the infra lands first, in the same PR, and every port arrives with a render
+test that pins the same behaviour its React test pins.
+
+</Section>
+
+<Section id="infra" title="Test infrastructure">
+
+Angular 21 is already installed (`@angular/core` 21.2.18, `@angular/common`).
+The package builds with plain `tsc`, so components are JIT-compiled at runtime —
+which means tests need `@angular/compiler` present and nothing more exotic.
+Angular 21 `TestBed` supports zoneless change detection, so `zone.js` stays out.
+
+| File | Change | Detail |
+|---|---|---|
+| `packages/angular/package.json` | add devDeps + keep `test` script | `@angular/compiler`, `@angular/platform-browser`, `jsdom`. No `zone.js` — `provideZonelessChangeDetection()` instead, which is Angular 21's default direction and avoids a global patch that would leak into the geometry tests. |
+| `packages/angular/vitest.config.ts` | two projects, not one env | The geometry test stays on `environment: 'node'`; a second project runs `src/__tests__/**/*.spec.ts` on `jsdom` with the setup file. Keeps the pure-TS suite honest — it must not silently start depending on a DOM. |
+| `packages/angular/test-setup.ts` | new | `import '@angular/compiler'` then `TestBed.initTestEnvironment(...)` with the zoneless provider. Mirrors `packages/react/test-setup.ts`. |
+| `packages/angular/tsconfig.json` | no change | `src/__tests__` is already excluded from the build. |
+| `packages/angular/src/__tests__/render.ts` | new helper | `renderComponent(Cmp, inputs)` → `{ fixture, host }`. Wraps `TestBed.createComponent` + `setInput` + `detectChanges` so 8 spec files don't each repeat it. |
+
+<Question id="q-decorators" text="esbuild transpiles the @Component decorator for Vitest; if Angular 21 JIT rejects that output, what's the fallback?"
+  options={["Add @analogjs/vite-plugin-angular", "Pre-build with tsc and test dist/"]}
+  defaultNote="Proceeding with the plain-esbuild path first. If TestBed can't compile the decorator output, I'll add @analogjs/vite-plugin-angular (the standard Vitest+Angular transform) rather than testing built output, since testing dist/ would decouple the tests from source line numbers." />
+
+</Section>
+
+<Section id="ports" title="The 8 ports">
+
+Every port reuses the CSS that already ships in `@paul-portfolio/css` — none of
+these adds a stylesheet. The React source is the contract; the Angular twin
+matches its DOM, class names, and ARIA exactly.
+
+| React source | New Angular file | Selector | Reuses | Detail |
+|---|---|---|---|---|
+| `packages/react/src/Textarea.tsx` | `packages/angular/src/textarea.ts` | `paul-textarea` | `textarea.css`, `input.css` (`.input__wrapper`, `.input__helper`) | Hardest of the form ports: the live `showCount` counter is derived state. React tracks controlled vs uncontrolled; Angular takes `value` as an input plus a `valueChanged` output and counts off the DOM event, matching how `PaulInputComponent` already works. `hideLabel` swaps the label class to `sr-only`. |
+| `packages/react/src/Select.tsx` | `packages/angular/src/select.ts` | `paul-select` | `select.css` | Options come in as `<ng-content>` so callers pass native `<option>`s — no options-array API that React doesn't have. `orientation="horizontal"` adds `.select__wrapper--horizontal`. |
+| `packages/react/src/FilterBar.tsx` | `packages/angular/src/filter-bar.ts` | `paul-filter-bar` | `filter-bar.css` | Thinnest port. Renders a real `<section aria-label>` wrapping `.filter-bar__row` around `<ng-content>`, so the landmark is a genuine `<section>` rather than a class on the host element — matching the React DOM exactly. |
+| `packages/react/src/InfoTip.tsx` | `packages/angular/src/info-tip.ts` | `paul-info-tip` | `info-tip.css`, `PaulTooltipComponent` | React composes `Tooltip`; Angular does the same via `imports: [PaulTooltipComponent]`. Note `PaulTooltipComponent` takes `text: string` where React's `Tooltip` takes a `ReactNode` — so the Angular `InfoTip` exposes `content: string`. Disclosed narrowing, not a silent one. |
+| `packages/react/src/Ticker.tsx` | `packages/angular/src/ticker.ts` | `paul-ticker` | `ticker.css` | The one with real machinery: two modes (`scroll`/`marquee`), an rAF ambient scroll, hover/touch pause with a 4s touch resume, a duplicated aria-hidden clone whose focusables get `tabIndex = -1`, and a reduced-motion branch that drops the clone and the loop entirely. Needs `afterNextRender` + `DestroyRef` for the rAF lifecycle. |
+| `packages/react/src/TiltCard.tsx` | `packages/angular/src/tilt-card.ts` | `paul-tilt-card` | `tilt-card.css` | Pointer-driven 3D tilt writing `--paul-tilt-x/y` and `--paul-glare-x/y` on the inner element. Reduced motion → flat card, no handlers bound. |
+| `packages/react/src/GradientBackground.tsx` | `packages/angular/src/gradient-background.ts` | `paul-gradient-background` | `gradient-background.css` | No JS motion at all — sets `--paul-gradient-image` / `--paul-gradient-duration` and a `data-animate` attribute; the CSS handles the reduced-motion gate. Straight port. |
+| `packages/react/src/Spotlight.tsx` | `packages/angular/src/spotlight.ts` | `paul-spotlight` | `spotlight.css` | Cursor-tracking radial glow via `--paul-spotlight-x/y`. Reduced motion → glow pinned centre, `data-active` always on. |
+
+Shared support:
+
+| File | Change | Detail |
+|---|---|---|
+| `packages/angular/src/prefers-reduced-motion.ts` | new | Angular twin of `packages/react/src/usePrefersReducedMotion.ts`. A tiny injectable returning a `Signal<boolean>` backed by `matchMedia`, SSR-safe (false when `window`/`matchMedia` is absent). Consumed by `ticker`, `tilt-card`, `spotlight`. Three components would otherwise each hand-roll the same listener. |
+| `packages/angular/src/index.ts` | 8 new exports + the signal | Barrel stays alphabetically grouped the way it is now (form → overlay → decorative → charts). |
+
+</Section>
+
+<Section id="architecture" title="How the pieces sit">
+  <Mermaid>{`flowchart TB
+    CSS["@paul-portfolio/css<br/>ships all 8 stylesheets already"]
+    RX["React source<br/>= the behavioural contract"]
+    subgraph NG["@paul-portfolio/angular (new)"]
+      PRM["prefers-reduced-motion.ts"]
+      FORM["textarea · select · filter-bar"]
+      OVER["info-tip → PaulTooltipComponent"]
+      DEC["ticker · tilt-card · spotlight · gradient-background"]
+    end
+    subgraph TEST["test harness (new)"]
+      SETUP["test-setup.ts<br/>@angular/compiler + zoneless TestBed"]
+      HELP["__tests__/render.ts"]
+      SPECS["8 × *.spec.ts"]
+    end
+    CSS --> NG
+    RX -.mirrors.-> NG
+    PRM --> DEC
+    SETUP --> SPECS
+    HELP --> SPECS
+    NG --> SPECS`}</Mermaid>
+</Section>
+
+<Section id="wireframes" title="What the ports render">
+
+No new visual design — each port reproduces the React component's DOM against
+the same CSS. These are the states the tests assert on.
+
+  <Screens>
+    <Screen name="Textarea">
+      <Wireframe url="paul-textarea [showCount] [error]">
+        <WfRow label="Bio *"><WfBox h="4rem" /></WfRow>
+        <WfRow><WfLine w="4rem" /> 24 / 280</WfRow>
+        <WfRow label="helper"><WfLine w="14rem" /></WfRow>
+      </Wireframe>
+    </Screen>
+    <Screen name="Select · horizontal">
+      <Wireframe url="paul-filter-bar > paul-select ×3">
+        <WfRow label="Team"><WfPill on>All</WfPill> <WfPill>Season</WfPill> <WfPill>Player</WfPill></WfRow>
+      </Wireframe>
+    </Screen>
+    <Screen name="InfoTip">
+      <Wireframe url="paul-info-tip content='…'">
+        <WfRow label="Net rating"><WfPill on>i</WfPill></WfRow>
+        <WfRow><WfBox h="2rem" /></WfRow>
+      </Wireframe>
+    </Screen>
+    <Screen name="Ticker · reduced motion">
+      <Wireframe url="paul-ticker mode=scroll (prefers-reduced-motion)">
+        <WfRow label="section"><WfLine w="18rem" /></WfRow>
+        <WfRow>no clone · no rAF loop · plain scroll container</WfRow>
+      </Wireframe>
+    </Screen>
+    <Screen name="Empty / absent">
+      <Wireframe url="degenerate inputs">
+        <WfRow label="Textarea"><WfLine w="10rem" /> no label, no helper, no count</WfRow>
+        <WfRow label="Select"><WfLine w="10rem" /> no options projected</WfRow>
+        <WfRow label="Ticker"><WfLine w="10rem" /> no children</WfRow>
+      </Wireframe>
+    </Screen>
+  </Screens>
+</Section>
+
+<Section id="tests" title="Tests, RED first">
+
+Written before the components. Each mirrors an assertion that already exists in
+the React suite, so a drift between the twins fails somewhere.
+
+  <Tests>
+    <Test name="render.ts mounts a trivial standalone component">proves the TestBed harness itself works before any port depends on it</Test>
+    <Test name="geometry suite still runs on node, not jsdom">the split-project config didn't quietly move the pure-TS suite onto a DOM</Test>
+    <Test name="textarea: label, helper, error wire up aria-describedby / aria-invalid">matches Textarea.test.tsx</Test>
+    <Test name="textarea: showCount renders 'n / max' and updates on input">the derived-count path, the piece most likely to drift from React</Test>
+    <Test name="textarea: hideLabel keeps the label in the a11y tree via sr-only">hiding must not mean removing</Test>
+    <Test name="select: projects options, applies size/error classes, links helper">matches Select.test.tsx</Test>
+    <Test name="select: orientation=horizontal adds the wrapper modifier">the FilterBar-facing case</Test>
+    <Test name="filter-bar: renders a labelled section landmark around its row">matches FilterBar.test.tsx</Test>
+    <Test name="info-tip: trigger exposes role=img with the default 'More information' name">matches InfoTip.test.tsx</Test>
+    <Test name="ticker: marquee mode is aria-hidden and duplicates its content">decorative mode stays out of the a11y tree</Test>
+    <Test name="ticker: scroll mode is a labelled section and clones with tabIndex -1">the clone must never be tabbable</Test>
+    <Test name="ticker: reduced motion renders one group and starts no rAF loop">the branch React tests too</Test>
+    <Test name="tilt-card: pointermove writes tilt + glare custom properties">pins the pointer math, not just the markup</Test>
+    <Test name="tilt-card: reduced motion renders flat with no glare element">matches TiltCard.test.tsx</Test>
+    <Test name="gradient-background: custom colors build the linear-gradient, speed maps to a duration">the colours→CSS-var mapping</Test>
+    <Test name="spotlight: pointermove moves the glow; reduced motion pins it centred and active">matches Spotlight.test.tsx</Test>
+    <Test name="prefers-reduced-motion: false when matchMedia is absent">SSR-safety, same guarantee as the React hook</Test>
+  </Tests>
+
+Not in scope: axe-core a11y tests for the Angular twins. React runs axe over
+every component in `a11y.test.tsx`; wiring `axe-core` into the Angular harness is
+worth doing but is its own change, and the DOM being asserted here is the DOM
+React already proves accessible.
+
+</Section>
+
+<Section id="risks" title="Risks">
+
+| Risk | Mitigation |
+|---|---|
+| esbuild's decorator output may not JIT-compile under Angular 21 | Prototype `render.ts` + one trivial component first; fall back to `@analogjs/vite-plugin-angular` (see `q-decorators`). This is the first thing built, so it fails cheap. |
+| Zoneless TestBed changes when `detectChanges` is needed vs `await fixture.whenStable()` | The `renderComponent` helper owns that so it's decided once, not eight times. |
+| `Ticker`'s rAF loop leaking across tests | Component tears the loop down through `DestroyRef`; the spec asserts the teardown, and fixtures are destroyed in `afterEach`. |
+| Angular twin drifts from React over time | Every spec is written as the mirror of a named React test, and the mapping is in the table above so the next person can find the pair. |
+| Three more Angular components adds package weight | All eight reuse existing CSS; the only new shared code is the ~20-line reduced-motion signal. |
+
+</Section>
+
+<Section id="deferred" title="Explicitly deferred">
+
+- **PR B** — specialty gallery charts (funnel, radar, scatter, cohort heatmap, pareto, radial gauge, word cloud, stacked/multi-series line) and multi-series `Sparkline`, in the geometry core + React + Angular + CSS.
+- **PR C** — Storybook stories and Chromatic coverage for everything from A and B.
+- axe-core a11y tests for the Angular package (see Tests).
+- Angular versions of React-only escape hatches (`cx`, `usePrefersReducedMotion` as a public export) stay internal.
+
+</Section>
+
+<Section id="open-questions" title="Open questions">
+  <Question id="q-infotip" text="React's Tooltip takes rich ReactNode content; PaulTooltipComponent takes a string. Should the Angular InfoTip project rich content instead?"
+    options={["Ship string-only now, matching PaulTooltip", "Widen PaulTooltip to project content first"]}
+    defaultNote="Proceeding with string-only. Widening PaulTooltip is a change to a shipped component's API and belongs in its own PR, not smuggled into a port." />
+  <Question id="q-versions" text="Version bump for this PR?"
+    options={["@paul-portfolio/angular 0.1.22 → 0.2.0", "Patch bump to 0.1.23"]}
+    defaultNote="Proceeding with 0.2.0 — eight new exported components is a feature-sized change, and CHANGELOG.md gets the entry either way." />
+</Section>
+
+<Verdict kind="plan" />
