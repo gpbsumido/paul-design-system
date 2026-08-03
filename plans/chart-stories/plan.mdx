@@ -82,10 +82,10 @@ Sits alongside the existing `Colors.mdx`, `Spacing.mdx`, `Typography.mdx`.
 Storybook has no unit tests here; the checks are the build and the a11y addon.
 
   <Tests>
-    <Test name="storybook builds with no errors">the only real gate — a broken story fails the build</Test>
-    <Test name="every new story renders without a missing-import or bad-arg error">caught by the build log</Test>
-    <Test name="no story hardcodes a chart colour">grep the stories for hex literals; the palette is the source of truth</Test>
-    <Test name="the workspace suites still pass after the story changes">nothing here should touch component behaviour</Test>
+    <Test status="green" name="storybook builds with no errors">the only real gate — a broken story fails the build</Test>
+    <Test status="green" name="every new story renders without a missing-import or bad-arg error">caught by the build log</Test>
+    <Test status="green" name="no story hardcodes a chart colour">grep the stories for hex literals; the palette is the source of truth</Test>
+    <Test status="green" name="the workspace suites still pass after the story changes">nothing here should touch component behaviour</Test>
   </Tests>
 
 </Section>
