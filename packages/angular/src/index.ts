@@ -28,4 +28,20 @@ export { PaulBadgeComponent } from './badge';
 
 export { PaulSkeletonComponent } from './skeleton';
 
+export { PaulSpinnerComponent } from './spinner';
+
+export { PaulDividerComponent } from './divider';
+
+export { PaulIconButtonComponent } from './icon-button';
+
+export { PaulSwitchComponent } from './switch';
+
+export { PaulSparklineComponent } from './sparkline';
+
+export { PaulBarChartComponent } from './bar-chart';
+
+export { PaulDonutChartComponent, type PaulDonutDatum } from './donut-chart';
+
+export * as chartGeometry from './chart-geometry';
+
 export { PaulVisuallyHiddenComponent } from './visually-hidden';
