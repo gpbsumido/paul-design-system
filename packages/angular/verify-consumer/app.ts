@@ -11,7 +11,18 @@ import {
   PaulSpotlightComponent,
   PaulSparklineComponent,
   PaulDonutChartComponent,
+  PaulFunnelChartComponent,
+  PaulRadarChartComponent,
+  PaulScatterPlotComponent,
+  PaulHeatmapChartComponent,
+  PaulParetoChartComponent,
+  PaulGaugeChartComponent,
+  PaulWordCloudComponent,
+  PaulStackedLineChartComponent,
   type PaulDonutDatum,
+  type PaulFunnelDatum,
+  type PaulRadarSeries,
+  type PaulLineSeries,
 } from '@paul-portfolio/angular';
 
 /**
@@ -38,6 +49,14 @@ import {
     PaulSpotlightComponent,
     PaulSparklineComponent,
     PaulDonutChartComponent,
+    PaulFunnelChartComponent,
+    PaulRadarChartComponent,
+    PaulScatterPlotComponent,
+    PaulHeatmapChartComponent,
+    PaulParetoChartComponent,
+    PaulGaugeChartComponent,
+    PaulWordCloudComponent,
+    PaulStackedLineChartComponent,
   ],
   template: `
     <paul-button variant="primary" size="lg" [disabled]="busy()" (clicked)="onClick()">
@@ -75,6 +94,29 @@ import {
     <paul-sparkline [data]="series" variant="area" label="Sessions, last 8 weeks" />
 
     <paul-donut-chart [data]="mix" label="Revenue mix" [legend]="true" [thickness]="24" />
+
+    <paul-sparkline [series]="cohorts" label="Two cohorts" />
+
+    <paul-funnel-chart [data]="funnel" label="Signup funnel" [showDropOff]="true" />
+
+    <paul-radar-chart [data]="profiles" [axes]="axes" label="Team profile" [max]="10" />
+
+    <paul-scatter-plot [series]="cloud" label="Load vs latency" [radius]="5" />
+
+    <paul-heatmap-chart
+      [matrix]="cohortGrid"
+      [rowLabels]="['Jan', 'Feb']"
+      [colLabels]="['W0', 'W1']"
+      label="Cohort retention"
+    />
+
+    <paul-pareto-chart [data]="defects" label="Defects" [threshold]="80" />
+
+    <paul-gauge-chart label="Disk used" [value]="62" unit="%" tone="warning" />
+
+    <paul-word-cloud [terms]="topics" label="Topics" [limit]="20" />
+
+    <paul-stacked-line-chart [series]="traffic" label="Traffic" variant="stacked" />
   `,
 })
 export class ConsumerApp {
@@ -87,6 +129,45 @@ export class ConsumerApp {
   readonly mix: PaulDonutDatum[] = [
     { label: 'IAP', value: 42 },
     { label: 'Ads', value: 28 },
+  ];
+
+  readonly cohorts = [
+    [1, 5, 3],
+    [2, 4, 8],
+  ];
+  readonly funnel: PaulFunnelDatum[] = [
+    { label: 'Visit', value: 1000 },
+    { label: 'Signup', value: 620 },
+  ];
+  readonly axes = ['Speed', 'Power', 'Range'];
+  readonly profiles: PaulRadarSeries[] = [
+    { label: 'Alpha', values: [10, 6, 8] },
+    { label: 'Beta', values: [5, 9, 3] },
+  ];
+  readonly cloud = [
+    {
+      label: 'p95',
+      points: [
+        { x: 1, y: 2 },
+        { x: 3, y: 5 },
+      ],
+    },
+  ];
+  readonly cohortGrid = [
+    [100, 60],
+    [100, 55],
+  ];
+  readonly defects = [
+    { label: 'Scratch', value: 50 },
+    { label: 'Dent', value: 30 },
+  ];
+  readonly topics = [
+    { text: 'typescript', weight: 40 },
+    { text: 'angular', weight: 28 },
+  ];
+  readonly traffic: PaulLineSeries[] = [
+    { label: 'Organic', values: [10, 20, 30] },
+    { label: 'Paid', values: [5, 10, 15] },
   ];
 
   onClick(): void {

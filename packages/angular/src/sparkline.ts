@@ -1,10 +1,14 @@
 import { Component, input, computed, ChangeDetectionStrategy } from '@angular/core';
-import { linePath, areaPath } from './chart-geometry';
+import { linePath, areaPath, multiLinePoints } from './chart-geometry';
 
 /**
  * A compact, axis-free trend line — the Angular twin of the React `Sparkline`.
  * Renders identical pure SVG from the shared `chart-geometry`. Exposes
  * `role="img"` with a caller-supplied label since the drawing has no text.
+ *
+ * With `series`, every line is scaled against ONE domain spanning all of them —
+ * independently scaled sparklines look comparable and aren't. `area` applies to
+ * the single-series form only; stacked fills at this size are mud.
  */
 @Component({
   selector: 'paul-sparkline',
@@ -16,7 +20,7 @@ import { linePath, areaPath } from './chart-geometry';
     '[attr.aria-label]': 'label()',
   },
   template: `
-    @if (data().length > 0) {
+    @if (hasData()) {
       <svg
         class="paul-chart__svg"
         [attr.viewBox]="viewBox()"
@@ -24,15 +28,27 @@ import { linePath, areaPath } from './chart-geometry';
         aria-hidden="true"
         focusable="false"
       >
-        @if (variant() === 'area') {
-          <path class="paul-chart__area" [attr.d]="areaD()"></path>
+        @if (lines().length > 0) {
+          @for (line of lines(); track line.index) {
+            <path
+              class="paul-chart__line"
+              [attr.d]="line.d"
+              fill="none"
+              [attr.stroke]="line.color"
+              vector-effect="non-scaling-stroke"
+            ></path>
+          }
+        } @else {
+          @if (variant() === 'area') {
+            <path class="paul-chart__area" [attr.d]="areaD()"></path>
+          }
+          <path
+            class="paul-chart__line"
+            [attr.d]="lineD()"
+            fill="none"
+            vector-effect="non-scaling-stroke"
+          ></path>
         }
-        <path
-          class="paul-chart__line"
-          [attr.d]="lineD()"
-          fill="none"
-          vector-effect="non-scaling-stroke"
-        ></path>
       </svg>
     } @else {
       <span class="paul-chart__empty" aria-hidden="true">No data</span>
@@ -40,7 +56,10 @@ import { linePath, areaPath } from './chart-geometry';
   `,
 })
 export class PaulSparklineComponent {
+  /** The series to plot. Ignored when `series` is given. */
   readonly data = input<number[]>([]);
+  /** Several series on one shared y-domain. Takes precedence over `data`. */
+  readonly series = input<number[][]>([]);
   readonly variant = input<'line' | 'area'>('line');
   readonly label = input.required<string>();
   readonly width = input(160);
@@ -52,7 +71,19 @@ export class PaulSparklineComponent {
     padding: 2,
   }));
 
+  private readonly multi = computed(() => this.series().filter((s) => s.length > 0));
+
   readonly viewBox = computed(() => `0 0 ${this.width()} ${this.height()}`);
+  readonly hasData = computed(() => this.multi().length > 0 || this.data().length > 0);
+
+  readonly lines = computed(() =>
+    multiLinePoints(this.multi(), this.box()).map((points, index) => ({
+      index,
+      d: points.map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x},${p.y}`).join(' '),
+      color: `var(--paul-chart-${Math.min(index, 5) + 1})`,
+    })),
+  );
+
   readonly lineD = computed(() => linePath(this.data(), this.box()));
   readonly areaD = computed(() => areaPath(this.data(), this.box()));
 }

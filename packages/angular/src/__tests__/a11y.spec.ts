@@ -14,6 +14,14 @@ import { PaulSpotlightComponent } from '../spotlight';
 import { PaulSparklineComponent } from '../sparkline';
 import { PaulBarChartComponent } from '../bar-chart';
 import { PaulDonutChartComponent } from '../donut-chart';
+import { PaulFunnelChartComponent } from '../funnel-chart';
+import { PaulRadarChartComponent } from '../radar-chart';
+import { PaulScatterPlotComponent } from '../scatter-plot';
+import { PaulHeatmapChartComponent } from '../heatmap-chart';
+import { PaulParetoChartComponent } from '../pareto-chart';
+import { PaulGaugeChartComponent } from '../gauge-chart';
+import { PaulWordCloudComponent } from '../word-cloud';
+import { PaulStackedLineChartComponent } from '../stacked-line-chart';
 
 expect.extend(matchers);
 
@@ -195,6 +203,137 @@ describe('Accessibility', () => {
           { label: 'Offline', value: 2 },
         ],
         label: 'Fleet health',
+      }),
+    );
+    expect(await auditFixture(el)).toHaveNoViolations();
+  });
+
+  it('PaulFunnelChart has no violations', async () => {
+    const el = host(
+      renderComponent(PaulFunnelChartComponent, {
+        label: 'Signup funnel',
+        data: [
+          { label: 'Visit', value: 1000 },
+          { label: 'Signup', value: 620 },
+        ],
+      }),
+    );
+    expect(await auditFixture(el)).toHaveNoViolations();
+  });
+
+  it('PaulRadarChart has no violations', async () => {
+    const el = host(
+      renderComponent(PaulRadarChartComponent, {
+        label: 'Team profile',
+        axes: ['Speed', 'Power', 'Range'],
+        data: [
+          { label: 'Alpha', values: [10, 6, 8] },
+          { label: 'Beta', values: [5, 9, 3] },
+        ],
+      }),
+    );
+    expect(await auditFixture(el)).toHaveNoViolations();
+  });
+
+  it('PaulScatterPlot has no violations', async () => {
+    const el = host(
+      renderComponent(PaulScatterPlotComponent, {
+        label: 'Load vs latency',
+        series: [
+          {
+            label: 'p95',
+            points: [
+              { x: 1, y: 2 },
+              { x: 3, y: 5 },
+            ],
+          },
+        ],
+      }),
+    );
+    expect(await auditFixture(el)).toHaveNoViolations();
+  });
+
+  it('PaulHeatmapChart has no violations', async () => {
+    const el = host(
+      renderComponent(PaulHeatmapChartComponent, {
+        label: 'Cohort retention',
+        matrix: [
+          [100, 60],
+          [100, 55],
+        ],
+        rowLabels: ['Jan', 'Feb'],
+        colLabels: ['W0', 'W1'],
+      }),
+    );
+    expect(await auditFixture(el)).toHaveNoViolations();
+  });
+
+  it('PaulParetoChart has no violations', async () => {
+    const el = host(
+      renderComponent(PaulParetoChartComponent, {
+        label: 'Defects',
+        data: [
+          { label: 'Scratch', value: 50 },
+          { label: 'Dent', value: 30 },
+        ],
+      }),
+    );
+    expect(await auditFixture(el)).toHaveNoViolations();
+  });
+
+  it('PaulGaugeChart has no violations', async () => {
+    const el = host(
+      renderComponent(PaulGaugeChartComponent, { label: 'Disk used', value: 62, unit: '%' }),
+    );
+    expect(await auditFixture(el)).toHaveNoViolations();
+  });
+
+  it('PaulGaugeChart with a status tone has no violations', async () => {
+    const el = host(
+      renderComponent(PaulGaugeChartComponent, {
+        label: 'Disk used',
+        value: 94,
+        unit: '%',
+        tone: 'critical',
+      }),
+    );
+    expect(await auditFixture(el)).toHaveNoViolations();
+  });
+
+  it('PaulWordCloud has no violations', async () => {
+    const el = host(
+      renderComponent(PaulWordCloudComponent, {
+        label: 'Topics',
+        terms: [
+          { text: 'typescript', weight: 40 },
+          { text: 'angular', weight: 28 },
+        ],
+      }),
+    );
+    expect(await auditFixture(el)).toHaveNoViolations();
+  });
+
+  it('PaulStackedLineChart has no violations', async () => {
+    const el = host(
+      renderComponent(PaulStackedLineChartComponent, {
+        label: 'Traffic',
+        series: [
+          { label: 'Organic', values: [10, 20, 30] },
+          { label: 'Paid', values: [5, 10, 15] },
+        ],
+      }),
+    );
+    expect(await auditFixture(el)).toHaveNoViolations();
+  });
+
+  it('PaulSparkline with several series has no violations', async () => {
+    const el = host(
+      renderComponent(PaulSparklineComponent, {
+        label: 'Two teams',
+        series: [
+          [1, 5, 3],
+          [2, 4, 8],
+        ],
       }),
     );
     expect(await auditFixture(el)).toHaveNoViolations();

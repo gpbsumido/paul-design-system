@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.2.29] - 2026-08-03
+
+### Fixed
+
+- The chart palette failed its colour checks, and had since it shipped. `--paul-chart-1` (blue) and `--paul-chart-2` (purple) — the first two series of every multi-series chart — were ΔE **1.3** apart under deuteranopia and **12.0** for normal vision, below the hard floor of 15; `--paul-chart-6` sat outside the lightness band and below the chroma floor, reading gray. New slot order, drawn from the token ramps plus a new `cyan` ramp (slot 5 needed a hue the system didn't have), passes all six checks. Light and dark are separately chosen steps rather than a flip, because the dark lightness band is tighter. **This recolours the charts shipped in 0.2.27.** The checks now live in `packages/tokens/src/__tests__/chart-palette.test.ts`, so the next colour edit can't quietly regress them.
+
+### Added
+
+- Eight specialty chart forms, React and Angular, from one shared geometry core: `FunnelChart`, `RadarChart`, `ScatterPlot`, `HeatmapChart`, `ParetoChart`, `GaugeChart`, `WordCloud`, `StackedLineChart` (and their `Paul*` twins). Same contract as the first three: pure SVG, zero JS at runtime, `role="img"` with a data summary as the accessible name.
+- `Sparkline` gains `series?: number[][]` — several trends on one shared y-domain. Independently scaled sparklines look comparable and aren't. `data` is unchanged.
+- `--paul-chart-seq-1..5`, a single-hue sequential ramp for the forms that encode magnitude rather than identity (heatmap cells, funnel stages). A categorical palette on ordered data double-encodes the value as hue.
+- Two encoding decisions worth knowing, both documented in the source. `ParetoChart` has **one** y-axis: bars are percent-of-total and the cumulative line is cumulative percent, on the same 0–100 scale. The textbook two-axis version invents a correlation, because the alignment between the scales is arbitrary. `WordCloud` ships with its own objection in its doc comment: glyph area is not a comparable encoding and a long word reads as bigger at equal weight — `BarChart` shows the same data honestly.
+- `wordCloudLayout` is deterministic — spiral packing, no RNG — so the server and the client can't disagree and visual regression can settle.
+- axe coverage extended to all eight new charts in both frameworks, and the Angular consumer type-check now binds every one of them.
+- Bumps `@paul-portfolio/tokens` 0.1.10 → 0.2.0, `@paul-portfolio/css` 0.4.7 → 0.5.0, `@paul-portfolio/react` 0.4.6 → 0.5.0, `@paul-portfolio/angular` 0.2.0 → 0.3.0.
+
 ## [0.2.28] - 2026-08-03
 
 ### Fixed

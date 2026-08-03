@@ -60,6 +60,22 @@ export { PaulBarChartComponent } from './bar-chart';
 
 export { PaulDonutChartComponent, type PaulDonutDatum } from './donut-chart';
 
+export { PaulFunnelChartComponent, type PaulFunnelDatum } from './funnel-chart';
+
+export { PaulScatterPlotComponent, type PaulScatterSeries } from './scatter-plot';
+
+export { PaulRadarChartComponent, type PaulRadarSeries } from './radar-chart';
+
+export { PaulParetoChartComponent, type PaulParetoDatum } from './pareto-chart';
+
+export { PaulHeatmapChartComponent } from './heatmap-chart';
+
+export { PaulGaugeChartComponent, type PaulGaugeTone } from './gauge-chart';
+
+export { PaulStackedLineChartComponent, type PaulLineSeries } from './stacked-line-chart';
+
+export { PaulWordCloudComponent, type PaulWordCloudDatum } from './word-cloud';
+
 export * as chartGeometry from './chart-geometry';
 
 export { PaulVisuallyHiddenComponent } from './visually-hidden';

@@ -146,6 +146,336 @@
     color: var(--paul-color-foreground);
   }
 
+  /* ---- Funnel ---- */
+  .paul-chart--funnel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--paul-spacing-3);
+  }
+
+  .paul-chart--funnel .paul-chart__figure {
+    width: 100%;
+    height: 8.75rem;
+  }
+
+  .paul-chart__stage {
+    /* A surface-coloured hairline keeps adjacent stages from bleeding together,
+       the same 2px spacer rule the donut slices use. */
+    stroke: var(--paul-color-surface);
+    stroke-width: 1;
+  }
+
+  .paul-chart__delta {
+    margin-left: var(--paul-spacing-2);
+    font-variant-numeric: tabular-nums;
+    color: var(--paul-color-muted);
+  }
+
+  /* ---- Scatter ---- */
+  .paul-chart--scatter {
+    display: flex;
+    flex-direction: column;
+    gap: var(--paul-spacing-3);
+  }
+
+  .paul-chart--scatter .paul-chart__figure {
+    width: 100%;
+    height: 8.75rem;
+  }
+
+  .paul-chart__mark {
+    /* A 2px surface-coloured ring on every mark. Scatter is the one shape where
+       marks routinely land on top of each other, and without the ring a cluster
+       reads as one blob instead of five points. Lives here rather than inline so
+       the fill stays the only per-series decision the component makes. */
+    stroke: var(--paul-color-surface);
+    stroke-width: 2;
+  }
+
+  /* ---- Pareto ---- */
+  .paul-chart--pareto {
+    display: flex;
+    flex-direction: column;
+    gap: var(--paul-spacing-3);
+  }
+
+  .paul-chart--pareto .paul-chart__figure {
+    width: 100%;
+    height: 8.75rem;
+  }
+
+  /* The cumulative line is the second read, so it gets the second colour and
+     enough weight to stay legible where it crosses a bar. */
+  .paul-chart__cumulative {
+    fill: none;
+    stroke: var(--paul-chart-4);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .paul-chart__cut {
+    fill: var(--paul-chart-4);
+    /* A surface-coloured halo keeps the marker readable on top of a bar. */
+    stroke: var(--paul-color-surface);
+    stroke-width: 1;
+  }
+
+  /* Recessive ink: a reference line, not a series. Dashed so it never reads as
+     data, and never heavier than the line it is there to help you read. */
+  .paul-chart__threshold {
+    stroke: var(--paul-color-border);
+    stroke-width: 1;
+    stroke-dasharray: 4 3;
+  }
+
+  .paul-chart__category {
+    fill: var(--paul-color-muted);
+    font-size: 7px;
+    font-family: inherit;
+  }
+
+  /* ---- Heatmap ---- */
+  .paul-chart--heatmap {
+    display: flex;
+    flex-direction: column;
+    gap: var(--paul-spacing-2);
+  }
+
+  .paul-chart--heatmap .paul-chart__figure {
+    width: 100%;
+    height: 8.75rem;
+  }
+
+  .paul-chart__cell {
+    /* Same surface-coloured hairline the donut slices and funnel stages use, so
+       two adjacent cells on neighbouring ramp steps never bleed together. The
+       geometry already leaves a 2px gap; this is the edge on top of it. */
+    stroke: var(--paul-color-surface);
+    stroke-width: 0.5;
+    rx: 1;
+  }
+
+  /* Sizes are in viewBox user units, not rem — these live inside the SVG. */
+  .paul-chart__row-label,
+  .paul-chart__col-label {
+    font-size: 7px;
+    font-family: inherit;
+    fill: var(--paul-color-muted);
+  }
+
+  .paul-chart__cell-value {
+    font-size: 7px;
+    font-family: inherit;
+    font-variant-numeric: tabular-nums;
+    /* `fill` is set per cell in the component: the top ramp steps are dark
+       enough that the ink has to flip to the surface colour to stay legible. */
+  }
+
+  /* ---- Sequential scale legend ---- */
+  .paul-chart__scale {
+    display: flex;
+    align-items: center;
+    gap: var(--paul-spacing-1);
+    font-size: var(--paul-font-size-xs);
+    font-variant-numeric: tabular-nums;
+    color: var(--paul-color-muted);
+  }
+
+  .paul-chart__scale-step {
+    display: inline-block;
+    height: 0.5rem;
+    width: 1.25rem;
+    flex-shrink: 0;
+  }
+
+  /* The five steps read as one continuous ramp, so only the ends are rounded. */
+  .paul-chart__scale-step:first-of-type {
+    border-start-start-radius: var(--paul-radius-sm);
+    border-end-start-radius: var(--paul-radius-sm);
+  }
+
+  .paul-chart__scale-step:last-of-type {
+    border-start-end-radius: var(--paul-radius-sm);
+    border-end-end-radius: var(--paul-radius-sm);
+  }
+
+  /* ---- Gauge ---- */
+  /* The arc and the readout share one grid cell, so the number sits inside the
+     dial without absolute positioning or a magic offset. */
+  .paul-chart--gauge {
+    display: grid;
+    place-items: center;
+    width: 7.5rem;
+  }
+
+  .paul-chart--gauge .paul-chart__figure,
+  .paul-chart__readout {
+    grid-area: 1 / 1;
+  }
+
+  .paul-chart--gauge .paul-chart__figure {
+    width: 7.5rem;
+    height: 7.5rem;
+  }
+
+  /* The track is scenery: it shows the range and then gets out of the way. */
+  .paul-chart__gauge-track {
+    fill: var(--paul-color-border);
+  }
+
+  .paul-chart__gauge-fill {
+    /* The tone colour arrives as a fill attribute from the component; this is
+       only the fallback for a bare arc. */
+    fill: var(--paul-chart-1);
+  }
+
+  .paul-chart__readout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--paul-spacing-0_5);
+    text-align: center;
+    /* The readout overlays the dial; the arc underneath is not interactive. */
+    pointer-events: none;
+  }
+
+  /* Text wears the text tokens, never the series colour — a number tinted to
+     match its arc reads as decoration and stops meeting contrast on the tone
+     colours. */
+  .paul-chart__value {
+    margin: 0;
+    font-size: var(--paul-font-size-2xl);
+    font-weight: var(--paul-font-weight-bold);
+    font-variant-numeric: tabular-nums;
+    line-height: var(--paul-line-height-tight);
+    color: var(--paul-color-foreground);
+  }
+
+  .paul-chart__unit {
+    margin-left: 0.0625rem;
+    font-size: var(--paul-font-size-sm);
+    font-weight: var(--paul-font-weight-medium);
+    color: var(--paul-color-muted);
+  }
+
+  /* Status is never colour alone: the tone name is text, and it is text in the
+     ordinary ink so it stays legible on either surface. */
+  .paul-chart__tone {
+    margin: 0;
+    font-size: var(--paul-font-size-xs);
+    font-weight: var(--paul-font-weight-medium);
+    letter-spacing: var(--paul-letter-spacing-wide);
+    color: var(--paul-color-foreground);
+  }
+
+  .paul-chart__caption {
+    margin: 0;
+    font-size: var(--paul-font-size-xs);
+    font-variant-numeric: tabular-nums;
+    color: var(--paul-color-muted);
+  }
+
+  /* ---- Lines (multi-series line / stacked bands) ---- */
+  .paul-chart--lines {
+    display: flex;
+    flex-direction: column;
+    gap: var(--paul-spacing-3);
+  }
+
+  .paul-chart--lines .paul-chart__figure {
+    width: 100%;
+    height: 7.5rem;
+  }
+
+  /* Stroke colour is set per series from --paul-chart-N on the element itself;
+     everything else about the mark is the sparkline's line, so the two forms
+     read as the same primitive at different densities. */
+  .paul-chart__series-line {
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* Adjacent bands share an edge, so without a spacer two neighbouring hues
+     bleed into one shape. Same 2px surface-coloured rule the donut slices and
+     funnel stages use — it is a gap drawn in the surface colour, not a border. */
+  .paul-chart__band {
+    stroke: var(--paul-color-surface);
+    stroke-width: 2;
+    stroke-linejoin: round;
+  }
+
+  /* Series identity is the legend's whole job here, so the rows sit in a row
+     rather than a column: there is no value column to align. */
+  .paul-chart--lines .paul-chart__legend {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--paul-spacing-1_5) var(--paul-spacing-4);
+  }
+
+  /* ---- Radar ---- */
+  .paul-chart--radar {
+    display: flex;
+    align-items: center;
+    gap: var(--paul-spacing-4);
+  }
+
+  .paul-chart--radar .paul-chart__figure {
+    width: 10rem;
+    height: 10rem;
+  }
+
+  /* The frame is recessive ink, never a series colour — the polygons have to
+     read on top of it rather than compete with it. */
+  .paul-chart__ring,
+  .paul-chart__axis {
+    fill: none;
+    stroke: var(--paul-color-border);
+    stroke-width: 1;
+  }
+
+  .paul-chart__axis-label {
+    font-size: 0.5rem;
+    fill: var(--paul-color-muted);
+  }
+
+  /* Translucent fill so overlapping series stay legible; the stroke keeps each
+     polygon's own outline readable where the fills stack. Capped at three
+     series in the component for exactly this reason. */
+  .paul-chart__radar-area {
+    fill-opacity: 0.2;
+    stroke-width: 2;
+    stroke-linejoin: round;
+  }
+
+  /* ---- Word cloud ----
+     Sizing is the encoding here, and it is a weak one — glyph area isn't
+     comparable, so a long word outweighs a short one at the same weight. The
+     honest version of this data is .paul-chart--bar; this styling exists to
+     make the gallery piece legible, not to make it accurate. */
+  .paul-chart--word-cloud {
+    display: block;
+    width: 100%;
+  }
+
+  .paul-chart--word-cloud .paul-chart__figure {
+    width: 100%;
+    height: 15rem;
+  }
+
+  .paul-chart__word {
+    /* Font size comes from the layout as a viewBox unit, so it scales with the
+       SVG rather than with the page's root font size — that is the point: the
+       packing was computed against those exact numbers and must not reflow. */
+    font-family: var(--paul-font-family-sans);
+    font-weight: var(--paul-font-weight-semibold);
+    /* Fills are per-word from the categorical palette; the cursor stays default
+       because nothing here is interactive. */
+    user-select: none;
+  }
+
   /* ---- Empty state ---- */
   .paul-chart__empty {
     display: flex;
