@@ -1,0 +1,109 @@
+export const meta = {
+  title: "Framework-agnostic charts + React→Angular parity",
+  goal: "Ship reusable Sparkline / BarChart / DonutChart in @paul-portfolio/{css,react,angular} from one pure-geometry core, and close the easiest React→Angular component gaps.",
+};
+
+<Section id="why" title="Why & approach">
+
+paul-explore draws its charts with `recharts` (React-only) and `@unovis` — see
+`src/app/work-portfolio/demos/chart-library.tsx` (17-type gallery),
+`src/components/operator/{FleetHealthChart,AlertTrendChart,InventoryComparisonChart}.tsx`,
+and `src/app/vitals/VitalsChart.tsx`. Neither library runs in Angular, so
+lifting them verbatim can never satisfy "reusable everywhere".
+
+Instead I compute chart geometry (line/area paths, bar rects, donut arcs) in a
+**pure, dependency-free TS core** and render plain SVG. React and Angular render
+identical SVG from the same math; the published packages gain **no** charting
+runtime dependency; the theme comes from existing tokens. This is the only
+approach that gives true React/Angular parity for a framework-agnostic system.
+
+</Section>
+
+<Section id="architecture" title="Architecture">
+  <Mermaid>{`flowchart LR
+    G["chartGeometry.ts (pure)\\nlinePath / areaPath / barRects / donutSegments"] --> R["React: Sparkline / BarChart / DonutChart"]
+    G --> A["Angular: PaulSparkline / PaulBarChart / PaulDonutChart"]
+    C["css: chart.css (token palette)"] --> R
+    C --> A`}</Mermaid>
+
+The geometry core is small pure math, duplicated identically in the `react` and
+`angular` packages (no shared JS-logic package exists, and adding one would drag
+in build-order/publish complexity for ~80 lines). Both copies are unit-tested so
+they cannot drift silently.
+
+</Section>
+
+<Section id="geometry" title="Geometry core — the reusable delta">
+
+| Function | Returns | Backs |
+|---|---|---|
+| `linePath(values, box)` | SVG `M..L..` path | Sparkline line, Vitals trend |
+| `areaPath(values, box)` | closed path to baseline | Sparkline area, AlertTrend |
+| `barRects(values, box, opts)` | `{x,y,width,height,value}[]` | BarChart vertical |
+| `barRectsHorizontal(values, box, opts)` | same, rotated | InventoryComparison |
+| `donutSegments(values, opts)` | `{path,percent,startAngle,endAngle,index}[]` | FleetHealth, Revenue mix |
+| `polarToCartesian` / `arcPath` | arc helpers | donut internals |
+
+Edge cases pinned by tests: empty data, single point, all-zero series, one non-zero slice.
+
+</Section>
+
+<Section id="components" title="Components">
+
+| Component | Package | Reuses | API |
+|---|---|---|---|
+| `Sparkline` | react `src/Sparkline.tsx` | `cx`, geometry | `data:number[]`, `variant:'line'\|'area'`, `label`, `width`, `height` |
+| `BarChart` | react `src/BarChart.tsx` | `cx`, geometry | `data:number[]`, `labels?`, `orientation`, `colors?`, `label` |
+| `DonutChart` | react `src/DonutChart.tsx` | `cx`, geometry | `data:{label,value,color?}[]`, `label`, `legend?` |
+| `PaulSparklineComponent` | angular `src/sparkline.ts` | geometry | signal inputs mirroring React |
+| `PaulBarChartComponent` | angular `src/bar-chart.ts` | geometry | signal inputs mirroring React |
+| `PaulDonutChartComponent` | angular `src/donut-chart.ts` | geometry | signal inputs mirroring React |
+| `chart.css` | css `src/components/chart.css` | tokens | `.paul-chart*`, `--paul-chart-1..6` palette |
+
+All charts render `role="img"` with an aria-label summary of the data (matching
+paul-explore's a11y pattern), color never the only signal (legend text + values).
+
+Parity batch (existing React → new Angular, CSS already shipped): `PaulDividerComponent`,
+`PaulSpinnerComponent`, `PaulIconButtonComponent`, `PaulSwitchComponent`.
+
+</Section>
+
+<Section id="tests" title="Tests, RED first">
+  <Tests>
+    <Test name="linePath maps N values to N points across the box">geometry</Test>
+    <Test name="areaPath closes to the baseline">geometry</Test>
+    <Test name="barRects: heights proportional to values, sum of gaps fits box">geometry</Test>
+    <Test name="donutSegments: percents sum to 100, angles are contiguous">geometry</Test>
+    <Test name="geometry handles empty / single / all-zero data without NaN">geometry</Test>
+    <Test name="Sparkline renders an svg path and role=img with label">react</Test>
+    <Test name="BarChart renders one rect per value, horizontal + vertical">react</Test>
+    <Test name="DonutChart renders one arc + legend row per slice">react</Test>
+    <Test name="charts have no axe violations">react a11y</Test>
+    <Test name="Divider/Spinner/IconButton/Switch Angular hosts bind the right classes">angular (geometry+shape)</Test>
+  </Tests>
+</Section>
+
+<Section id="deferred" title="Explicitly deferred (disclosed follow-ups)">
+
+- Specialty chart types from the 17-gallery: funnel, radar, scatter, cohort
+  heatmap, pareto, radial gauge, word cloud, stacked/multi-series line. The three
+  shipped primitives cover the operator + vitals charts and most of the gallery.
+- Multi-series line (DAU-vs-MAU) — Sparkline ships single-series first.
+- Remaining React→Angular ports: Textarea, Select, FilterBar, InfoTip, Ticker,
+  TiltCard, GradientBackground, Spotlight (motion/stateful — larger).
+- Angular TestBed render tests: Angular package has no TestBed infra today; the
+  shared geometry is unit-tested and React is the tested reference for the
+  rendered contract. Full Angular DOM tests are a follow-up.
+
+</Section>
+
+<Section id="open-questions" title="Open questions">
+  <Question id="q0" text="Duplicate geometry per package vs new shared package?"
+    options={["Duplicate + test both", "New @paul-portfolio/chart-core package"]}
+    defaultNote="Proceeding with duplicate-and-test: ~80 lines, avoids a new build/publish target." />
+  <Question id="q1" text="Bundle recharts instead of hand-rolled SVG?"
+    options={["Pure SVG (framework-agnostic)", "recharts (React-only)"]}
+    defaultNote="Proceeding with pure SVG: recharts can't serve Angular." />
+</Section>
+
+<Verdict kind="plan" />

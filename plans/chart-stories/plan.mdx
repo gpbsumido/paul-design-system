@@ -1,0 +1,111 @@
+export const meta = {
+  title: "Storybook and Chromatic coverage for the charts and the ported components",
+  goal: "Every chart form has a story with controls, the palette has a documented page, and Chromatic watches all of it in light and dark.",
+};
+
+PR C of a 3-PR stack, on top of `ps/specialty-charts` (#44). The last of the
+follow-ups disclosed on #42.
+
+<Section id="why" title="What's missing">
+
+`packages/storybook` covers 23 components. After PRs A and B the system has
+eleven chart forms and eight more Angular twins, and the chart half of that has
+almost no visual surface: `Sparkline`, `BarChart` and `DonutChart` have one
+story file each, and nothing covers the eight new forms at all.
+
+Two smaller problems this fixes on the way:
+
+- `DonutChart.stories.tsx` hardcodes hex colours (`#22c55e`, `#f59e0b`, `#ef4444`) in its default args. That was always a bad example to set — it bypasses the token palette — and after the recolour in PR B it also renders the *old* colours next to components using the new ones.
+- Nothing screenshots dark mode for the charts. PR B validated the dark palette numerically; nothing has looked at it.
+
+Storybook here is React-only (`@storybook/react-vite`), so these stories cover
+the React components. The Angular twins are pinned by their TestBed specs and by
+the DOM-parity assertions in each spec, not by Chromatic.
+
+</Section>
+
+<Section id="stories" title="Stories">
+
+| File | Change | Detail |
+|---|---|---|
+| `stories/components/FunnelChart.stories.tsx` | new | Default, drop-off hidden, empty. Stage colours come from the sequential ramp, so no per-datum colour args. |
+| `stories/components/RadarChart.stories.tsx` | new | One series, two series, shared `max`, empty. |
+| `stories/components/ScatterPlot.stories.tsx` | new | One series, two series, explicit `domain` (the small-multiples case), empty. |
+| `stories/components/HeatmapChart.stories.tsx` | new | Cohort grid, values off, empty. Includes the scale legend. |
+| `stories/components/ParetoChart.stories.tsx` | new | Default, custom threshold, empty. The story text says why there's one axis. |
+| `stories/components/GaugeChart.stories.tsx` | new | Default, each status tone, over-max (the clamp), custom range. |
+| `stories/components/WordCloud.stories.tsx` | new | Default, `limit` applied, empty. The story description carries the encoding caveat — a reader who meets this in Storybook should meet the objection too. |
+| `stories/components/StackedLineChart.stories.tsx` | new | Lines, stacked, one series (no legend), empty. |
+| `stories/components/Sparkline.stories.tsx` | modified | Add a multi-series story. |
+| `stories/components/DonutChart.stories.tsx` | modified | Drop the hardcoded hexes; let the palette do its job. |
+| `stories/components/ChartGallery.stories.tsx` | new | All eleven forms in one grid. One Chromatic snapshot that catches a palette or layout regression across the whole set, and the thing to look at when reviewing. |
+
+</Section>
+
+<Section id="docs" title="Docs page">
+
+| File | Change | Detail |
+|---|---|---|
+| `stories/tokens/ChartPalette.mdx` | new | The six categorical slots and the five sequential steps, rendered as swatches in both modes, with the rule that makes them what they are: slot order is the contract, adjacent slots are what a reader must tell apart, and the numbers behind it (worst adjacent ΔE, light and dark). Also states what to do past six series — fold into "Other" — and why status colours aren't series colours. |
+
+Sits alongside the existing `Colors.mdx`, `Spacing.mdx`, `Typography.mdx`.
+
+</Section>
+
+<Section id="wireframes" title="The gallery story">
+  <Screens>
+    <Screen name="Gallery, light">
+      <Wireframe url="Charts/Gallery">
+        <WfRow label="row 1"><WfBox h="4rem" /></WfRow>
+        <WfRow>Sparkline · BarChart · DonutChart · Funnel</WfRow>
+        <WfRow label="row 2"><WfBox h="4rem" /></WfRow>
+        <WfRow>Radar · Scatter · Heatmap · Pareto</WfRow>
+        <WfRow label="row 3"><WfBox h="4rem" /></WfRow>
+        <WfRow>Gauge · WordCloud · StackedLine</WfRow>
+      </Wireframe>
+    </Screen>
+    <Screen name="Gallery, dark">
+      <Wireframe url="Charts/Gallery · data-theme=dark">
+        <WfRow>Same grid, dark palette steps — the first rendered look at them</WfRow>
+      </Wireframe>
+    </Screen>
+    <Screen name="Empty">
+      <Wireframe url="every chart · data=[]">
+        <WfRow label="each"><WfLine w="8rem" /> “No data”</WfRow>
+      </Wireframe>
+    </Screen>
+  </Screens>
+</Section>
+
+<Section id="tests" title="Tests, RED first">
+
+Storybook has no unit tests here; the checks are the build and the a11y addon.
+
+  <Tests>
+    <Test status="green" name="storybook builds with no errors">the only real gate — a broken story fails the build</Test>
+    <Test status="green" name="every new story renders without a missing-import or bad-arg error">caught by the build log</Test>
+    <Test status="green" name="no story hardcodes a chart colour">grep the stories for hex literals; the palette is the source of truth</Test>
+    <Test status="green" name="the workspace suites still pass after the story changes">nothing here should touch component behaviour</Test>
+  </Tests>
+
+</Section>
+
+<Section id="risks" title="Risks">
+
+| Risk | Mitigation |
+|---|---|
+| Chromatic will flag every existing chart snapshot as changed | Expected — that's the PR B recolour showing up. Called out in the PR body so it isn't mistaken for a regression. |
+| The gallery story is a single snapshot that changes whenever any chart changes | That's the point; the per-chart stories localise the diff. |
+| Storybook 8 with React 19 in this repo | Already the case for 23 components; nothing new here. |
+
+</Section>
+
+<Section id="deferred" title="Explicitly deferred">
+
+- **Angular stories.** Storybook here is React-only; adding `@storybook/angular` means a second builder and a second build in CI. Its own change.
+- **Interaction tests** (`play` functions) for the charts — they're static SVG, so there's nothing to drive until the hover layer lands.
+- **The hover/tooltip layer and table-view fallbacks**, still deferred from PR B.
+
+</Section>
+
+<Verdict kind="plan" />

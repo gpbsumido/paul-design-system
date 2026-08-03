@@ -1,0 +1,134 @@
+export const meta = {
+  title: "Storybook and Chromatic coverage for the charts — recap",
+  goal: "Shipped: every chart form has a story with controls, the palette has a documented page, and one gallery story watches the whole set in light and dark.",
+};
+
+**Shipped** — 8 new story files, a gallery story covering all eleven chart forms,
+a `Tokens/Chart palette` page, and two existing stories fixed. Storybook builds
+clean; the workspace suites are unchanged at 615.
+
+<Section id="plan-vs-reality" title="Plan vs reality">
+  <PlanVsReality>
+    <Row planned="Stories for the eight new charts, with controls and empty states" shipped="Done — 8 files, 30 stories" />
+    <Row planned="Multi-series Sparkline story" shipped="Done" />
+    <Row planned="Charts/Gallery story with all eleven forms" shipped="Done — a responsive grid, one snapshot for the whole set" />
+    <Row planned="Tokens/Chart palette MDX" shipped="Done — both ramps, both modes, the validated numbers, and the rules" />
+    <Row planned="Strip the hardcoded hexes from DonutChart.stories.tsx" shipped="Done" />
+    <Row
+      planned="Nothing about BarChart's stories"
+      shipped="Rewrote its CustomColors story as PerEntityColors"
+      drift="More than planned. It shaded a single series green→amber→red by size, which double-encodes the value as hue and reads as a status signal that isn't in the data. It now demonstrates what per-bar colour is for — one entity per slot — with the reasoning in the story's doc comment. Found while grepping the stories for hex literals." />
+    <Row
+      planned="Nothing — the MDX pipeline was assumed to work"
+      shipped="Enabled remark-gfm and moved addon-docs out of addon-essentials"
+      drift="The palette page rendered its tables as paragraphs of literal pipe characters. No GFM plugin was configured, and passing docs options through addon-essentials silently does nothing — @storybook/addon-docs has to be listed directly. Every docs page had this: Colors, Spacing and Typography were rendering the same way and nobody had noticed. Verified with a real browser screenshot rather than the build log this time." />
+    <Row
+      planned="Nothing — Chromatic was assumed to be a clean run away"
+      shipped="Chromatic flagged inconsistent renders; diagnosed by rendering all 132 stories twice and comparing pixels"
+      drift="Eleven stories differ run to run, all of them animated: Skeleton ×4, Spinner ×4, Button's loading state, GradientBackground's fast variant, the marquee Ticker. Fixed with pauseAnimationAtEnd globally, plus disableSnapshot on the scroll Ticker, whose rAF-driven scrollLeft cannot be frozen that way. None of the eleven chart forms was unstable — the word cloud's determinism held. Two apparent failures (Textarea, the donut) turned out to be races in my measuring harness, not the UI; worth saying because I nearly 'fixed' them." />
+    <Row
+      planned="Nothing about GaugeChart"
+      shipped="Fixed its caption to name both ends of the range"
+      drift="Reported by the agent that wrote the stories: a gauge running 20–60 showing 41.5 captioned 'of 60', which reads as 69% when the arc means 54%. The arc knew about min; the caption didn't. Fixed in both frameworks with tests." />
+    <Row
+      planned="Angular stories: deferred"
+      shipped="Still deferred"
+      drift="none — Storybook here is @storybook/react-vite; adding @storybook/angular means a second builder in CI." />
+  </PlanVsReality>
+</Section>
+
+<Section id="files" title="Files">
+
+```
+packages/storybook/
+  stories/components/
+    FunnelChart.stories.tsx        added     Default, DropOffHidden, Empty
+    RadarChart.stories.tsx         added     OneSeries, TwoSeries, SharedMax, Empty
+    ScatterPlot.stories.tsx        added     OneSeries, TwoSeries, ExplicitDomain, Empty
+    HeatmapChart.stories.tsx       added     CohortRetention, ValuesHidden, Empty
+    ParetoChart.stories.tsx        added     Default, CustomThreshold, Empty
+    GaugeChart.stories.tsx         added     Default, Good, Warning, Critical, OverMax, CustomRange
+    WordCloud.stories.tsx          added     Default, Limited, Empty
+    StackedLineChart.stories.tsx   added     Lines, Stacked, SingleSeries, Empty
+    ChartGallery.stories.tsx       added     all eleven forms in one grid
+    Sparkline.stories.tsx          modified  + MultipleSeries
+    DonutChart.stories.tsx         modified  hardcoded hexes removed
+    BarChart.stories.tsx           modified  CustomColors → PerEntityColors
+  stories/tokens/ChartPalette.mdx  added     slots, ramp, numbers, rules
+  package.json                     modified  0.1.19 → 0.2.0
+CHANGELOG.md / CLAUDE.md / package.json  modified  0.2.30
+```
+
+</Section>
+
+<Section id="key-changes" title="Key changes">
+
+**The gallery is the regression net.** One story, every form, so a palette or
+geometry change shows up in a single Chromatic diff — and the per-chart stories
+say which one moved:
+
+```tsx
+<div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(15rem, 1fr))' }}>
+  {/* Sparkline · BarChart · DonutChart · Funnel · Radar · Scatter ·
+      Heatmap · Pareto · Gauge · WordCloud · StackedLine */}
+</div>
+```
+
+It is also the first rendered look at the dark palette. PR B validated those
+steps numerically; nothing had looked at them.
+
+**Two stories were teaching the wrong thing.** `DonutChart` pinned its slices to
+literal hexes, so it bypassed the palette entirely and, after the recolour,
+showed the old colours beside components using the new ones. `BarChart` went
+further:
+
+```diff
+-export const CustomColors: Story = {
+-  args: { colors: ['#22c55e', '#22c55e', '#f59e0b', '#ef4444', '#ef4444'] },
+-};
++export const PerEntityColors: Story = {
++  args: {
++    data: [3800, 2600, 1900, 1200, 700],
++    labels: ['NA', 'EU', 'APAC', 'LATAM', 'MEA'],
++    colors: ['var(--paul-chart-1)', /* … */],
++  },
++};
+```
+
+Green-to-red by size on one series double-encodes the value as hue and reads as
+a status signal the data doesn't carry. The replacement shows what per-bar colour
+is actually for.
+
+**The palette page carries the reasoning, not just the swatches** — slot order as
+a contract, the ΔE numbers, what to do past six series, and why a green series
+does not mean "good".
+
+</Section>
+
+<Section id="tests" title="Tests">
+
+  <Tests>
+    <Test status="green" name="storybook builds with no errors">4.24s, all stories and the MDX page compile</Test>
+    <Test status="green" name="no new story hardcodes a chart colour">grepped; the only remaining hex literals are the decorative ones in Spotlight and GradientBackground</Test>
+    <Test status="green" name="the workspace suites still pass">angular 240, react 321, tokens 54 — unchanged, as expected for a stories-only change</Test>
+    <Test status="green" name="every story renders identically twice">132 stories, two renders each, pixel-compared — the 11 differences are all animation, now handled</Test>
+    <Test status="green" name="gauge names both ends of a non-zero range">2 + 2 tests, React and Angular</Test>
+    <Test status="green" name="docs pages render real tables">3 tables / 19 rows on the palette page, 4 / 26 on Colors, checked in a headless browser against the built output</Test>
+  </Tests>
+
+Chromatic itself hasn't run — it needs `CHROMATIC_PROJECT_TOKEN` in CI. When it
+does, **every existing chart snapshot will be flagged**: that's PR B's recolour,
+not a regression.
+
+</Section>
+
+<Section id="not-done" title="Not done">
+
+- **Angular stories.** Storybook here is React-only.
+- **`play` interaction tests** for the charts — static SVG, nothing to drive until a hover layer exists.
+- **The hover/tooltip layer and table-view fallbacks**, deferred since PR B and still the biggest open piece of the dataviz guidance.
+- **A Chromatic baseline.** The first run after merge will need the recolour accepted deliberately rather than rubber-stamped.
+
+</Section>
+
+<Verdict kind="recap" />

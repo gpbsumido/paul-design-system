@@ -37,7 +37,9 @@ jobs:
         run: |
           for pkg in tokens css react angular; do
             (
-              cd packages/$pkg
+              # ng-packagr writes the publishable manifest into dist/, so the
+              # Angular package is published from there, not from its source dir.
+              if [ "$pkg" = "angular" ]; then cd packages/angular/dist; else cd packages/$pkg; fi
               PACKAGE_NAME=$(node -p "require('./package.json').name")
               PACKAGE_VERSION=$(node -p "require('./package.json').version")
               if npm view "${PACKAGE_NAME}@${PACKAGE_VERSION}" version 2>/dev/null; then

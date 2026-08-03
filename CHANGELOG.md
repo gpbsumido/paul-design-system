@@ -1,5 +1,67 @@
 # Changelog
 
+## [0.2.30] - 2026-08-03
+
+### Added
+
+- Storybook coverage for the eight specialty chart forms — `FunnelChart`, `RadarChart`, `ScatterPlot`, `HeatmapChart`, `ParetoChart`, `GaugeChart`, `WordCloud`, `StackedLineChart` — each with controls and its empty state, plus a multi-series `Sparkline` story.
+- `Charts/Gallery`, a single story putting all eleven chart forms on one page. It is the story to look at after a palette or geometry change: one Chromatic snapshot that catches a regression across the whole set, where the per-chart stories localise it. Switching the theme toolbar to dark is also the first rendered look at the dark palette steps.
+- `Tokens/Chart palette`, documenting the six categorical slots and the five sequential steps in both modes, the validated numbers behind them, and the rules that keep them honest: slot order is the contract, past six series fold into "Other", colour follows the entity rather than its rank, and status colours are not series colours.
+
+### Fixed
+
+- `GaugeChart` / `PaulGaugeChart` captioned a gauge with `of {max}`, ignoring `min`. A dial running 20–60 showing 41.5 read "of 60", inviting the reader to compute 69% where the arc means 54%. It now names both ends of the range whenever `min` isn't zero, in the caption and in the accessible name.
+- Chromatic reported inconsistent renders between runs. Rendering all 132 stories twice and comparing pixels found the cause: animated components (Skeleton, Spinner, Button's loading state, GradientBackground, the marquee Ticker) are mid-animation when the screenshot is taken. CSS animations are now frozen at their end state for Chromatic; the scroll Ticker, whose position comes from a requestAnimationFrame loop that cannot be frozen that way, is excluded from snapshots and stays covered by its unit tests. No chart story was unstable.
+- Markdown tables in every Storybook docs page rendered as a paragraph of literal pipe characters. The MDX pipeline had no GFM plugin, and the docs options only reach `@storybook/addon-docs` when it is configured directly rather than through `addon-essentials`. This had been broken for the Colors, Spacing and Typography pages the whole time.
+- `DonutChart`'s stories hardcoded hex colours in their default args, which bypassed the token palette — a bad example to set, and after the 0.2.29 recolour it also rendered the old colours beside components using the new ones.
+- Documents the new `cyan` ramp on the Colors page.
+- Bumps `@paul-portfolio/storybook` 0.1.19 → 0.2.0.
+
+## [0.2.29] - 2026-08-03
+
+### Fixed
+
+- The chart palette failed its colour checks, and had since it shipped. `--paul-chart-1` (blue) and `--paul-chart-2` (purple) — the first two series of every multi-series chart — were ΔE **1.3** apart under deuteranopia and **12.0** for normal vision, below the hard floor of 15; `--paul-chart-6` sat outside the lightness band and below the chroma floor, reading gray. New slot order, drawn from the token ramps plus a new `cyan` ramp (slot 5 needed a hue the system didn't have), passes all six checks. Light and dark are separately chosen steps rather than a flip, because the dark lightness band is tighter. **This recolours the charts shipped in 0.2.27.** The checks now live in `packages/tokens/src/__tests__/chart-palette.test.ts`, so the next colour edit can't quietly regress them.
+
+### Added
+
+- Eight specialty chart forms, React and Angular, from one shared geometry core: `FunnelChart`, `RadarChart`, `ScatterPlot`, `HeatmapChart`, `ParetoChart`, `GaugeChart`, `WordCloud`, `StackedLineChart` (and their `Paul*` twins). Same contract as the first three: pure SVG, zero JS at runtime, `role="img"` with a data summary as the accessible name.
+- `Sparkline` gains `series?: number[][]` — several trends on one shared y-domain. Independently scaled sparklines look comparable and aren't. `data` is unchanged.
+- `--paul-chart-seq-1..5`, a single-hue sequential ramp for the forms that encode magnitude rather than identity (heatmap cells, funnel stages). A categorical palette on ordered data double-encodes the value as hue.
+- Two encoding decisions worth knowing, both documented in the source. `ParetoChart` has **one** y-axis: bars are percent-of-total and the cumulative line is cumulative percent, on the same 0–100 scale. The textbook two-axis version invents a correlation, because the alignment between the scales is arbitrary. `WordCloud` ships with its own objection in its doc comment: glyph area is not a comparable encoding and a long word reads as bigger at equal weight — `BarChart` shows the same data honestly.
+- `wordCloudLayout` is deterministic — spiral packing, no RNG — so the server and the client can't disagree and visual regression can settle.
+- axe coverage extended to all eight new charts in both frameworks, and the Angular consumer type-check now binds every one of them.
+- Bumps `@paul-portfolio/tokens` 0.1.10 → 0.2.0, `@paul-portfolio/css` 0.4.7 → 0.5.0, `@paul-portfolio/react` 0.4.6 → 0.5.0, `@paul-portfolio/angular` 0.2.0 → 0.3.0.
+
+## [0.2.28] - 2026-08-03
+
+### Fixed
+
+- `@paul-portfolio/angular` was built with plain `tsc`, so what shipped to npm was raw decorators: no `ɵcmp`/`ɵfac` in the JavaScript, no `ɵɵComponentDeclaration` in the typings. Every component uses signal `input()`, which needs the Angular compiler, so a consumer binding an input got nothing back. The package now builds with `ng-packagr` in partial compilation mode. Two consequences worth knowing: the peer range moves to `@angular/core >=21` (that's the truth about partial-compiled output), and publishing now happens from `packages/angular/dist`, where `ng-packagr` writes the real manifest.
+
+### Added
+
+- Angular render tests. The package had one test file — the pure-TS geometry suite on `node` — and had never rendered a template in CI. `vitest` now runs two projects: the geometry suite stays on `node`, and a new `jsdom` project drives components through `TestBed`, zoneless, with the Angular compiler plugin doing the AOT transform. A shared `renderComponent` helper owns fixture setup.
+- The last eight React → Angular ports, each with a render test mirroring its React counterpart: `PaulTextarea`, `PaulSelect`, `PaulFilterBar`, `PaulInfoTip`, `PaulTicker`, `PaulTiltCard`, `PaulGradientBackground`, `PaulSpotlight`. None adds a stylesheet — all eight reuse CSS that already ships in `@paul-portfolio/css`.
+- `PaulReducedMotion`, the Angular twin of the React `usePrefersReducedMotion` hook, so `PaulTicker`, `PaulTiltCard`, and `PaulSpotlight` share one `matchMedia` listener instead of each attaching its own.
+- Two disclosed API differences from React, both forced by the Angular side: `PaulInfoTip` takes string `content` (React accepts rich nodes) because `PaulTooltip` takes a string, and `PaulTicker` takes its content as an `<ng-template>` rather than projection, because the seamless loop renders the same content twice.
+- axe-core a11y tests for the Angular package (15 audits over the eight ports and the three chart components), held to the same bar as the React suite.
+- `npm run verify:consumer` in `packages/angular` — builds the package, then type-checks a stand-in consumer against `dist/` with `strictTemplates` on. This is the check that would have caught the packaging bug: nothing else in the repo consumed the built artifact.
+- Bumps `@paul-portfolio/angular` 0.1.22 → 0.2.0.
+
+## [0.2.27] - 2026-08-02
+
+### Added
+
+- Framework-agnostic chart primitives, so the charts I keep re-drawing in paul-explore (operator dashboard, web-vitals sparklines, the work-portfolio gallery) can be reused everywhere instead of living as one-off recharts/unovis components. They compute all their geometry in a pure, dependency-free `chartGeometry` core and render plain SVG, so React and Angular draw identical output and neither published package gains a charting runtime dependency:
+  - `Sparkline` — a compact, axis-free trend line, `line` or `area` variant. Backs the vitals sparklines and KPI trend cards.
+  - `BarChart` — a categorical bar chart, vertical or horizontal, with an optional per-bar palette. Backs retention/session/region bars and the operator inventory comparison.
+  - `DonutChart` — a ring chart with an optional legend. Backs fleet-health and revenue-mix breakdowns.
+  - All three render `role="img"` with a data summary as the accessible name (colour is never the only signal), and ship with unit tests for the geometry, Testing Library tests, and axe a11y tests. New CSS lives in `@paul-portfolio/css` as `.paul-chart*` with a token-driven `--paul-chart-1..6` palette a consumer can override.
+- Started closing the React → Angular parity gap: `PaulSparkline`, `PaulBarChart`, and `PaulDonutChart`, plus Angular twins of four existing React components whose CSS already shipped — `PaulDivider`, `PaulSpinner`, `PaulIconButton`, `PaulSwitch`. Added a `vitest` config to the Angular package and unit tests for its copy of `chartGeometry`, which guard the two copies against drifting.
+- Deferred (follow-ups): the specialty chart types from the 17-type gallery (funnel, radar, scatter, cohort heatmap, pareto, radial gauge, word cloud, stacked/multi-series line); multi-series line for `Sparkline`; the remaining React → Angular ports (Textarea, Select, FilterBar, InfoTip, Ticker, TiltCard, GradientBackground, Spotlight); and Angular TestBed render tests (the package has no TestBed infra yet — the shared geometry is unit-tested and React is the tested reference for the rendered contract).
+- Bumps `@paul-portfolio/css` 0.4.6 → 0.4.7, `@paul-portfolio/react` 0.4.5 → 0.4.6, and `@paul-portfolio/angular` 0.1.21 → 0.1.22.
+
 ## [0.2.26] - 2026-07-26
 
 ### Added
