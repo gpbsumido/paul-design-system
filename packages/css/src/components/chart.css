@@ -1,0 +1,123 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * Chart – shared styling for the pure-SVG chart primitives
+   * (Sparkline, BarChart, DonutChart). The geometry is computed in JS;
+   * this file only themes the result from tokens.
+   *
+   * The palette is exposed as --paul-chart-1..6 so a consumer can
+   * re-skin every series by overriding these on an ancestor.
+   * ---------------------------------------------------------------- */
+  .paul-chart {
+    --paul-chart-1: var(--paul-color-primary-500);
+    --paul-chart-2: var(--paul-color-secondary-500);
+    --paul-chart-3: var(--paul-color-success-500);
+    --paul-chart-4: var(--paul-color-warning-500);
+    --paul-chart-5: var(--paul-color-error-500);
+    --paul-chart-6: var(--paul-color-primary-300);
+
+    display: block;
+    color: var(--paul-color-primary-500);
+  }
+
+  .paul-chart__svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  /* ---- Sparkline ---- */
+  .paul-chart--sparkline {
+    width: 100%;
+    height: 2.5rem;
+  }
+
+  .paul-chart__line {
+    fill: none;
+    stroke: var(--paul-chart-1);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .paul-chart__area {
+    fill: var(--paul-chart-1);
+    fill-opacity: 0.15;
+    stroke: none;
+  }
+
+  /* ---- Bar ---- */
+  .paul-chart--bar {
+    width: 100%;
+    height: 100%;
+  }
+
+  .paul-chart__bar {
+    fill: var(--paul-chart-1);
+  }
+
+  /* ---- Donut ---- */
+  .paul-chart--donut {
+    display: flex;
+    align-items: center;
+    gap: var(--paul-spacing-4);
+  }
+
+  .paul-chart__figure {
+    flex-shrink: 0;
+    width: 7.5rem;
+    height: 7.5rem;
+  }
+
+  .paul-chart__slice {
+    stroke: var(--paul-color-surface);
+    stroke-width: 1;
+  }
+
+  .paul-chart__legend {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--paul-spacing-1_5);
+    font-size: var(--paul-font-size-xs);
+  }
+
+  .paul-chart__legend-item {
+    display: flex;
+    align-items: center;
+    gap: var(--paul-spacing-2);
+  }
+
+  .paul-chart__swatch {
+    display: inline-block;
+    height: 0.625rem;
+    width: 0.625rem;
+    border-radius: var(--paul-radius-full);
+    flex-shrink: 0;
+  }
+
+  .paul-chart__legend-label {
+    color: var(--paul-color-muted);
+  }
+
+  .paul-chart__legend-value {
+    margin-left: auto;
+    padding-left: var(--paul-spacing-3);
+    font-weight: var(--paul-font-weight-medium);
+    font-variant-numeric: tabular-nums;
+    color: var(--paul-color-foreground);
+  }
+
+  /* ---- Empty state ---- */
+  .paul-chart__empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    min-height: 2rem;
+    font-size: var(--paul-font-size-xs);
+    color: var(--paul-color-muted);
+  }
+}
