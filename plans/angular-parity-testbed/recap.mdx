@@ -1,0 +1,245 @@
+export const meta = {
+  title: "Angular TestBed infra + the last 8 React→Angular ports — recap",
+  goal: "Shipped: every React component now has an Angular twin, the Angular package renders components in tests, and — unplanned — what it publishes is actually consumable.",
+};
+
+**Shipped** — `@paul-portfolio/angular` gained eight components (`PaulTextarea`,
+`PaulSelect`, `PaulFilterBar`, `PaulInfoTip`, `PaulTicker`, `PaulTiltCard`,
+`PaulGradientBackground`, `PaulSpotlight`), a jsdom TestBed project that renders
+them, and a real Angular build. 88 tests where there were 20.
+
+The big drift is at the top of the next section and it is not a small one: the
+harness prototype found that the published package was broken, so this PR fixes
+the build as well.
+
+<Section id="plan-vs-reality" title="Plan vs reality">
+  <PlanVsReality>
+    <Row
+      planned="Keep the plain-tsc build; add test infra beside it"
+      shipped="Replaced the build with ng-packagr in partial compilation mode; publishing moves to packages/angular/dist"
+      drift="The probe from the infra step failed in a way the plan didn't anticipate: the template rendered but setInput silently no-opped. Cause was the build, not the test setup — tsc emits no ɵcmp/ɵfac and no ɵɵComponentDeclaration, so every signal input() in the package was dead on arrival for consumers too. Fixing the harness without fixing the build would have shipped tests that pass against a package nobody can use. Raised it and got the call to fix it here." />
+    <Row
+      planned="Peer range stays @angular/core >=19"
+      shipped="@angular/core >=21"
+      drift="Partial-compiled output can only be consumed by the Angular version it was built with or later. Leaving >=19 in place would have been a false claim." />
+    <Row
+      planned="Plain esbuild transpiles the decorator; @analogjs/vite-plugin-angular only if JIT rejects it (q-decorators)"
+      shipped="Took the fallback: @analogjs/vite-plugin-angular, plus tsconfig.spec.json"
+      drift="Answered the plan's open question by hitting it. JIT compiles the decorator fine but never registers initializer-API inputs, so the fallback was needed regardless. The plugin resolves tsconfig.spec.json by name — without that file it silently skipped compilation and fell through to esbuild." />
+    <Row
+      planned="test-setup.ts carries the zoneless provider"
+      shipped="test-setup.ts initialises the environment; provideZonelessChangeDetection() lives in renderComponent"
+      drift="Providers belong to the testing module, which renderComponent configures per fixture. Same guarantee, one place." />
+    <Row
+      planned="tsconfig.json: no change (src/__tests__ already excluded)"
+      shipped="Split into tsconfig.json (everything), tsconfig.lib.json (build, excludes tests, sets compilationMode: partial), tsconfig.spec.json (tests)"
+      drift="The Angular compiler has to see the spec files to compile the components inside them; the build must not." />
+    <Row planned="PaulTextarea, PaulSelect, PaulFilterBar" shipped="Done, as described" />
+    <Row planned="PaulInfoTip with string content (q-infotip)" shipped="Done — string content, PaulTooltip untouched" />
+    <Row planned="PaulTicker: two modes, rAF scroll, hover/touch pause, aria-hidden clone with tabIndex -1, reduced-motion branch" shipped="All of it, but content comes in as an <ng-template>" drift="Projected content can only be placed once and the seamless loop needs it twice. React takes children; Angular takes a template. Documented on the component and in the changelog." />
+    <Row planned="PaulTiltCard, PaulSpotlight, PaulGradientBackground" shipped="Done, as described" />
+    <Row planned="PaulReducedMotion shared signal" shipped="Done — injectable, providedIn root, one matchMedia listener for all three consumers" />
+    <Row planned="Version bump to 0.2.0 (q-versions)" shipped="0.2.0, plus root 0.2.27 → 0.2.28 and a CHANGELOG entry" />
+    <Row
+      planned="Test: 'ticker: reduced motion renders one group and starts no rAF loop'"
+      shipped="Asserts one group and no .ticker__track; the rAF assertion was dropped"
+      drift="Angular's own zoneless scheduler calls requestAnimationFrame, so a spy can't tell whose frame it is. The track's absence is the structural proof the loop has nothing to drive. The comment in the spec says so." />
+    <Row
+      planned="Nothing about host elements"
+      shipped="Every port sets host: { style: 'display: contents' }"
+      drift="Angular adds a host element React doesn't have; without this it would break the CSS's layout assumptions (.filter-bar__row flex, .select__wrapper--horizontal)." />
+  </PlanVsReality>
+</Section>
+
+<Section id="files" title="Files">
+
+```
+packages/angular/
+  package.json                          modified  build → ng-packagr, peer >=21, 0.2.0, test deps
+  ng-package.json                       added     ng-packagr entry point + dest
+  tsconfig.json                         modified  drops outDir/rootDir, now includes tests
+  tsconfig.lib.json                     added     build config: excludes tests, compilationMode partial
+  tsconfig.spec.json                    added     test config — the plugin looks for it by this name
+  vitest.config.ts                      modified  one env → two projects (geometry/node, render/jsdom)
+  test-setup.ts                         added     @angular/compiler + TestBed environment + reset
+  src/
+    prefers-reduced-motion.ts           added     shared matchMedia signal
+    textarea.ts                         added     label/error/helper + live character count
+    select.ts                           added     projected <option>s, orientation modifier
+    filter-bar.ts                       added     labelled <section> landmark + row
+    info-tip.ts                         added     "i" trigger over PaulTooltip
+    ticker.ts                           added     two modes, rAF scroll, clone, reduced-motion branch
+    tilt-card.ts                        added     pointer tilt + glare custom properties
+    gradient-background.ts              added     colours → --paul-gradient-image, speed → duration
+    spotlight.ts                        added     cursor-tracking glow
+    index.ts                            modified  9 new exports
+    __tests__/
+      render.ts                         added     renderComponent + host helpers
+      harness.spec.ts                   added     proves the harness before anything depends on it
+      textarea.spec.ts                  added     10 tests
+      select.spec.ts                    added     9 tests
+      filter-bar.spec.ts                added     4 tests
+      info-tip.spec.ts                  added     4 tests
+      ticker.spec.ts                    added     7 tests
+      tilt-card.spec.ts                 added     5 tests
+      gradient-background.spec.ts       added     5 tests
+      spotlight.spec.ts                 added     4 tests
+      prefers-reduced-motion.spec.ts    added     4 tests + the stubReducedMotion helper
+.github/workflows/publish.yml           modified  publish the Angular package from dist/
+CHANGELOG.md                            modified  0.2.28 entry
+CLAUDE.md                               modified  24 components, build/test rules
+package.json                            modified  0.2.27 → 0.2.28
+plans/angular-parity-testbed/plan.mdx   added     the plan, test list flipped green
+```
+
+</Section>
+
+<Section id="key-changes" title="Key changes">
+
+**The bug, in one line of output.** Before the build fix, a JIT-compiled
+component reported no inputs at all — which is why `setInput` did nothing:
+
+```js
+// (X as any).ɵcmp, esbuild + JIT           // after ng-packagr, in dist/types
+{ hasDef: true, inputs: {} }                "label": { "alias": "label", "required": false, "isSignal": true }
+```
+
+**The build.**
+
+```diff
+-  "main": "./dist/index.js",
+-  "module": "./dist/index.js",
+-  "types": "./dist/index.d.ts",
+-  "exports": { ".": { "import": "./dist/index.js", "types": "./dist/index.d.ts" } },
+-  "files": ["dist/"],
+   "peerDependencies": {
+-    "@angular/core": ">=19.0.0"
++    "@angular/core": ">=21.0.0"
+   },
+   "scripts": {
+-    "build": "npx tsc",
++    "build": "ng-packagr -p ng-package.json -c tsconfig.lib.json",
+```
+
+ng-packagr writes the entry fields into `dist/package.json` itself, so they come
+out of the source manifest and publishing follows:
+
+```diff
+-              cd packages/$pkg
++              # ng-packagr writes the publishable manifest into dist/, so the
++              # Angular package is published from there, not from its source dir.
++              if [ "$pkg" = "angular" ]; then cd packages/angular/dist; else cd packages/$pkg; fi
+```
+
+Partial mode is not the default here and full mode is unpublishable — ng-packagr
+injects a `prepublishOnly` that hard-fails — so `tsconfig.lib.json` states it:
+
+```json
+"angularCompilerOptions": { "compilationMode": "partial" }
+```
+
+**Two test projects, not one environment.** The geometry suite must not quietly
+grow a DOM:
+
+```ts
+projects: [
+  { test: { name: 'geometry', environment: 'node',  include: ['src/__tests__/**/*.test.ts'] } },
+  { plugins: [angular()],
+    test: { name: 'render', environment: 'jsdom', setupFiles: ['./test-setup.ts'],
+            include: ['src/__tests__/**/*.spec.ts'] } },
+]
+```
+
+**The Ticker's content difference.** React duplicates `children`; Angular can't
+place projected content twice, so the loop renders a template twice:
+
+```html
+<div class="ticker__track">
+  <div class="ticker__group"><ng-container [ngTemplateOutlet]="body()" /></div>
+  <div #clone aria-hidden="true" class="ticker__group">
+    <ng-container [ngTemplateOutlet]="body()" />
+  </div>
+</div>
+```
+
+The clone stays clickable but never tabbable — same trick as React, run from
+`afterNextRender`:
+
+```ts
+private dropCloneFromTabOrder(): void {
+  const focusables = this.clone()?.nativeElement.querySelectorAll<HTMLElement>(
+    'a[href], button, input, select, textarea, [tabindex]',
+  );
+  focusables?.forEach((el) => { el.tabIndex = -1; });
+}
+```
+
+**The character count.** React branches on controlled vs uncontrolled; the
+Angular twin seeds from the `value` input and lets typing win:
+
+```ts
+private readonly typed = signal<string | null>(null);
+readonly count = computed(() => (this.typed() ?? this.value()).length);
+```
+
+</Section>
+
+<Section id="states" title="States shipped">
+
+| State | Covered? | Test |
+|---|---|---|
+| Textarea with label / helper / error | yes | `textarea.spec.ts` — "associates the label", "marks the field invalid", "shows helper text" |
+| Textarea hidden label | yes | "hides the label visually but keeps it in the accessibility tree" |
+| Textarea live count | yes | "shows and updates a live character count" |
+| Textarea degenerate (no label/helper/count) | yes | "renders no label, helper or count when given nothing" |
+| Select horizontal (FilterBar case) | yes | `select.spec.ts` — "horizontal orientation applies the wrapper modifier" |
+| FilterBar empty row | yes | `filter-bar.spec.ts` — "renders an empty row when nothing is projected" |
+| InfoTip hidden → revealed | yes | `info-tip.spec.ts` — "reveals the tooltip content on hover" |
+| Ticker scroll / marquee / reduced motion | yes | `ticker.spec.ts` — three separate tests |
+| Ticker paused | yes | "pauses on hover and resumes on leave" |
+| TiltCard tilted / reset / flat | yes | `tilt-card.spec.ts` — "tilts toward the pointer and resets on leave", "renders flat … under reduced motion" |
+| Spotlight tracking / pinned | yes | `spotlight.spec.ts` — "tracks the pointer position", "pins the glow centred and stops tracking" |
+| Gradient default (no colours) | yes | `gradient-background.spec.ts` — "leaves the gradient image to CSS when no colors are given" |
+
+</Section>
+
+<Section id="tests" title="Tests">
+
+`npm test` across the workspace: angular **88** (was 20), react **184**, tokens
+**4** — all green. The Angular suite runs as two projects; the 20 geometry tests
+still run on `node`.
+
+  <Tests>
+    <Test status="green" name="render harness mounts, binds inputs, re-renders">3 tests — the prototype that found the build bug</Test>
+    <Test status="green" name="textarea: label, error, helper, hideLabel, required, count, describedBy, emit, empty">10 tests</Test>
+    <Test status="green" name="select: label + projected options, classes, orientation, error, helper, disabled, emit, aria-label">9 tests</Test>
+    <Test status="green" name="filter-bar: section landmark, row, projection, empty">4 tests</Test>
+    <Test status="green" name="info-tip: trigger role/name/tabindex, custom label, reveal, side">4 tests</Test>
+    <Test status="green" name="ticker: labelled section, clone, tab order, marquee, edge, reduced motion, pause">7 tests</Test>
+    <Test status="green" name="tilt-card: inner layer, glare on/off, pointer maths, flat under reduced motion">5 tests</Test>
+    <Test status="green" name="gradient-background: content, gradient image, default, animate toggle, speed">5 tests</Test>
+    <Test status="green" name="spotlight: glow + content, pointer tracking, size, reduced motion">4 tests</Test>
+    <Test status="green" name="prefers-reduced-motion: preference, change event, missing matchMedia">4 tests</Test>
+  </Tests>
+
+Nothing skipped. One planned assertion was replaced — the Ticker rAF spy, see
+Plan vs reality.
+
+</Section>
+
+<Section id="not-done" title="Not done">
+
+- **axe-core a11y tests for the Angular twins.** Called out as out of scope in
+  the plan and still is. React runs axe over every component; the DOM these
+  twins render is the DOM React already proves accessible.
+- **PR B** — specialty gallery charts + multi-series `Sparkline`.
+- **PR C** — Storybook stories and Chromatic coverage for A and B.
+- **A consumer smoke test.** The build fix is verified by the shipped artifacts
+  (`ɵɵngDeclareComponent` in the FESM, `isSignal: true` inputs in the typings)
+  and by the render tests going through the same compiler. Nobody has yet
+  installed the tarball into a real `ng` app — worth doing before the next
+  publish.
+
+</Section>
+
+<Verdict kind="recap" />
