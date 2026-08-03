@@ -1,0 +1,204 @@
+export const meta = {
+  title: "Specialty gallery charts, multi-series Sparkline, and a palette that passes",
+  goal: "Eight more chart forms — in React and Angular, from one geometry core — drawn on a categorical palette that actually survives colourblind separation.",
+};
+
+PR B of a 3-PR stack, on top of `ps/angular-parity-testbed` (#43). PR C adds the
+Storybook/Chromatic surface for everything in A and B.
+
+<Section id="palette" title="First: the palette is broken">
+
+Before writing a chart that leans on six series, I ran the shipped
+`--paul-chart-1..6` through the dataviz validator. It fails, and it fails for the
+charts already on `main`:
+
+| Check | Result |
+|---|---|
+| Lightness band | **FAIL** — `--paul-chart-6` (`#93c5fd`) at L 0.809, outside 0.43–0.77 |
+| Chroma floor | **FAIL** — `#93c5fd` at C 0.096, reads gray |
+| CVD separation | **FAIL** — chart-1 `#3b82f6` ↔ chart-2 `#8b5cf6`, ΔE **1.3** (deutan) |
+| Normal-vision floor | **FAIL** — the same pair at ΔE **12.0**, below the hard floor of 15 |
+| Contrast vs surface | WARN — three slots below 3:1 |
+
+Slots 1 and 2 are the first two series of every multi-series chart in this PR. A
+deuteranopic reader cannot tell them apart, and neither, really, can anyone else.
+
+The fix, drawn from the token ramps and re-validated in both modes:
+
+| Slot | Light | Dark | Hue |
+|---|---|---|---|
+| 1 | `#2563eb` | `#3b82f6` | blue |
+| 2 | `#16a34a` | `#16a34a` | green |
+| 3 | `#7c3aed` | `#8b5cf6` | purple |
+| 4 | `#d97706` | `#d97706` | amber |
+| 5 | `#0891b2` | `#0891b2` | cyan — **new ramp in the tokens package** |
+| 6 | `#dc2626` | `#ef4444` | red |
+
+Both orders pass all six checks (`validate_palette.js`, `--mode light` and
+`--mode dark`). Dark is a separately chosen set of steps, not a flip — the dark
+band is tighter (L 0.48–0.67).
+
+| File | Change | Detail |
+|---|---|---|
+| `packages/tokens/src/colors.ts` | add `cyan` ramp | 50→950, matching the shape of the existing ramps. Slot 5 needs a hue the system doesn't have; without it the passing orders don't exist. |
+| `packages/css/src/components/chart.css` | rewrite the palette block | `--paul-chart-1..6` get the light values; a `[data-theme="dark"] .paul-chart` block carries the dark values, matching how `base.css` already handles dark. |
+| `packages/css/src/components/chart.css` | add `--paul-chart-seq-1..5` | One hue, light→dark, for the forms that encode magnitude rather than identity: the cohort heatmap and the funnel's stages. A categorical palette on ordered data is its own anti-pattern. |
+
+<Question id="q-recolor" text="This recolours the charts shipped in #42. Ship the recolour in this PR?"
+  options={["Yes — one visible change, done once", "Hold the recolour for its own PR"]}
+  defaultNote="Proceeding with the recolour here, per the call already made. The alternative is building eight new chart types on a palette I know fails." />
+
+</Section>
+
+<Section id="geometry" title="The geometry core">
+
+Every form below is a pure function from data to SVG coordinates, added to
+`packages/react/src/chartGeometry.ts` and mirrored verbatim into
+`packages/angular/src/chart-geometry.ts`, exactly as the existing core is. The
+unit tests in both packages are what stop the copies drifting.
+
+Reuses what's there: `inner()`, `round()`, `polarToCartesian()`, `arcPath()`,
+`linePoints()`. The new work is the layout maths, not the plumbing.
+
+| Function | Returns | Notes |
+|---|---|---|
+| `funnelStages(values, box, opts?)` | `{ path, percent, dropOff, index }[]` | Trapezoids narrowing stage to stage; `dropOff` is the loss from the previous stage, which is the number a funnel is actually read for. |
+| `radarAxes(count, box)` / `radarPolygon(values, box, max?)` | axis endpoints + ring radii / a closed point list | Shared centre and radius so the axes, the rings and each series polygon agree. |
+| `scatterPoints(points, box, domain?)` | `{ x, y, datum }[]` | Domain defaults to the data's extent, padded; explicit domain for small multiples that must share a scale. |
+| `heatmapCells(matrix, box, opts?)` | `{ x, y, width, height, value, intensity, row, col }[]` | `intensity` is 0..1 against the matrix max — the component maps it onto the sequential ramp, never onto categorical hues. |
+| `paretoLayout(values, box)` | `{ bars, cumulative, ticks }` | **One axis.** Bars are percent-of-total, the cumulative line is percent — both 0–100 on the same scale. The textbook Pareto uses two y-scales; that's the top entry in the anti-patterns list. |
+| `gaugeArc(value, opts)` | `{ track, fill, percent, angle }` | Two arcs over `arcPath`, a 270° sweep by default. |
+| `wordCloudLayout(terms, box, opts?)` | `{ text, weight, fontSize, x, y, rotate }[]` | Deterministic Archimedean-spiral packing with rectangle collision rejection. No RNG — the same input must produce the same picture, or SSR and the client disagree and Chromatic never settles. |
+| `stackedSeries(series, box)` / `multiLinePoints(series, box)` | stacked band paths / per-series point lists | Shared y-domain across series, computed once, so the lines are actually comparable. |
+
+</Section>
+
+<Section id="components" title="Components">
+
+Each ships in React and Angular with the same DOM, class names and ARIA — the
+pattern `DonutChart`/`PaulDonutChart` already sets. All render `role="img"` with
+a data summary as the accessible name, so colour is never the only signal.
+
+| React | Angular | CSS | The job it does |
+|---|---|---|---|
+| `FunnelChart.tsx` | `funnel-chart.ts` | `.paul-chart--funnel` | Stage-to-stage conversion, with drop-off labelled per stage. Ordinal ramp, not categorical. |
+| `RadarChart.tsx` | `radar-chart.ts` | `.paul-chart--radar` | Profile comparison across 3–8 axes; up to 3 series before it turns to mud. |
+| `ScatterPlot.tsx` | `scatter-plot.ts` | `.paul-chart--scatter` | Correlation between two measures. ≥8px marks, 2px surface ring on overlap. |
+| `HeatmapChart.tsx` | `heatmap-chart.ts` | `.paul-chart--heatmap` | Cohort retention grids. Sequential ramp + a scale legend; values direct-labelled when the grid is small enough to read. |
+| `ParetoChart.tsx` | `pareto-chart.ts` | `.paul-chart--pareto` | The 80/20 cut: bars + cumulative line on one 0–100% axis. |
+| `GaugeChart.tsx` | `gauge-chart.ts` | `.paul-chart--gauge` | One ratio against a limit, with the value as the hero number inside the arc. |
+| `WordCloud.tsx` | `word-cloud.ts` | `.paul-chart--word-cloud` | Term frequency, gallery piece. **Caveat documented on the component** — glyph area is not a comparable encoding and long words read as bigger at equal weight. `ScatterPlot`'s sibling in spirit it is not; it ships because the gallery calls for it. |
+| `StackedLineChart.tsx` | `stacked-line-chart.ts` | `.paul-chart--lines` | Multi-series line, or stacked bands for part-to-whole over time. Legend always; direct labels at ≤4 series. |
+| `Sparkline.tsx` (modified) | `sparkline.ts` (modified) | — | New `series?: number[][]` alongside `data`, sharing one y-domain. `data` keeps working untouched. |
+
+Legend rules follow the skill: ≥2 series always gets a legend, ≤4 also get direct
+labels, one series gets neither (the title names it).
+
+</Section>
+
+<Section id="architecture" title="How it fits">
+  <Mermaid>{`flowchart LR
+    TOK["tokens: + cyan ramp"] --> CSS["chart.css<br/>chart-1..6 light + dark<br/>chart-seq-1..5"]
+    GEO["chartGeometry.ts<br/>8 new pure functions"] --> RX["React: 8 components<br/>+ Sparkline series"]
+    GEO -.mirrored.-> NGEO["chart-geometry.ts"]
+    NGEO --> NG["Angular: 8 components<br/>+ PaulSparkline series"]
+    CSS --> RX
+    CSS --> NG
+    GEO --> GT["geometry unit tests ×2"]
+    RX --> RT["RTL + axe"]
+    NG --> NT["TestBed + axe"]`}</Mermaid>
+</Section>
+
+<Section id="wireframes" title="What each form renders">
+  <Screens>
+    <Screen name="Funnel">
+      <Wireframe url="FunnelChart · signup">
+        <WfRow label="Visit"><WfBox h="1.5rem" /></WfRow>
+        <WfRow label="Signup"><WfLine w="14rem" /> −38%</WfRow>
+        <WfRow label="Activate"><WfLine w="9rem" /> −25%</WfRow>
+        <WfRow label="Pay"><WfLine w="4rem" /> −52%</WfRow>
+      </Wireframe>
+    </Screen>
+    <Screen name="Pareto">
+      <Wireframe url="ParetoChart · defects (one 0–100% axis)">
+        <WfRow label="100%"><WfLine w="16rem" /></WfRow>
+        <WfRow label="bars"><WfBox h="3rem" /></WfRow>
+        <WfRow label="cum."><WfLine w="16rem" /> crosses 80% at item 3</WfRow>
+      </Wireframe>
+    </Screen>
+    <Screen name="Heatmap">
+      <Wireframe url="HeatmapChart · cohort retention">
+        <WfRow label="Jan"><WfPill on>100</WfPill> <WfPill on>62</WfPill> <WfPill>41</WfPill> <WfPill>33</WfPill></WfRow>
+        <WfRow label="Feb"><WfPill on>100</WfPill> <WfPill on>58</WfPill> <WfPill>39</WfPill></WfRow>
+        <WfRow label="scale"><WfLine w="8rem" /> 0 → max</WfRow>
+      </Wireframe>
+    </Screen>
+    <Screen name="Empty">
+      <Wireframe url="every chart, data=[]">
+        <WfRow label="figure"><WfBox h="3rem" /></WfRow>
+        <WfRow>“No data”, aria-hidden, same as the existing charts</WfRow>
+      </Wireframe>
+    </Screen>
+    <Screen name="Degenerate">
+      <Wireframe url="single point · all-equal · zero total">
+        <WfRow label="Sparkline"><WfLine w="12rem" /> flat line at mid-height</WfRow>
+        <WfRow label="Gauge"><WfLine w="6rem" /> 0% fill, track still drawn</WfRow>
+        <WfRow label="Pareto"><WfLine w="6rem" /> zero total → no bars, no NaN</WfRow>
+      </Wireframe>
+    </Screen>
+  </Screens>
+</Section>
+
+<Section id="tests" title="Tests, RED first">
+  <Tests>
+    <Test name="validator: the new palette passes all six checks, light and dark">a script in the repo, not a one-off — the palette can regress</Test>
+    <Test name="funnelStages: widths narrow monotonically and dropOff matches the previous stage">the number the chart exists to show</Test>
+    <Test name="radarPolygon: N values close into N points on the shared radius">geometry agreement with radarAxes</Test>
+    <Test name="scatterPoints: an explicit domain overrides the data extent">so small multiples can share a scale</Test>
+    <Test name="heatmapCells: intensity is 0..1 against the matrix max">the sequential mapping, not a categorical one</Test>
+    <Test name="paretoLayout: bars and cumulative share one 0–100 scale and cumulative ends at 100">the no-dual-axis rule, pinned</Test>
+    <Test name="gaugeArc: value below min and above max clamp, not overflow">degenerate input</Test>
+    <Test name="wordCloudLayout: same input renders identical positions twice">determinism, or SSR and Chromatic both break</Test>
+    <Test name="wordCloudLayout: no two placed rectangles overlap">the packing actually packs</Test>
+    <Test name="stackedSeries: series share one y-domain">otherwise the comparison is a lie</Test>
+    <Test name="every geometry function returns [] for empty input, no NaN">the whole degenerate row</Test>
+    <Test name="Angular and React geometry copies agree">both suites run the same cases</Test>
+    <Test name="React: each chart renders role=img with a data summary">8 tests</Test>
+    <Test name="React: legend present for ≥2 series, absent for one">the identity rule</Test>
+    <Test name="Angular: each chart matches its React DOM">8 TestBed tests</Test>
+    <Test name="axe: no violations for all 8, both frameworks">extends both a11y suites</Test>
+    <Test name="Sparkline: series renders one path per series over a shared domain, data still works">the additive change</Test>
+  </Tests>
+</Section>
+
+<Section id="risks" title="Risks">
+
+| Risk | Mitigation |
+|---|---|
+| The recolour is a visible change to charts already reviewed in #42 | It's the point of the change, and the validator output is the justification. Called out in the PR body and changelog, not buried. |
+| Word cloud packing is O(n²) against placed rectangles | Cap terms (default 50, documented), reject after a bounded spiral walk, and return what fits rather than looping forever. |
+| Eight forms × two frameworks is a lot of surface to keep identical | Geometry is shared and unit-tested in both packages; the components are thin. Same discipline as the first three charts. |
+| The dark palette is a second set of values to keep in sync | The validator script runs over both in CI-able form, so a bad edit fails a test rather than shipping. |
+| Scope creep into interaction (tooltips, crosshair) | Explicitly deferred below — these stay SSR-safe, zero-JS primitives, like the three that shipped. |
+
+</Section>
+
+<Section id="deferred" title="Explicitly deferred">
+
+- **Hover/tooltip layer.** The dataviz guidance wants a crosshair + tooltip on line/area and per-mark tooltips elsewhere. Every chart here is a zero-JS, SSR-safe SVG primitive, as the first three are; adding an interaction layer is a coherent change across all eleven charts, not a rider on this one.
+- **Table view fallback** for each chart, same reason.
+- **PR C** — Storybook stories and Chromatic coverage for A and B.
+- **Texture fills** for the CVD/print/forced-colors case.
+
+</Section>
+
+<Section id="open-questions" title="Open questions">
+  <Question id="q-slots" text="Cap categorical series at 6 (today's palette length) or extend to 8?"
+    options={["Keep 6", "Extend to 8"]}
+    defaultNote="Proceeding with 6. The skill's ceiling is 8, but I only have validated orders for 6 from these ramps, and a 7th hue would need another new token ramp. Past 6, callers fold the tail into “Other”." />
+  <Question id="q-wordcloud" text="Word cloud ships despite the encoding objection — already decided. Where does the caveat live?"
+    options={["Doc comment + changelog", "Doc comment only"]}
+    defaultNote="Proceeding with both, plus a line in the component's JSDoc so it shows up in an editor's hover." />
+</Section>
+
+<Verdict kind="plan" />
