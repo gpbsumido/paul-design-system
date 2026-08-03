@@ -22,13 +22,16 @@
     "@angular/compiler-cli": "^21.2.19",
     "@angular/core": ">=21.0.0",
     "@angular/platform-browser": "^21.2.19",
+    "axe-core": "^4.12.1",
     "jsdom": "^29.1.1",
     "ng-packagr": "^21.2.6",
-    "rxjs": "^7.0.0"
+    "rxjs": "^7.0.0",
+    "vitest-axe": "^0.1.0"
   },
   "scripts": {
     "build": "ng-packagr -p ng-package.json -c tsconfig.lib.json",
     "clean": "rm -rf dist",
-    "test": "vitest run"
+    "test": "vitest run",
+    "verify:consumer": "npm run build && ngc -p verify-consumer/tsconfig.json"
   }
 }

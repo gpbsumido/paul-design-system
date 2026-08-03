@@ -6,7 +6,8 @@ export const meta = {
 **Shipped** — `@paul-portfolio/angular` gained eight components (`PaulTextarea`,
 `PaulSelect`, `PaulFilterBar`, `PaulInfoTip`, `PaulTicker`, `PaulTiltCard`,
 `PaulGradientBackground`, `PaulSpotlight`), a jsdom TestBed project that renders
-them, and a real Angular build. 88 tests where there were 20.
+them, and a real Angular build. 103 tests where there were 20, plus a consumer
+type-check against the built artifact.
 
 The big drift is at the top of the next section and it is not a small one: the
 harness prototype found that the published package was broken, so this PR fixes
@@ -48,6 +49,14 @@ the build as well.
       planned="Nothing about host elements"
       shipped="Every port sets host: { style: 'display: contents' }"
       drift="Angular adds a host element React doesn't have; without this it would break the CSS's layout assumptions (.filter-bar__row flex, .select__wrapper--horizontal)." />
+    <Row
+      planned="axe tests for the Angular twins: explicitly out of scope"
+      shipped="Shipped anyway — 15 axe tests in a11y.spec.ts"
+      drift="The plan reasoned that React already proves this DOM accessible. With the harness working it cost one file, and it now covers the chart components too, which the React argument never covered on the Angular side." />
+    <Row
+      planned="Nothing — the build fix was found mid-flight"
+      shipped="npm run verify:consumer compiles a stand-in consumer against the built dist/ with strictTemplates"
+      drift="More than planned. The regression that started this PR was invisible to every existing test because nothing consumed the built artifact; this closes that hole. Verified it fails on a bad binding before trusting it." />
   </PlanVsReality>
 </Section>
 
@@ -85,6 +94,10 @@ packages/angular/
       gradient-background.spec.ts       added     5 tests
       spotlight.spec.ts                 added     4 tests
       prefers-reduced-motion.spec.ts    added     4 tests + the stubReducedMotion helper
+      a11y.spec.ts                      added     15 axe audits
+  verify-consumer/
+    app.ts                              added     stand-in consumer binding every ported component
+    tsconfig.json                       added     strictTemplates, resolves the library via dist/
 .github/workflows/publish.yml           modified  publish the Angular package from dist/
 CHANGELOG.md                            modified  0.2.28 entry
 CLAUDE.md                               modified  24 components, build/test rules
@@ -205,8 +218,9 @@ readonly count = computed(() => (this.typed() ?? this.value()).length);
 
 <Section id="tests" title="Tests">
 
-`npm test` across the workspace: angular **88** (was 20), react **184**, tokens
-**4** — all green. The Angular suite runs as two projects; the 20 geometry tests
+`npm test` across the workspace: angular **103** (was 20), react **184**, tokens
+**4** — all green. Plus `npm run verify:consumer`, which builds the package and
+type-checks a consumer against it. The Angular suite runs as two projects; the 20 geometry tests
 still run on `node`.
 
   <Tests>
@@ -220,6 +234,8 @@ still run on `node`.
     <Test status="green" name="gradient-background: content, gradient image, default, animate toggle, speed">5 tests</Test>
     <Test status="green" name="spotlight: glow + content, pointer tracking, size, reduced motion">4 tests</Test>
     <Test status="green" name="prefers-reduced-motion: preference, change event, missing matchMedia">4 tests</Test>
+    <Test status="green" name="axe: 15 audits across the 8 ports and the 3 chart components">a11y.spec.ts, same bar as the React suite</Test>
+    <Test status="green" name="verify:consumer type-checks the built package">strictTemplates against dist/; proven to fail on a bad binding</Test>
   </Tests>
 
 Nothing skipped. One planned assertion was replaced — the Ticker rAF spy, see
@@ -229,16 +245,12 @@ Plan vs reality.
 
 <Section id="not-done" title="Not done">
 
-- **axe-core a11y tests for the Angular twins.** Called out as out of scope in
-  the plan and still is. React runs axe over every component; the DOM these
-  twins render is the DOM React already proves accessible.
 - **PR B** — specialty gallery charts + multi-series `Sparkline`.
 - **PR C** — Storybook stories and Chromatic coverage for A and B.
-- **A consumer smoke test.** The build fix is verified by the shipped artifacts
-  (`ɵɵngDeclareComponent` in the FESM, `isSignal: true` inputs in the typings)
-  and by the render tests going through the same compiler. Nobody has yet
-  installed the tarball into a real `ng` app — worth doing before the next
-  publish.
+- **A runtime install into a real `ng` app.** `npm run verify:consumer` now
+  compiles a stand-in consumer against the built `dist/` with `strictTemplates`,
+  which is what would have caught the packaging bug — but nobody has booted the
+  library in a browser app end to end.
 
 </Section>
 

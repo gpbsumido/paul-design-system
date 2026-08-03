@@ -12,6 +12,8 @@
 - The last eight React → Angular ports, each with a render test mirroring its React counterpart: `PaulTextarea`, `PaulSelect`, `PaulFilterBar`, `PaulInfoTip`, `PaulTicker`, `PaulTiltCard`, `PaulGradientBackground`, `PaulSpotlight`. None adds a stylesheet — all eight reuse CSS that already ships in `@paul-portfolio/css`.
 - `PaulReducedMotion`, the Angular twin of the React `usePrefersReducedMotion` hook, so `PaulTicker`, `PaulTiltCard`, and `PaulSpotlight` share one `matchMedia` listener instead of each attaching its own.
 - Two disclosed API differences from React, both forced by the Angular side: `PaulInfoTip` takes string `content` (React accepts rich nodes) because `PaulTooltip` takes a string, and `PaulTicker` takes its content as an `<ng-template>` rather than projection, because the seamless loop renders the same content twice.
+- axe-core a11y tests for the Angular package (15 audits over the eight ports and the three chart components), held to the same bar as the React suite.
+- `npm run verify:consumer` in `packages/angular` — builds the package, then type-checks a stand-in consumer against `dist/` with `strictTemplates` on. This is the check that would have caught the packaging bug: nothing else in the repo consumed the built artifact.
 - Bumps `@paul-portfolio/angular` 0.1.22 → 0.2.0.
 
 ## [0.2.27] - 2026-08-02
