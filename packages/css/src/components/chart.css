@@ -8,14 +8,50 @@
    * re-skin every series by overriding these on an ancestor.
    * ---------------------------------------------------------------- */
   .paul-chart {
-    --paul-chart-1: var(--paul-color-primary-500);
-    --paul-chart-2: var(--paul-color-secondary-500);
-    --paul-chart-3: var(--paul-color-success-500);
-    --paul-chart-4: var(--paul-color-warning-500);
-    --paul-chart-5: var(--paul-color-error-500);
-    --paul-chart-6: var(--paul-color-primary-300);
+    /* Slot order is part of the contract: adjacent slots are the pairs a
+       reader has to tell apart, and they are validated as such in
+       packages/tokens/src/__tests__/chart-palette.test.ts. Don't reshuffle
+       without re-running that test.
+
+       The previous order (primary-500, secondary-500, …) put blue next to
+       purple at ΔE 1.3 under deuteranopia — indistinguishable — and ended on
+       primary-300, which reads gray. */
+    --paul-chart-1: var(--paul-color-primary-600);
+    --paul-chart-2: var(--paul-color-success-600);
+    --paul-chart-3: var(--paul-color-secondary-600);
+    --paul-chart-4: var(--paul-color-warning-600);
+    --paul-chart-5: var(--paul-color-cyan-600);
+    --paul-chart-6: var(--paul-color-error-600);
+
+    /* Magnitude, not identity: cohort heatmaps, funnel stages, anything
+       ordered. One hue, light to dark. */
+    --paul-chart-seq-1: var(--paul-color-primary-100);
+    --paul-chart-seq-2: var(--paul-color-primary-300);
+    --paul-chart-seq-3: var(--paul-color-primary-500);
+    --paul-chart-seq-4: var(--paul-color-primary-700);
+    --paul-chart-seq-5: var(--paul-color-primary-900);
 
     display: block;
+    color: var(--paul-color-primary-600);
+  }
+
+  /* Dark is its own set of steps, not a flip — the lightness band for a dark
+     surface is tighter (OKLCH L 0.48–0.67 vs 0.43–0.77), so the light values
+     would sit too dark against it. Validated separately. */
+  [data-theme='dark'] .paul-chart {
+    --paul-chart-1: var(--paul-color-primary-500);
+    --paul-chart-2: var(--paul-color-success-600);
+    --paul-chart-3: var(--paul-color-secondary-500);
+    --paul-chart-4: var(--paul-color-warning-600);
+    --paul-chart-5: var(--paul-color-cyan-600);
+    --paul-chart-6: var(--paul-color-error-500);
+
+    --paul-chart-seq-1: var(--paul-color-primary-900);
+    --paul-chart-seq-2: var(--paul-color-primary-700);
+    --paul-chart-seq-3: var(--paul-color-primary-500);
+    --paul-chart-seq-4: var(--paul-color-primary-400);
+    --paul-chart-seq-5: var(--paul-color-primary-300);
+
     color: var(--paul-color-primary-500);
   }
 
