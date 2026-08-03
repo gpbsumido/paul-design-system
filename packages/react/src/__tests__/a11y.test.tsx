@@ -20,6 +20,9 @@ import { Skeleton } from '../Skeleton';
 import { TiltCard } from '../TiltCard';
 import { GradientBackground } from '../GradientBackground';
 import { Spotlight } from '../Spotlight';
+import { Sparkline } from '../Sparkline';
+import { BarChart } from '../BarChart';
+import { DonutChart } from '../DonutChart';
 import { VisuallyHidden } from '../VisuallyHidden';
 
 expect.extend(matchers);
@@ -173,6 +176,34 @@ describe('Accessibility', () => {
       <Spotlight>
         <p>Content under a spotlight</p>
       </Spotlight>
+    );
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it('Sparkline has no a11y violations', async () => {
+    const { container } = render(<Sparkline data={[1, 4, 2, 8, 5]} label="Weekly signups" />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it('BarChart has no a11y violations', async () => {
+    const { container } = render(
+      <BarChart data={[3, 6, 9]} labels={['Jan', 'Feb', 'Mar']} label="Sales by month" />,
+    );
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it('DonutChart has no a11y violations', async () => {
+    const { container } = render(
+      <DonutChart
+        data={[
+          { label: 'Online', value: 6 },
+          { label: 'Offline', value: 2 },
+        ]}
+        label="Fleet health"
+      />,
     );
     const results = await axe(container);
     expect(results).toHaveNoViolations();
