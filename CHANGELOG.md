@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.31] - 2026-08-03
+
+### Fixed
+
+- The spinner kept rotating under `prefers-reduced-motion`. The reduced branch only slowed it from 0.6s to 1.5s, which is not answering the preference — rotation is the vestibular trigger, and a slower spin is still a spin. It now swaps to a slow opacity pulse and drops the rotation entirely. Both `Spinner` components already render `role="status"` with an accessible name, so the loading state reaches assistive tech regardless; the animation is for sighted users, and a spinner frozen solid would be indistinguishable from one that has hung.
+- `packages/css` had 21 test files, a vitest config, and no `test` script — so `npm test` had never run a single one of them. Wired up; all 139 existing assertions pass.
+
+### Added
+
+- A reduced-motion guard over every component stylesheet: any file that animates must answer `prefers-reduced-motion` with a non-empty block, and no component may keep a rotating keyframe inside that block. Confirmed it fails on the old spinner before trusting it.
+- Bumps `@paul-portfolio/css` 0.5.0 → 0.5.1.
+
 ## [0.2.30] - 2026-08-03
 
 ### Added
