@@ -50,12 +50,33 @@ describe('PaulTicker', () => {
   });
 
   it('drops the clone out of the tab order', () => {
+    // Exercises the fallback rather than the main path: jsdom has no `inert`,
+    // so the capability check falls through to the manual tabIndex sweep. In a
+    // real browser `inert` does this before render and these values stay 0.
     stubReducedMotion(false);
     const el = host(renderComponent(TickerHost));
     const cloned = groups(el)[1].querySelector('a') as HTMLAnchorElement;
     expect(cloned.tabIndex).toBe(-1);
     const original = groups(el)[0].querySelector('a') as HTMLAnchorElement;
     expect(original.tabIndex).toBe(0);
+  });
+
+  it('keeps the clone inert from the first render, not after an effect', () => {
+    // The clone duplicates real controls so the loop looks seamless, and it is
+    // aria-hidden. Dropping its focusables to tabIndex -1 in a lifecycle hook
+    // leaves a window: between render and that hook the duplicate holds
+    // tabbable controls inside an aria-hidden container, and axe rates that
+    // serious. Its React twin shipped exactly this and the violation fired on
+    // a live page. Hiding something from assistive tech while leaving it
+    // reachable by keyboard is worse than not hiding it -- the user lands on a
+    // control a screen reader insists is not there.
+    stubReducedMotion(false);
+    const el = host(renderComponent(TickerHost));
+
+    expect(groups(el)[1].hasAttribute('inert')).toBe(true);
+    // The visible copy stays fully reachable.
+    expect(groups(el)[0].hasAttribute('inert')).toBe(false);
+    expect(groups(el)[0].hasAttribute('aria-hidden')).toBe(false);
   });
 
   it('marquee mode is decorative and aria-hidden', () => {
