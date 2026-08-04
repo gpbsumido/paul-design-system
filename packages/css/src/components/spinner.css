@@ -1,6 +1,11 @@
 @layer components {
   /* ----------------------------------------------------------------
    * Spinner – an indeterminate loading indicator.
+   *
+   * The component renders role="status" with an accessible name, so the
+   * "something is loading" message reaches assistive tech without the
+   * animation. The motion is there for sighted users only, which is what
+   * makes the reduced-motion branch below safe to change.
    * ---------------------------------------------------------------- */
   .spinner {
     display: inline-block;
@@ -30,9 +35,25 @@
     }
   }
 
+  @keyframes paul-spinner-pulse {
+    50% {
+      opacity: 0.35;
+    }
+  }
+
+  /* Rotation is the vestibular trigger, so under reduced motion it stops
+     outright — slowing it from 0.6s to 1.5s, which is what this used to do,
+     still spins. A slow opacity pulse keeps the "in progress" signal for
+     sighted users without anything travelling or turning, and the whole ring
+     takes the accent colour so it still reads as active rather than disabled.
+
+     This is the one component where the reduced-motion branch substitutes an
+     animation instead of removing it: a spinner that stops moving entirely is
+     indistinguishable from a spinner that has hung. */
   @media (prefers-reduced-motion: reduce) {
     .spinner {
-      animation-duration: 1.5s;
+      border-color: var(--paul-color-primary-600);
+      animation: paul-spinner-pulse 1.8s ease-in-out infinite;
     }
   }
 }

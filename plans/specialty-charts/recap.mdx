@@ -1,0 +1,199 @@
+export const meta = {
+  title: "Specialty gallery charts, multi-series Sparkline, and a palette that passes — recap",
+  goal: "Shipped: eleven chart forms in React and Angular from one geometry core, drawn on a categorical palette that survives colourblind separation and has a test to keep it that way.",
+};
+
+**Shipped** — eight new chart forms in both frameworks, `series` on `Sparkline`,
+and a chart palette that passes all six colour checks in light and dark. 615
+tests across the workspace, up from 428.
+
+<Section id="plan-vs-reality" title="Plan vs reality">
+  <PlanVsReality>
+    <Row planned="Fix the palette: cyan ramp + validated light/dark slots + sequential ramp" shipped="Done, plus the checks themselves ported into the repo as a tokens test" drift="The plan said 'a script in the repo, not a one-off'; what landed is packages/tokens/src/__tests__/palette-check.ts — the OKLab maths and the Machado CVD model from the dataviz validator — driven by 22 assertions over both modes. A palette that passes once and regresses next edit was the failure mode." />
+    <Row planned="chartPalette lives in chart.css" shipped="It lives in packages/tokens/src/colors.ts as chartPalette + chartSequential; chart.css references the token vars" drift="The values needed to be testable, and the tokens package is where a test can reach them. chart.css stayed the place the slots are wired up." />
+    <Row planned="8 geometry functions, mirrored into Angular" shipped="Done, verbatim copies, 42 tests running in both packages" />
+    <Row planned="FunnelChart, RadarChart, ScatterPlot, HeatmapChart, ParetoChart, GaugeChart, WordCloud, StackedLineChart" shipped="All eight, React + Angular, each Angular spec mirroring its React test" />
+    <Row planned="Sparkline gains series?: number[][]" shipped="Done — one shared domain, data untouched" />
+    <Row
+      planned="Nothing about what happens past 6 series"
+      shipped="Slot assignment CLAMPS at 6 rather than cycling to 1"
+      drift="A 7th series cycling back to slot 1 would read as series one. Clamping repeats slot 6 instead, which is visibly wrong rather than invisibly wrong. Sparkline's multi-series path was changed to match after StackedLineChart argued for it." />
+    <Row
+      planned="Pareto: one axis, bars as percent-of-total"
+      shipped="Done, and pinned by a test that asserts no rendered text is a raw count"
+      drift="More than planned: the encoding rule is enforced by a test, not just a comment." />
+    <Row
+      planned="Word cloud with the caveat in the doc comment and changelog"
+      shipped="Both, and the aria-label carries the complete ranked list even when the spiral drops a term"
+      drift="The honest version of the data is the accessible name. The picture can be incomplete; the list can't." />
+    <Row
+      planned="Nothing about labels inside the SVG"
+      shipped="Heatmap, pareto and radar reserve coordinate-space gutters and render their labels as SVG text"
+      drift="HTML labels beside an SVG grid need a second layout system to stay aligned. The consequence: those charts pass a reduced box to the geometry, so their plots don't span the full viewBox." />
+    <Row
+      planned="Nothing about preserveAspectRatio"
+      shipped="Scatter, pareto, heatmap and radar deliberately omit it"
+      drift="Funnel and sparkline stretch fine. A scatter can't — non-uniform scaling turns the ≥8px circular marks into ellipses — and text labels would shear." />
+    <Row
+      planned="axe tests were not in scope for this PR"
+      shipped="19 new axe assertions across both frameworks"
+      drift="The suites existed by then (PR A added the Angular one), so it was one file each." />
+    <Row
+      planned="Nothing about the consumer type-check"
+      shipped="verify-consumer/app.ts binds all eight new charts"
+      drift="The check added in PR A only pays off if new components get added to it." />
+  </PlanVsReality>
+</Section>
+
+<Section id="palette" title="The palette, before and after">
+
+Run against the real surfaces (`#fafafa` light, `#171717` dark):
+
+| Check | Before | After |
+|---|---|---|
+| Lightness band | FAIL — `#93c5fd` at L 0.809 | PASS, both modes |
+| Chroma floor | FAIL — `#93c5fd` reads gray | PASS, both modes |
+| CVD separation | FAIL — blue↔purple ΔE **1.3** (deutan) | PASS — worst adjacent 19.0 light / 16.8 dark |
+| Normal-vision floor | FAIL — the same pair at **12.0** | PASS — worst 27.2 |
+| Contrast vs surface | WARN — three slots under 3:1 | PASS — all six ≥ 3:1 |
+
+| Slot | Light | Dark |
+|---|---|---|
+| 1 | `primary-600` | `primary-500` |
+| 2 | `success-600` | `success-600` |
+| 3 | `secondary-600` | `secondary-500` |
+| 4 | `warning-600` | `warning-600` |
+| 5 | `cyan-600` **(new ramp)** | `cyan-600` |
+| 6 | `error-600` | `error-500` |
+
+</Section>
+
+<Section id="files" title="Files">
+
+```
+packages/tokens/
+  src/colors.ts                            modified  + cyan ramp, chartPalette, chartSequential
+  src/index.ts                             modified  export both
+  build.mjs                                modified  + cyan (the file duplicates the ramps)
+  src/__tests__/palette-check.ts           added     OKLab + Machado CVD maths
+  src/__tests__/chart-palette.test.ts      added     22 assertions over both modes
+packages/css/src/components/chart.css      modified  new slots, dark block, sequential ramp, 8 chart sections
+packages/react/src/
+  chartGeometry.ts                         modified  + 8 specialty functions
+  Sparkline.tsx                            modified  + series
+  FunnelChart · RadarChart · ScatterPlot · HeatmapChart
+  ParetoChart · GaugeChart · WordCloud · StackedLineChart   added
+  __tests__/specialtyGeometry.test.ts      added     42 tests
+  __tests__/<each chart>.test.tsx          added     7–12 tests each
+  __tests__/a11y.test.tsx                  modified  + 11 audits
+packages/angular/src/
+  chart-geometry.ts                        modified  verbatim mirror
+  sparkline.ts                             modified  + series
+  funnel-chart · radar-chart · scatter-plot · heatmap-chart
+  pareto-chart · gauge-chart · word-cloud · stacked-line-chart   added
+  __tests__/specialty-geometry.test.ts     added     the same 42 tests
+  __tests__/<each chart>.spec.ts           added     mirrors of the React tests
+  __tests__/a11y.spec.ts                   modified  + 10 audits
+  __tests__/vitest-axe.d.ts                added     types the matchers expect.extend adds
+  tsconfig.json                            modified  + DOM.Iterable (spreading a NodeList in specs)
+  verify-consumer/app.ts                   modified  binds all eight new charts
+```
+
+</Section>
+
+<Section id="key-changes" title="Key changes">
+
+**One axis, enforced.** `paretoLayout` returns bars already expressed as
+percent-of-total, so there is nothing to align against a second scale:
+
+```ts
+const total = sorted.reduce((sum, v) => sum + v, 0);
+const percents = sorted.map((v) => round((v / total) * 100));
+// …bars scale by (value / total) * 100 against the same box height the
+// cumulative line uses, so the 80% crossing is a real position, not a coincidence.
+```
+
+and the component test refuses to let a raw count back in:
+
+```
+draws exactly one y-scale — no second axis and no raw-count labels
+```
+
+**Determinism, because SSR and Chromatic both depend on it.** No RNG anywhere in
+the word cloud; the spiral is a pure function of the index:
+
+```ts
+const angle = step * 0.35;
+const radius = 2 + angle * 2.2;
+x = cx + Math.cos(angle) * radius;
+y = cy + Math.sin(angle) * radius * 0.62; // wider than tall, like the box
+```
+
+**Ordered data gets the ordered ramp.** Funnel stages and heatmap cells map onto
+`--paul-chart-seq-*`, never the categorical slots — and the tests assert both
+directions, so a future edit can't quietly swap them:
+
+```ts
+expect(fill).toMatch(/--paul-chart-seq-\d/);
+expect(fill).not.toMatch(/--paul-chart-\d(?!.*seq)/);
+```
+
+**Clamp, don't cycle.**
+
+```ts
+// A 7th series repeats slot 6 rather than wrapping to slot 1 — a repeat of the
+// first slot would read as the first series. Past six, fold the tail into "Other".
+`var(--paul-chart-${Math.min(i, 5) + 1})`
+```
+
+</Section>
+
+<Section id="states" title="States shipped">
+
+| State | Covered? | Test |
+|---|---|---|
+| Every chart with data | yes | one render test per chart, both frameworks |
+| Every chart empty | yes | each suite asserts the "No data" span and no `<svg>` |
+| All-zero / zero-total | yes | `funnelStages`, `paretoLayout`, `gaugeArc`, word cloud weights |
+| Single point / single series | yes | `scatterPoints`, `multiLinePoints` centre it; legend suppressed at one series |
+| Value outside the gauge range | yes | clamps to 0/100%, with the raw value still shown |
+| Ragged radar series | yes | padded to the axis count so the polygon closes |
+| Unsorted Pareto input | yes | labels follow their own bars after the descending sort |
+| Dark mode | partial | palette validated against the dark surface in tests; no rendered dark-mode snapshot until PR C's Chromatic |
+
+</Section>
+
+<Section id="tests" title="Tests">
+
+`npm test`: angular **240**, react **321**, tokens **54** — 615 total, up from
+428. `npm run verify:consumer` type-checks a consumer binding all eleven charts
+against the built package. Nothing skipped.
+
+  <Tests>
+    <Test status="green" name="chart palette passes all six checks, light and dark">22 assertions in the tokens package</Test>
+    <Test status="green" name="specialty geometry: 42 tests, identical in both packages">funnel, radar, scatter, heatmap, pareto, gauge, word cloud, stacked/multi-line</Test>
+    <Test status="green" name="FunnelChart / PaulFunnelChart">7 + 7</Test>
+    <Test status="green" name="RadarChart / PaulRadarChart">12 + 12</Test>
+    <Test status="green" name="ScatterPlot / PaulScatterPlot">7 + 7</Test>
+    <Test status="green" name="HeatmapChart / PaulHeatmapChart">9 + 9</Test>
+    <Test status="green" name="ParetoChart / PaulParetoChart">12 + 12</Test>
+    <Test status="green" name="GaugeChart / PaulGaugeChart">10 + 10</Test>
+    <Test status="green" name="WordCloud / PaulWordCloud">9 + 9</Test>
+    <Test status="green" name="StackedLineChart / PaulStackedLineChart">12 + 12</Test>
+    <Test status="green" name="Sparkline series: shared domain, own slot, precedence over data">6 + 7</Test>
+    <Test status="green" name="axe: no violations for all eight new charts, both frameworks">19 new audits</Test>
+  </Tests>
+
+</Section>
+
+<Section id="not-done" title="Not done">
+
+- **Hover / tooltip layer and table-view fallbacks.** Deferred in the plan and still deferred: every chart here is a zero-JS, SSR-safe primitive, and adding interaction is a coherent change across all eleven, not a rider on this one.
+- **Texture fills** for the CVD/print/forced-colors case.
+- **A rendered dark-mode check.** The dark palette is validated numerically but nothing has screenshotted it. PR C's Chromatic run is where that lands.
+- **PR C** — Storybook stories and Chromatic coverage for everything in A and B.
+- **Seven of the eight charts were written by parallel subagents** against the FunnelChart exemplar and this plan's brief. I set the geometry, the palette rules, the API shape and the test list; each agent's output was integrated, re-run, and typechecked here. Worth a closer read than usual on review.
+
+</Section>
+
+<Verdict kind="recap" />

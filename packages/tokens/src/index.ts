@@ -1,5 +1,5 @@
-export { colors, semanticColors } from './colors.js';
-export type { Colors, SemanticColors } from './colors.js';
+export { colors, semanticColors, chartPalette, chartSequential } from './colors.js';
+export type { Colors, SemanticColors, ChartPalette, ChartSequential } from './colors.js';
 
 export { spacing } from './spacing.js';
 export type { Spacing } from './spacing.js';

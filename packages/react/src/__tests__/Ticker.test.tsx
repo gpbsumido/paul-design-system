@@ -66,3 +66,23 @@ describe('Ticker', () => {
     await waitFor(() => expect(screen.getAllByText('Solo')).toHaveLength(1));
   });
 });
+
+describe('Ticker clone inertness', () => {
+  it('keeps the clone inert from the first render, not after an effect', () => {
+    // The clone duplicates real controls so the loop looks seamless, and it is
+    // aria-hidden. Dropping its focusables to tabIndex -1 in an effect leaves a
+    // window: between render and that effect the duplicate holds tabbable
+    // controls inside an aria-hidden container, which axe rates serious.
+    stubReducedMotion(false);
+    const { container } = render(
+      <Ticker label="News ticker">
+        <a href="#story">Headline</a>
+      </Ticker>,
+    );
+    const groups = [...container.querySelectorAll('.ticker__group')];
+    expect(groups[1].hasAttribute('inert')).toBe(true);
+    // The visible copy stays fully reachable.
+    expect(groups[0].hasAttribute('inert')).toBe(false);
+    expect(groups[0].hasAttribute('aria-hidden')).toBe(false);
+  });
+});

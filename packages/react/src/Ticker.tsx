@@ -84,10 +84,17 @@ function ScrollTicker({
     pausedRef.current = paused;
   }, [paused]);
 
-  // The clone fills the trailing half of the loop and stays clickable for
-  // pointer users, so drop its focusables out of the tab order by hand. Paired
-  // with aria-hidden, screen readers and axe never see the duplicate.
+  // Fallback for browsers without `inert`.
+  //
+  // The clone carries `inert` in the markup, which drops its descendants from
+  // the tab order and the accessibility tree together, before first paint. This
+  // effect used to be the only mechanism, and it left a gap: an effect runs
+  // after the DOM exists, so between render and this call the duplicate held
+  // tabbable controls inside an aria-hidden container. Hiding something from
+  // assistive tech while leaving it reachable by keyboard is worse than not
+  // hiding it — the user lands on a control a screen reader insists is absent.
   useEffect(() => {
+    if ('inert' in HTMLElement.prototype) return;
     const focusables = cloneRef.current?.querySelectorAll<HTMLElement>(
       'a[href], button, input, select, textarea, [tabindex]',
     );
@@ -155,7 +162,7 @@ function ScrollTicker({
     >
       <div className="ticker__track" data-paused={paused || undefined}>
         <div className="ticker__group">{children}</div>
-        <div ref={cloneRef} aria-hidden="true" className="ticker__group">
+        <div ref={cloneRef} aria-hidden="true" inert className="ticker__group">
           {children}
         </div>
       </div>

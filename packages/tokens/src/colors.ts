@@ -64,6 +64,19 @@ export const colors = {
     900: '#14532d',
     950: '#052e16',
   },
+  cyan: {
+    50: '#ecfeff',
+    100: '#cffafe',
+    200: '#a5f3fc',
+    300: '#67e8f9',
+    400: '#22d3ee',
+    500: '#06b6d4',
+    600: '#0891b2',
+    700: '#0e7490',
+    800: '#155e75',
+    900: '#164e63',
+    950: '#083344',
+  },
   warning: {
     50: '#fffbeb',
     100: '#fef3c7',
@@ -80,6 +93,67 @@ export const colors = {
 } as const;
 
 export type Colors = typeof colors;
+
+/**
+ * Categorical chart palette — the series colours, in fixed slot order.
+ *
+ * These are NOT the status colours. Reusing success/warning/error for "series 3"
+ * makes a green series read as "good"; the slots below are chosen for separation,
+ * not meaning.
+ *
+ * Light and dark are separately chosen steps, not a flip: the two modes have
+ * different lightness bands. Both orders are validated for colourblind
+ * separation, chroma, lightness and contrast — see the palette test in this
+ * package. Adjacent slots are what a reader has to tell apart, so slot ORDER is
+ * part of the contract; don't reshuffle without re-validating.
+ *
+ * Past six series, fold the tail into "Other" — a seventh generated hue is
+ * indistinguishable from one of these under CVD.
+ */
+export const chartPalette = {
+  light: [
+    colors.primary[600], // blue
+    colors.success[600], // green
+    colors.secondary[600], // purple
+    colors.warning[600], // amber
+    colors.cyan[600], // cyan
+    colors.error[600], // red
+  ],
+  dark: [
+    colors.primary[500],
+    colors.success[600],
+    colors.secondary[500],
+    colors.warning[600],
+    colors.cyan[600],
+    colors.error[500],
+  ],
+} as const;
+
+export type ChartPalette = typeof chartPalette;
+
+/**
+ * Sequential ramp for magnitude — cohort heatmaps, funnel stages, anything with
+ * a natural order. One hue, light to dark. A categorical palette on ordered data
+ * double-encodes the value as hue and reads as noise.
+ */
+export const chartSequential = {
+  light: [
+    colors.primary[100],
+    colors.primary[300],
+    colors.primary[500],
+    colors.primary[700],
+    colors.primary[900],
+  ],
+  dark: [
+    colors.primary[900],
+    colors.primary[700],
+    colors.primary[500],
+    colors.primary[400],
+    colors.primary[300],
+  ],
+} as const;
+
+export type ChartSequential = typeof chartSequential;
 
 export const semanticColors = {
   light: {
