@@ -46,6 +46,15 @@ export const Scroll: Story = {
     mode: 'scroll',
     children: items.map((t) => <Chip key={t}>{t}</Chip>),
   },
+  parameters: {
+    // Scroll mode advances `scrollLeft` from a requestAnimationFrame loop, so
+    // its position depends on when the screenshot happens to be taken. Pausing
+    // CSS animations doesn't help — there is no CSS animation to pause. Rather
+    // than feed Chromatic a snapshot that differs every run, this one is
+    // excluded; Marquee still covers the strip's appearance, and the behaviour
+    // is pinned by Ticker.test.tsx and ticker.spec.ts.
+    chromatic: { disableSnapshot: true },
+  },
 };
 
 export const Marquee: Story = {

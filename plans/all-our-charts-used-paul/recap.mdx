@@ -1,0 +1,112 @@
+# Framework-agnostic charts + React→Angular parity — recap
+
+**Shipped** — the design system now ships `Sparkline`, `BarChart`, and
+`DonutChart` in both React (`@paul-portfolio/react`) and Angular
+(`@paul-portfolio/angular`), drawn as pure SVG from one shared, unit-tested
+geometry core with no charting runtime dependency. Four existing React
+components (`Divider`, `Spinner`, `IconButton`, `Switch`) gained Angular twins,
+and the Angular package got its first `vitest` config + geometry tests.
+
+<Section id="plan-vs-reality" title="Plan vs reality">
+  <PlanVsReality>
+    <Row planned="Pure geometry core (line/area/bar/donut), RED tests first" shipped="chartGeometry.ts in react + angular, 20 unit tests each" />
+    <Row planned="React Sparkline / BarChart / DonutChart + axe tests" shipped="All three + Testing Library tests + 3 axe cases" />
+    <Row planned="chart.css token palette, registered in the layer" shipped="chart.css with --paul-chart-1..6, imported in components.css" />
+    <Row planned="Angular PaulSparkline / PaulBarChart / PaulDonutChart" shipped="Done, mirroring the React APIs with signal inputs" />
+    <Row planned="Angular parity: Divider, Spinner, IconButton, Switch" shipped="All four, standalone + OnPush, mirroring React + existing CSS" />
+    <Row planned="Version bumps + CHANGELOG" shipped="css 0.4.7, react 0.4.6, angular 0.1.22, root 0.2.27" />
+    <Row planned="Storybook stories (repo convention, not in the plan's step list)" shipped="Sparkline/BarChart/DonutChart stories under Charts/*" drift="Added beyond the plan — matches the repo's per-component Storybook convention." />
+    <Row planned="Angular component render tests" shipped="Geometry unit-tested; components declarative" drift="Angular has no TestBed infra (zero component tests today). Deferred and disclosed; geometry is the tested drift-guard." />
+    <Row planned="Before/after screenshots" shipped="Single AFTER preview committed" drift="No BEFORE — the charts are net-new, so there is no prior view to diff. Storybook/Chromatic is the ongoing visual surface." />
+  </PlanVsReality>
+</Section>
+
+<Section id="files" title="Files">
+
+```
+packages/react/src/
+  chartGeometry.ts            (added)  pure geometry: line/area paths, bar rects, donut arcs
+  Sparkline.tsx               (added)  line/area sparkline, role=img
+  BarChart.tsx                (added)  vertical/horizontal bars, per-bar palette
+  DonutChart.tsx              (added)  ring + optional legend
+  index.ts                    (modified) export charts + chartGeometry
+  __tests__/chartGeometry.test.ts (added) 20 geometry unit tests
+  __tests__/{Sparkline,BarChart,DonutChart}.test.tsx (added) component tests
+  __tests__/a11y.test.tsx     (modified) +3 axe cases
+packages/css/src/
+  components/chart.css         (added)  .paul-chart* + --paul-chart-1..6 palette
+  components.css               (modified) import chart.css into the components layer
+packages/angular/src/
+  chart-geometry.ts            (added)  verbatim copy of the React geometry
+  {sparkline,bar-chart,donut-chart}.ts (added) Angular chart components
+  {divider,spinner,icon-button,switch}.ts (added) React-parity twins
+  index.ts                     (modified) export the new components
+  __tests__/chart-geometry.test.ts (added) 20 geometry unit tests
+packages/angular/vitest.config.ts (added)  node-env vitest for the geometry tests
+packages/storybook/stories/components/{Sparkline,BarChart,DonutChart}.stories.tsx (added)
+docs/pr-screenshots/0.2.27/42/charts/after.png (added) rendered preview of all three charts
+CHANGELOG.md, package.json(s), package-lock.json (modified) version bump + entry
+```
+
+</Section>
+
+<Section id="key-changes" title="Key changes">
+
+**Geometry is the single source of truth (mirrored in both packages).**
+
+```ts
+export function donutSegments(values: number[], opts: DonutOptions): DonutSegment[] {
+  const total = values.reduce((sum, v) => sum + Math.max(0, v), 0);
+  if (values.length === 0 || total <= 0) return [];   // no NaN for empty/all-zero
+  // ... walks the circle, one contiguous arc per value, percents sum to 100
+}
+```
+
+**Charts summarise their data as the accessible name — colour is never the only signal.**
+
+```tsx
+const name = data.length > 0 ? `${label}: ${summarise(data, labels)}` : label;
+// <div role="img" aria-label={name} className="paul-chart paul-chart--bar">
+```
+
+**Token-driven palette a consumer can re-skin from an ancestor.**
+
+```css
+.paul-chart {
+  --paul-chart-1: var(--paul-color-primary-500);
+  /* ...through --paul-chart-6; bars/slices default to fill: var(--paul-chart-N) */
+}
+```
+
+</Section>
+
+<Section id="states" title="States shipped">
+  <PlanVsReality>
+    <Row planned="Normal (data present)" shipped="Covered" drift="react tests assert one rect/arc per value" />
+    <Row planned="Empty (no data)" shipped="Covered" drift="stays an accessible role=img; no slices/bars; Sparkline shows a 'No data' note" />
+    <Row planned="All-zero / single point" shipped="Covered" drift="geometry tests assert no NaN" />
+  </PlanVsReality>
+</Section>
+
+<Section id="tests" title="Tests">
+  <Tests>
+    <Test name="chartGeometry.test.ts (react)" status="green">20 tests — points, paths, bars, donut, edge cases</Test>
+    <Test name="chart-geometry.test.ts (angular)" status="green">20 tests — same suite guards the mirrored copy</Test>
+    <Test name="Sparkline / BarChart / DonutChart (react)" status="green">component render + prop behaviour</Test>
+    <Test name="a11y.test.tsx" status="green">+3 axe cases, no violations</Test>
+    <Test name="Full workspace" status="green">react 184, angular 20, tokens 4 — all pass</Test>
+  </Tests>
+</Section>
+
+<Section id="not-done" title="Not done (disclosed follow-ups)">
+
+- Specialty gallery charts: funnel, radar, scatter, cohort heatmap, pareto,
+  radial gauge, word cloud, stacked/multi-series line.
+- Multi-series line for `Sparkline` (e.g. DAU-vs-MAU).
+- Remaining React→Angular ports: Textarea, Select, FilterBar, InfoTip, Ticker,
+  TiltCard, GradientBackground, Spotlight.
+- Angular TestBed render tests (package has no TestBed infra yet).
+
+</Section>
+
+<Verdict kind="recap" />

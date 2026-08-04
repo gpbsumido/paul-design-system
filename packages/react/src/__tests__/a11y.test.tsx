@@ -20,7 +20,18 @@ import { Skeleton } from '../Skeleton';
 import { TiltCard } from '../TiltCard';
 import { GradientBackground } from '../GradientBackground';
 import { Spotlight } from '../Spotlight';
+import { Sparkline } from '../Sparkline';
+import { BarChart } from '../BarChart';
+import { DonutChart } from '../DonutChart';
 import { VisuallyHidden } from '../VisuallyHidden';
+import { FunnelChart } from '../FunnelChart';
+import { RadarChart } from '../RadarChart';
+import { ScatterPlot } from '../ScatterPlot';
+import { HeatmapChart } from '../HeatmapChart';
+import { ParetoChart } from '../ParetoChart';
+import { GaugeChart } from '../GaugeChart';
+import { WordCloud } from '../WordCloud';
+import { StackedLineChart } from '../StackedLineChart';
 
 expect.extend(matchers);
 
@@ -178,9 +189,160 @@ describe('Accessibility', () => {
     expect(results).toHaveNoViolations();
   });
 
+  it('Sparkline has no a11y violations', async () => {
+    const { container } = render(<Sparkline data={[1, 4, 2, 8, 5]} label="Weekly signups" />);
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it('BarChart has no a11y violations', async () => {
+    const { container } = render(
+      <BarChart data={[3, 6, 9]} labels={['Jan', 'Feb', 'Mar']} label="Sales by month" />,
+    );
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it('DonutChart has no a11y violations', async () => {
+    const { container } = render(
+      <DonutChart
+        data={[
+          { label: 'Online', value: 6 },
+          { label: 'Offline', value: 2 },
+        ]}
+        label="Fleet health"
+      />,
+    );
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
   it('VisuallyHidden has no a11y violations', async () => {
     const { container } = render(<VisuallyHidden>Screen reader text</VisuallyHidden>);
     const results = await axe(container);
     expect(results).toHaveNoViolations();
+  });
+
+  it('FunnelChart has no a11y violations', async () => {
+    const { container } = render(
+      <FunnelChart
+        label="Signup funnel"
+        data={[
+          { label: 'Visit', value: 1000 },
+          { label: 'Signup', value: 620 },
+        ]}
+      />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('RadarChart has no a11y violations', async () => {
+    const { container } = render(
+      <RadarChart
+        label="Team profile"
+        axes={['Speed', 'Power', 'Range']}
+        data={[
+          { label: 'Alpha', values: [10, 6, 8] },
+          { label: 'Beta', values: [5, 9, 3] },
+        ]}
+      />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('ScatterPlot has no a11y violations', async () => {
+    const { container } = render(
+      <ScatterPlot
+        label="Load vs latency"
+        series={[{ label: 'p95', points: [{ x: 1, y: 2 }, { x: 3, y: 5 }] }]}
+      />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('HeatmapChart has no a11y violations', async () => {
+    const { container } = render(
+      <HeatmapChart
+        label="Cohort retention"
+        rows={[
+          { label: 'Jan', values: [100, 60] },
+          { label: 'Feb', values: [100, 55] },
+        ]}
+        colLabels={['W0', 'W1']}
+      />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('ParetoChart has no a11y violations', async () => {
+    const { container } = render(
+      <ParetoChart
+        label="Defects"
+        data={[
+          { label: 'Scratch', value: 50 },
+          { label: 'Dent', value: 30 },
+        ]}
+      />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('GaugeChart has no a11y violations', async () => {
+    const { container } = render(<GaugeChart label="Disk used" value={62} unit="%" />);
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('GaugeChart with a status tone has no a11y violations', async () => {
+    const { container } = render(
+      <GaugeChart label="Disk used" value={94} unit="%" tone="critical" />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('WordCloud has no a11y violations', async () => {
+    const { container } = render(
+      <WordCloud
+        label="Topics"
+        terms={[
+          { text: 'typescript', weight: 40 },
+          { text: 'angular', weight: 28 },
+        ]}
+      />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('StackedLineChart has no a11y violations', async () => {
+    const { container } = render(
+      <StackedLineChart
+        label="Traffic"
+        series={[
+          { label: 'Organic', values: [10, 20, 30] },
+          { label: 'Paid', values: [5, 10, 15] },
+        ]}
+      />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('StackedLineChart stacked variant has no a11y violations', async () => {
+    const { container } = render(
+      <StackedLineChart
+        label="Traffic"
+        variant="stacked"
+        series={[
+          { label: 'Organic', values: [10, 20, 30] },
+          { label: 'Paid', values: [5, 10, 15] },
+        ]}
+      />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('Sparkline with several series has no a11y violations', async () => {
+    const { container } = render(
+      <Sparkline label="Two teams" series={[[1, 5, 3], [2, 4, 8]]} />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
   });
 });

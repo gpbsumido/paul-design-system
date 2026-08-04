@@ -1,6 +1,6 @@
 {
   "name": "@paul-portfolio/css",
-  "version": "0.4.6",
+  "version": "0.5.1",
   "description": "Framework-agnostic CSS components for the Paul Design System",
   "license": "MIT",
   "repository": {
@@ -21,7 +21,8 @@
     "@paul-portfolio/tokens": ">=0.1.0"
   },
   "scripts": {
-    "clean": "echo 'nothing to clean'"
+    "clean": "echo 'nothing to clean'",
+    "test": "vitest run"
   },
   "devDependencies": {
     "css-tree": "^3.2.1"
