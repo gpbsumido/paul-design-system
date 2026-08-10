@@ -1,0 +1,47 @@
+@layer utilities {
+  /* ----------------------------------------------------------------
+   * Touch targets
+   *
+   * Every interactive component in this package already meets a finger-sized
+   * minimum on a coarse pointer. These two utilities are for the cases a
+   * consumer hits that the package cannot decide for them.
+   *
+   * Which one to reach for is the whole judgement:
+   *
+   *   .paul-touch-min     grows the control. Use it where there is room —
+   *                       a bespoke button, a filter pill, a link acting as
+   *                       a page action.
+   *
+   *   .paul-touch-target  leaves the control exactly as it looks and centres
+   *                       an invisible 44px box on it. Use it where growing
+   *                       would damage the thing — a checkbox scaled to 44px
+   *                       reads as broken, a toggle has a size people
+   *                       recognise on sight, a colour swatch has to stay a
+   *                       small round chip, and a control floating over a
+   *                       canvas spends real estate on chrome.
+   *
+   * Both are keyed on `pointer: coarse` rather than a width breakpoint,
+   * because this is about fingers rather than screen size. A touch laptop
+   * wants it; a narrow desktop window does not. Nothing moves on a
+   * mouse-driven screen however narrow it gets.
+   * ---------------------------------------------------------------- */
+  @media (pointer: coarse) {
+    .paul-touch-min {
+      min-height: var(--paul-touch-target, 44px);
+    }
+
+    .paul-touch-target {
+      position: relative;
+    }
+
+    .paul-touch-target::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      height: var(--paul-touch-target, 44px);
+      width: var(--paul-touch-target, 44px);
+      transform: translate(-50%, -50%);
+    }
+  }
+}

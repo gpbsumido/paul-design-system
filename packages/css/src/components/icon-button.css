@@ -40,4 +40,23 @@
     height: 1.75rem;
     width: 1.75rem;
   }
+
+  /* An icon button is small on purpose: a toolbar of chunky circles is worse
+     than a toolbar of small ones. The icon keeps its size and the hit area
+     grows underneath it. */
+  @media (pointer: coarse) {
+    .icon-btn {
+      position: relative;
+    }
+
+    .icon-btn::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      height: var(--paul-touch-target, 44px);
+      width: var(--paul-touch-target, 44px);
+      transform: translate(-50%, -50%);
+    }
+  }
 }

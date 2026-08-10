@@ -175,4 +175,10 @@
   [data-theme="dark"] .select__helper {
     color: var(--paul-color-neutral-400);
   }
+
+  @media (pointer: coarse) {
+    .select {
+      min-height: var(--paul-touch-target, 44px);
+    }
+  }
 }
