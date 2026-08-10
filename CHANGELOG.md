@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.2.33] - 2026-08-10
+
+### Added
+
+- **Every interactive component now meets a finger-sized minimum on a coarse pointer, by default.** This was previously the consumer's problem, and the result was predictable: an app auditing its own pages found 129 undersized targets on one route and 69 on another, then invented its own two utilities to fix them. A design system that leaves this to each consumer is asking every consumer to solve it, and they will solve it differently or not at all.
+- Which treatment a component gets is the actual decision, and each stylesheet says why. `.btn`, `.input`, `.select`, `.textarea` and `.chip` **grow**, because they have room and a short one is genuinely awkward to hit. `.icon-btn` and `.switch` **keep their size and grow only the hit area** — a toolbar of chunky circles is worse than a toolbar of small ones, and a switch stretched to 44px stops reading as a switch.
+- Two utilities for the cases the package cannot decide: `.paul-touch-min` grows a control that has room, `.paul-touch-target` leaves a control's appearance untouched and centres an invisible 44px box on it. The second is for things that genuinely cannot grow — a colour swatch, a control floating over a canvas where every pixel of chrome costs a pixel of the thing it controls.
+- Everything keys on `pointer: coarse` rather than a width breakpoint, because this is about fingers rather than screen size. A touch laptop wants it and a narrow desktop window does not, so nothing moves on a mouse-driven screen however narrow it gets. The size is `var(--paul-touch-target, 44px)`, so a consumer with a genuine reason can raise or lower it in one place.
+- A guard test in the shape of the existing reduced-motion one: every stylesheet on the interactive list must answer `pointer: coarse` with a real size, and the list must stay complete. Adding an interactive component is now a deliberate decision to answer this or not, rather than shipping with whatever looked right on a desktop.
+- Bumps `@paul-portfolio/css` 0.5.1 → 0.6.0.
+
 ## [0.2.32] - 2026-08-10
 
 ### Fixed

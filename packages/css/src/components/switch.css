@@ -44,4 +44,23 @@
   .switch--on .switch__thumb {
     transform: translateX(1rem);
   }
+
+  /* A switch is a shape people recognise on sight, and stretching the track to
+     44px stops reading as a switch. The track keeps its size; the hit area
+     grows around it. */
+  @media (pointer: coarse) {
+    .switch {
+      position: relative;
+    }
+
+    .switch::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      height: var(--paul-touch-target, 44px);
+      width: var(--paul-touch-target, 44px);
+      transform: translate(-50%, -50%);
+    }
+  }
 }

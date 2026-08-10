@@ -109,4 +109,12 @@
       transition: none;
     }
   }
+
+  /* A chip is a tap target whenever it is removable or selectable, and it has
+     the room. */
+  @media (pointer: coarse) {
+    .chip {
+      min-height: var(--paul-touch-target, 44px);
+    }
+  }
 }
