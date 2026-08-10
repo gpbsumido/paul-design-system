@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.2.32] - 2026-08-10
+
+### Fixed
+
+- **Half the items in a `Ticker` silently ignored clicks.** The scroll-mode strip duplicates its children so the loop looks seamless, and the clone carried `inert`. That was the right instinct aimed one notch too broadly: `inert` removes a subtree from the accessibility tree *and* from the pointer. The loop wraps at half the scroll width, so roughly half of what is on screen at any moment is the clone — meaning roughly half the strip did nothing when clicked, at random from the reader's point of view. The clone is now `aria-hidden` with its focusables dropped to `tabIndex = -1` in a layout effect, which runs before paint: hidden from assistive tech, out of the tab order, still clickable. Both copies render the same children, so clicking either runs the same handler and it does not matter which one you hit.
+- Bumps `@paul-portfolio/react` 0.5.0 → 0.5.1.
+
+### Added
+
+- A test asserting the clone never carries `inert`. Written as an attribute assertion rather than by dispatching a click, because jsdom does not implement `inert` — a click test passes whether or not the bug is present, which is exactly how this regression got through the first time.
+
 ## [0.2.31] - 2026-08-03
 
 ### Fixed
