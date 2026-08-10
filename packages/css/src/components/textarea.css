@@ -36,4 +36,10 @@
     font-size: var(--paul-font-size-xs);
     color: var(--paul-color-neutral-500);
   }
+
+  @media (pointer: coarse) {
+    .textarea {
+      min-height: var(--paul-touch-target, 44px);
+    }
+  }
 }

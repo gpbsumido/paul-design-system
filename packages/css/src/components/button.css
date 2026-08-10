@@ -234,4 +234,12 @@
       border-color: currentColor;
     }
   }
+
+  /* A finger needs more than a mouse pointer does. Buttons have room to grow,
+     so they grow — the small sizes are exactly the ones that were too short. */
+  @media (pointer: coarse) {
+    .btn {
+      min-height: var(--paul-touch-target, 44px);
+    }
+  }
 }

@@ -161,4 +161,11 @@
       border-width: 2px;
     }
   }
+
+  /* Text fields have room, and a short one is genuinely awkward to tap into. */
+  @media (pointer: coarse) {
+    .input {
+      min-height: var(--paul-touch-target, 44px);
+    }
+  }
 }
