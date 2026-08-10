@@ -1,6 +1,12 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { cx } from './cx';
-import { usePrefersReducedMotion } from './usePrefersReducedMotion';
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
+import { cx } from "./cx";
+import { usePrefersReducedMotion } from "./usePrefersReducedMotion";
 
 type TickerProps = {
   /** Accessible name for the strip. Scroll mode renders a labelled region. */
@@ -10,11 +16,11 @@ type TickerProps = {
    * auto-scroll — every item stays reachable. `marquee` is a decorative,
    * aria-hidden CSS loop for pure flavour.
    */
-  mode?: 'scroll' | 'marquee';
+  mode?: "scroll" | "marquee";
   /** Which edge the strip sits on; picks the border side. */
-  edge?: 'top' | 'bottom';
+  edge?: "top" | "bottom";
   /** Which way the ambient motion travels. */
-  direction?: 'left' | 'right';
+  direction?: "left" | "right";
   /** Ambient auto-scroll speed for scroll mode, in px/sec. */
   speed?: number;
   className?: string;
@@ -31,21 +37,21 @@ const TOUCH_RESUME_MS = 4000;
  * children, so the strip stays content-agnostic.
  */
 export function Ticker(props: TickerProps) {
-  return props.mode === 'marquee' ? (
+  return props.mode === "marquee" ? (
     <MarqueeTicker {...props} />
   ) : (
     <ScrollTicker {...props} />
   );
 }
 
-function edgeClassFor(edge: 'top' | 'bottom'): string {
-  return edge === 'top' ? 'ticker--top' : 'ticker--bottom';
+function edgeClassFor(edge: "top" | "bottom"): string {
+  return edge === "top" ? "ticker--top" : "ticker--bottom";
 }
 
 /** Decorative marquee: aria-hidden, CSS-driven, content duplicated for the loop. */
 function MarqueeTicker({
-  edge = 'top',
-  direction = 'left',
+  edge = "top",
+  direction = "left",
   className,
   children,
 }: TickerProps) {
@@ -53,7 +59,7 @@ function MarqueeTicker({
     <div
       aria-hidden="true"
       data-direction={direction}
-      className={cx('ticker', 'ticker--marquee', edgeClassFor(edge), className)}
+      className={cx("ticker", "ticker--marquee", edgeClassFor(edge), className)}
     >
       <div className="ticker__track">
         <div className="ticker__group">{children}</div>
@@ -66,8 +72,8 @@ function MarqueeTicker({
 /** Accessible scroll container with an ambient JS auto-scroll loop. */
 function ScrollTicker({
   label,
-  edge = 'top',
-  direction = 'left',
+  edge = "top",
+  direction = "left",
   speed = 40,
   className,
   children,
@@ -84,19 +90,26 @@ function ScrollTicker({
     pausedRef.current = paused;
   }, [paused]);
 
-  // Fallback for browsers without `inert`.
+  // Take the clone out of the tab order, but leave it clickable.
   //
-  // The clone carries `inert` in the markup, which drops its descendants from
-  // the tab order and the accessibility tree together, before first paint. This
-  // effect used to be the only mechanism, and it left a gap: an effect runs
-  // after the DOM exists, so between render and this call the duplicate held
-  // tabbable controls inside an aria-hidden container. Hiding something from
-  // assistive tech while leaving it reachable by keyboard is worse than not
-  // hiding it — the user lands on a control a screen reader insists is absent.
-  useEffect(() => {
-    if ('inert' in HTMLElement.prototype) return;
+  // The clone used to carry `inert`, which was the right instinct aimed one
+  // notch too broadly: `inert` removes a subtree from the accessibility tree
+  // AND from the pointer. Since the loop wraps at half the scroll width,
+  // roughly half of what is on screen at any moment is the clone, so half the
+  // strip silently ignored clicks.
+  //
+  // What is actually wanted is narrower: hidden from assistive tech
+  // (`aria-hidden` on the element), not tabbable (`tabIndex = -1` here), and
+  // still interactive with a pointer. Both copies render the same children, so
+  // clicking either runs the same handler and the reader cannot tell which one
+  // they hit — which is the point.
+  //
+  // A layout effect rather than a passive one: it runs before the browser
+  // paints, so there is no frame in which the duplicate holds tabbable controls
+  // inside an aria-hidden container, which axe rates serious.
+  useLayoutEffect(() => {
     const focusables = cloneRef.current?.querySelectorAll<HTMLElement>(
-      'a[href], button, input, select, textarea, [tabindex]',
+      "a[href], button, input, select, textarea, [tabindex]",
     );
     focusables?.forEach((el) => {
       el.tabIndex = -1;
@@ -110,7 +123,7 @@ function ScrollTicker({
     const el = scrollerRef.current;
     if (!el) return;
 
-    const dir = direction === 'left' ? 1 : -1;
+    const dir = direction === "left" ? 1 : -1;
     // Start the rightward strip one copy in, so it has somewhere to scroll back.
     if (dir < 0) el.scrollLeft = el.scrollWidth / 2;
 
@@ -139,7 +152,7 @@ function ScrollTicker({
     resumeTimer.current = setTimeout(() => setPaused(false), TOUCH_RESUME_MS);
   };
 
-  const classes = cx('ticker', edgeClassFor(edge), className);
+  const classes = cx("ticker", edgeClassFor(edge), className);
 
   // Reduced motion: a plain, single-copy scrollable row. No clone, no loop.
   if (reduced) {
@@ -162,7 +175,7 @@ function ScrollTicker({
     >
       <div className="ticker__track" data-paused={paused || undefined}>
         <div className="ticker__group">{children}</div>
-        <div ref={cloneRef} aria-hidden="true" inert className="ticker__group">
+        <div ref={cloneRef} aria-hidden="true" className="ticker__group">
           {children}
         </div>
       </div>
