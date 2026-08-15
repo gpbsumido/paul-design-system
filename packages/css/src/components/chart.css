@@ -15,12 +15,17 @@
 
        The previous order (primary-500, secondary-500, …) put blue next to
        purple at ΔE 1.3 under deuteranopia — indistinguishable — and ended on
-       primary-300, which reads gray. */
-    --paul-chart-1: var(--paul-color-primary-600);
-    --paul-chart-2: var(--paul-color-success-600);
-    --paul-chart-3: var(--paul-color-secondary-600);
-    --paul-chart-4: var(--paul-color-warning-600);
-    --paul-chart-5: var(--paul-color-cyan-600);
+       primary-300, which reads gray.
+
+       Verdigris leads at primary-500, not 600: 600 sits at OKLCH chroma 0.092,
+       under the floor, and reads gray as a series. Amber is not in the set —
+       next to ember it repeats that same ΔE 1.3 collision — which is what the
+       violet ramp is here to replace. */
+    --paul-chart-1: var(--paul-color-primary-500);
+    --paul-chart-2: var(--paul-color-secondary-600);
+    --paul-chart-3: var(--paul-color-violet-600);
+    --paul-chart-4: var(--paul-color-cyan-600);
+    --paul-chart-5: var(--paul-color-success-700);
     --paul-chart-6: var(--paul-color-error-600);
 
     /* Magnitude, not identity: cohort heatmaps, funnel stages, anything
@@ -35,16 +40,20 @@
     color: var(--paul-color-primary-600);
   }
 
-  /* Dark is its own set of steps, not a flip — the lightness band for a dark
-     surface is tighter (OKLCH L 0.48–0.67 vs 0.43–0.77), so the light values
-     would sit too dark against it. Validated separately. */
+  /* Dark used to be its own set of steps, because its lightness band is
+     tighter (OKLCH L 0.48–0.67 vs 0.43–0.77). It now repeats the light set: the
+     band that satisfies both modes is the intersection, and with verdigris and
+     ember anchored only one combination clears it. Restated rather than left to
+     inherit, so the dark palette is readable in one place — and so the day a
+     ramp moves and the two diverge again, this is where it happens. The
+     sequential ramp still genuinely differs. Validated separately. */
   [data-theme='dark'] .paul-chart {
     --paul-chart-1: var(--paul-color-primary-500);
-    --paul-chart-2: var(--paul-color-success-600);
-    --paul-chart-3: var(--paul-color-secondary-500);
-    --paul-chart-4: var(--paul-color-warning-600);
-    --paul-chart-5: var(--paul-color-cyan-600);
-    --paul-chart-6: var(--paul-color-error-500);
+    --paul-chart-2: var(--paul-color-secondary-600);
+    --paul-chart-3: var(--paul-color-violet-600);
+    --paul-chart-4: var(--paul-color-cyan-600);
+    --paul-chart-5: var(--paul-color-success-700);
+    --paul-chart-6: var(--paul-color-error-600);
 
     --paul-chart-seq-1: var(--paul-color-primary-900);
     --paul-chart-seq-2: var(--paul-color-primary-700);

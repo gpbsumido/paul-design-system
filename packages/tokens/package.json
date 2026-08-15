@@ -29,5 +29,8 @@
     "prepublishOnly": "npm run build",
     "clean": "rm -rf build",
     "test": "vitest run"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.1"
   }
 }

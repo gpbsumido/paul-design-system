@@ -22,7 +22,9 @@
     background: radial-gradient(
       circle var(--paul-spotlight-size, 350px) at
         var(--paul-spotlight-x, 50%) var(--paul-spotlight-y, 50%),
-      var(--paul-spotlight-color, rgb(59 130 246 / 0.25)),
+      /* Verdigris at 25%. The fallback is what most consumers actually get,
+         so it has to be the design system's colour and not stock blue. */
+      var(--paul-spotlight-color, rgb(33 155 132 / 0.25)),
       transparent 100%
     );
   }
