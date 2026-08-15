@@ -1,42 +1,42 @@
 export const colors = {
   primary: {
-    50: '#eff6ff',
-    100: '#dbeafe',
-    200: '#bfdbfe',
-    300: '#93c5fd',
-    400: '#60a5fa',
-    500: '#3b82f6',
-    600: '#2563eb',
-    700: '#1d4ed8',
-    800: '#1e40af',
-    900: '#1e3a8a',
-    950: '#172554',
+    50: '#eefaf6',
+    100: '#d6f3ea',
+    200: '#aee6d7',
+    300: '#79d2bd',
+    400: '#43b69e',
+    500: '#219b84',
+    600: '#157c6b',
+    700: '#136357',
+    800: '#124f47',
+    900: '#11413b',
+    950: '#062520',
   },
   secondary: {
-    50: '#f5f3ff',
-    100: '#ede9fe',
-    200: '#ddd6fe',
-    300: '#c4b5fd',
-    400: '#a78bfa',
-    500: '#8b5cf6',
-    600: '#7c3aed',
-    700: '#6d28d9',
-    800: '#5b21b6',
-    900: '#4c1d95',
-    950: '#2e1065',
+    50: '#fdf7ef',
+    100: '#faecd7',
+    200: '#f5d6ab',
+    300: '#eeba74',
+    400: '#e69a42',
+    500: '#d97e1f',
+    600: '#b25c12',
+    700: '#9d4b13',
+    800: '#7f3b16',
+    900: '#683114',
+    950: '#391807',
   },
   neutral: {
-    50: '#fafafa',
-    100: '#f5f5f5',
-    200: '#e5e5e5',
-    300: '#d4d4d4',
-    400: '#a3a3a3',
-    500: '#737373',
-    600: '#525252',
-    700: '#404040',
-    800: '#262626',
-    900: '#171717',
-    950: '#0a0a0a',
+    50: '#faf9f7',
+    100: '#f1efeb',
+    200: '#e3e0d9',
+    300: '#cfcac0',
+    400: '#a49d90',
+    500: '#7f7869',
+    600: '#635d50',
+    700: '#4f4a40',
+    800: '#35312a',
+    900: '#24211c',
+    950: '#151310',
   },
   error: {
     50: '#fef2f2',
@@ -77,6 +77,19 @@ export const colors = {
     900: '#164e63',
     950: '#083344',
   },
+  violet: {
+    50: '#f8f5ff',
+    100: '#f0e9ff',
+    200: '#dfd1fd',
+    300: '#c9b3f2',
+    400: '#b095e1',
+    500: '#9677ca',
+    600: '#735a9c',
+    700: '#63488d',
+    800: '#503b72',
+    900: '#42305e',
+    950: '#251b35',
+  },
   warning: {
     50: '#fffbeb',
     100: '#fef3c7',
@@ -85,7 +98,7 @@ export const colors = {
     400: '#fbbf24',
     500: '#f59e0b',
     600: '#d97706',
-    700: '#b45309',
+    700: '#ae4f08',
     800: '#92400e',
     900: '#78350f',
     950: '#451a03',
@@ -101,31 +114,46 @@ export type Colors = typeof colors;
  * makes a green series read as "good"; the slots below are chosen for separation,
  * not meaning.
  *
- * Light and dark are separately chosen steps, not a flip: the two modes have
- * different lightness bands. Both orders are validated for colourblind
- * separation, chroma, lightness and contrast — see the palette test in this
- * package. Adjacent slots are what a reader has to tell apart, so slot ORDER is
- * part of the contract; don't reshuffle without re-validating.
+ * Light and dark hold the same steps here, which is new. They used to differ,
+ * because the dark lightness band (0.48–0.67) is tighter than the light one
+ * (0.43–0.77). Once verdigris and ember are anchored, the set that clears both
+ * bands is the intersection, and only one combination survives it. Keeping the
+ * two arrays is deliberate: the day a ramp moves, they will diverge again.
+ *
+ * Both orders are validated for colourblind separation, chroma, lightness and
+ * contrast — see the palette test in this package. Adjacent slots are what a
+ * reader has to tell apart, so slot ORDER is part of the contract; don't
+ * reshuffle without re-validating.
+ *
+ * Slot 1 is primary-500 rather than 600: verdigris-600 sits at OKLCH chroma
+ * 0.092, under the 0.1 floor, so the brand colour at its usual step reads gray
+ * as a series.
+ *
+ * Slot 3 is why the violet ramp exists. With ember in secondary, the palette is
+ * two oranges short of six separable hues — searched exhaustively over every
+ * slot order and every viable step, nothing passes using only the other ramps.
+ * Amber drops out of the set for the same reason: next to ember it lands at
+ * ΔE 1.3 under deuteranopia, which is the collision this test was written for.
  *
  * Past six series, fold the tail into "Other" — a seventh generated hue is
  * indistinguishable from one of these under CVD.
  */
 export const chartPalette = {
   light: [
-    colors.primary[600], // blue
-    colors.success[600], // green
-    colors.secondary[600], // purple
-    colors.warning[600], // amber
+    colors.primary[500], // verdigris
+    colors.secondary[600], // ember
+    colors.violet[600], // violet
     colors.cyan[600], // cyan
+    colors.success[700], // green
     colors.error[600], // red
   ],
   dark: [
     colors.primary[500],
-    colors.success[600],
-    colors.secondary[500],
-    colors.warning[600],
+    colors.secondary[600],
+    colors.violet[600],
     colors.cyan[600],
-    colors.error[500],
+    colors.success[700],
+    colors.error[600],
   ],
 } as const;
 
@@ -155,20 +183,30 @@ export const chartSequential = {
 
 export type ChartSequential = typeof chartSequential;
 
+/**
+ * Semantic aliases. Light is warm paper rather than white, and dark is warm ink
+ * rather than black — the point of the warm neutral ramp is lost if the page
+ * behind it is #ffffff.
+ *
+ * Most of these are ramp steps, and the ones that aren't are deliberate: paper
+ * sits a shade off neutral-50, ink a shade off neutral-950, and light `muted`
+ * falls between 500 and 600 because 500 measured under 4.5:1 on the surface.
+ * Changing the surface moves the chart palette's contrast floor with it.
+ */
 export const semanticColors = {
   light: {
-    foreground: colors.neutral[950],
-    background: '#ffffff',
-    surface: colors.neutral[50],
+    foreground: '#1d1a15',
+    background: '#fbfaf7',
+    surface: '#f4f2ed',
     border: colors.neutral[200],
-    muted: colors.neutral[500],
+    muted: '#6d675b',
     'muted-foreground': colors.neutral[400],
   },
   dark: {
-    foreground: colors.neutral[50],
-    background: colors.neutral[950],
-    surface: colors.neutral[900],
-    border: colors.neutral[800],
+    foreground: '#ece8e1',
+    background: '#131110',
+    surface: '#1b1815',
+    border: '#322e28',
     muted: colors.neutral[400],
     'muted-foreground': colors.neutral[500],
   },

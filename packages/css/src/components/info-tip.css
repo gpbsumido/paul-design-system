@@ -11,7 +11,7 @@
     width: 1rem;
     border-radius: var(--paul-radius-full);
     border: 1px solid var(--paul-color-border);
-    color: var(--paul-color-neutral-500);
+    color: var(--paul-color-neutral-600);
     font-size: 0.625rem;
     font-weight: var(--paul-font-weight-bold);
     font-style: normal;
@@ -28,5 +28,16 @@
   .info-tip:focus-visible {
     outline: 2px solid var(--paul-color-primary-600);
     outline-offset: 2px;
+  }
+
+  /* The glyph is text at 10px, so it carries the 4.5:1 floor. 600 on paper,
+     400 on ink; hover brightens toward the theme's foreground either way. */
+  [data-theme="dark"] .info-tip {
+    color: var(--paul-color-neutral-400);
+  }
+
+  [data-theme="dark"] .info-tip:hover,
+  [data-theme="dark"] .info-tip:focus-visible {
+    color: var(--paul-color-neutral-100);
   }
 }

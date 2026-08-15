@@ -33,6 +33,12 @@ export const typography = {
   fontFamily: {
     sans: "'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
     mono: "'JetBrains Mono', ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace",
+    // Page titles and other display type. Falls back to the whole sans stack
+    // rather than to a bare sans-serif, so a consumer that doesn't load
+    // Bricolage gets Inter and not whatever the platform picks. Loading the
+    // face is the consumer's job — the token only names it.
+    display:
+      "'Bricolage Grotesque', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
   },
 } as const;
 

@@ -4,37 +4,39 @@ import { Meta } from '@storybook/blocks';
 
 # Color Palette
 
-The design system uses a comprehensive color palette with semantic aliases for light and dark modes.
+Verdigris and ember on warm paper. The identity ramps are the two brand hues;
+the neutral ramp is a warm gray rather than a true one, which is why the
+semantic surfaces below are paper and ink rather than #ffffff and #000000.
 
-## Primary (Blue)
-
-| Shade | Value | Preview |
-|-------|-------|---------|
-| 50 | `#eff6ff` | <div style={{width: 40, height: 24, backgroundColor: '#eff6ff', border: '1px solid #e5e7eb', borderRadius: 4}} /> |
-| 100 | `#dbeafe` | <div style={{width: 40, height: 24, backgroundColor: '#dbeafe', borderRadius: 4}} /> |
-| 200 | `#bfdbfe` | <div style={{width: 40, height: 24, backgroundColor: '#bfdbfe', borderRadius: 4}} /> |
-| 300 | `#93c5fd` | <div style={{width: 40, height: 24, backgroundColor: '#93c5fd', borderRadius: 4}} /> |
-| 400 | `#60a5fa` | <div style={{width: 40, height: 24, backgroundColor: '#60a5fa', borderRadius: 4}} /> |
-| 500 | `#3b82f6` | <div style={{width: 40, height: 24, backgroundColor: '#3b82f6', borderRadius: 4}} /> |
-| 600 | `#2563eb` | <div style={{width: 40, height: 24, backgroundColor: '#2563eb', borderRadius: 4}} /> |
-| 700 | `#1d4ed8` | <div style={{width: 40, height: 24, backgroundColor: '#1d4ed8', borderRadius: 4}} /> |
-| 800 | `#1e40af` | <div style={{width: 40, height: 24, backgroundColor: '#1e40af', borderRadius: 4}} /> |
-| 900 | `#1e3a8a` | <div style={{width: 40, height: 24, backgroundColor: '#1e3a8a', borderRadius: 4}} /> |
-| 950 | `#172554` | <div style={{width: 40, height: 24, backgroundColor: '#172554', borderRadius: 4}} /> |
-
-## Secondary (Violet)
+## Primary (Verdigris)
 
 | Shade | Value | Preview |
 |-------|-------|---------|
-| 50 | `#f5f3ff` | <div style={{width: 40, height: 24, backgroundColor: '#f5f3ff', border: '1px solid #e5e7eb', borderRadius: 4}} /> |
-| 500 | `#8b5cf6` | <div style={{width: 40, height: 24, backgroundColor: '#8b5cf6', borderRadius: 4}} /> |
-| 600 | `#7c3aed` | <div style={{width: 40, height: 24, backgroundColor: '#7c3aed', borderRadius: 4}} /> |
-| 700 | `#6d28d9` | <div style={{width: 40, height: 24, backgroundColor: '#6d28d9', borderRadius: 4}} /> |
+| 50 | `#eefaf6` | <div style={{width: 40, height: 24, backgroundColor: '#eefaf6', border: '1px solid #e3e0d9', borderRadius: 4}} /> |
+| 100 | `#d6f3ea` | <div style={{width: 40, height: 24, backgroundColor: '#d6f3ea', borderRadius: 4}} /> |
+| 200 | `#aee6d7` | <div style={{width: 40, height: 24, backgroundColor: '#aee6d7', borderRadius: 4}} /> |
+| 300 | `#79d2bd` | <div style={{width: 40, height: 24, backgroundColor: '#79d2bd', borderRadius: 4}} /> |
+| 400 | `#43b69e` | <div style={{width: 40, height: 24, backgroundColor: '#43b69e', borderRadius: 4}} /> |
+| 500 | `#219b84` | <div style={{width: 40, height: 24, backgroundColor: '#219b84', borderRadius: 4}} /> |
+| 600 | `#157c6b` | <div style={{width: 40, height: 24, backgroundColor: '#157c6b', borderRadius: 4}} /> |
+| 700 | `#136357` | <div style={{width: 40, height: 24, backgroundColor: '#136357', borderRadius: 4}} /> |
+| 800 | `#124f47` | <div style={{width: 40, height: 24, backgroundColor: '#124f47', borderRadius: 4}} /> |
+| 900 | `#11413b` | <div style={{width: 40, height: 24, backgroundColor: '#11413b', borderRadius: 4}} /> |
+| 950 | `#062520` | <div style={{width: 40, height: 24, backgroundColor: '#062520', borderRadius: 4}} /> |
+
+## Secondary (Ember)
+
+| Shade | Value | Preview |
+|-------|-------|---------|
+| 50 | `#fdf7ef` | <div style={{width: 40, height: 24, backgroundColor: '#fdf7ef', border: '1px solid #e3e0d9', borderRadius: 4}} /> |
+| 500 | `#d97e1f` | <div style={{width: 40, height: 24, backgroundColor: '#d97e1f', borderRadius: 4}} /> |
+| 600 | `#b25c12` | <div style={{width: 40, height: 24, backgroundColor: '#b25c12', borderRadius: 4}} /> |
+| 700 | `#9d4b13` | <div style={{width: 40, height: 24, backgroundColor: '#9d4b13', borderRadius: 4}} /> |
 
 ## Cyan
 
-Added for the chart palette — slot 5 needed a hue the system didn't have. See
-**Tokens/Chart palette** for why the slot order matters.
+Added for the chart palette — a hue the identity ramps don't cover. It holds
+slot 4. See **Tokens/Chart palette** for why the slot order matters.
 
 | Shade | Value | Preview |
 |-------|-------|---------|
@@ -44,23 +46,52 @@ Added for the chart palette — slot 5 needed a hue the system didn't have. See
 | 600 | `#0891b2` | <div style={{width: 40, height: 24, backgroundColor: '#0891b2', borderRadius: 4}} /> |
 | 700 | `#0e7490` | <div style={{width: 40, height: 24, backgroundColor: '#0e7490', borderRadius: 4}} /> |
 
+## Violet
+
+The other supporting ramp, and the reason the chart palette works. With ember
+holding secondary, the categorical set is short of six separable hues — amber
+next to ember lands at ΔE 1.3 under deuteranopia, so amber leaves the set and
+this takes slot 3. Not a status colour, and not used for identity outside charts.
+
+| Shade | Value | Preview |
+|-------|-------|---------|
+| 50 | `#f8f5ff` | <div style={{width: 40, height: 24, backgroundColor: '#f8f5ff', borderRadius: 4}} /> |
+| 100 | `#f0e9ff` | <div style={{width: 40, height: 24, backgroundColor: '#f0e9ff', borderRadius: 4}} /> |
+| 200 | `#dfd1fd` | <div style={{width: 40, height: 24, backgroundColor: '#dfd1fd', borderRadius: 4}} /> |
+| 300 | `#c9b3f2` | <div style={{width: 40, height: 24, backgroundColor: '#c9b3f2', borderRadius: 4}} /> |
+| 400 | `#b095e1` | <div style={{width: 40, height: 24, backgroundColor: '#b095e1', borderRadius: 4}} /> |
+| 500 | `#9677ca` | <div style={{width: 40, height: 24, backgroundColor: '#9677ca', borderRadius: 4}} /> |
+| 600 | `#735a9c` | <div style={{width: 40, height: 24, backgroundColor: '#735a9c', borderRadius: 4}} /> |
+| 700 | `#63488d` | <div style={{width: 40, height: 24, backgroundColor: '#63488d', borderRadius: 4}} /> |
+| 800 | `#503b72` | <div style={{width: 40, height: 24, backgroundColor: '#503b72', borderRadius: 4}} /> |
+| 900 | `#42305e` | <div style={{width: 40, height: 24, backgroundColor: '#42305e', borderRadius: 4}} /> |
+| 950 | `#251b35` | <div style={{width: 40, height: 24, backgroundColor: '#251b35', borderRadius: 4}} /> |
+
 ## Status Colors
 
 | Color | Shade | Value | Preview |
 |-------|-------|-------|---------|
 | Success | 600 | `#16a34a` | <div style={{width: 40, height: 24, backgroundColor: '#16a34a', borderRadius: 4}} /> |
 | Warning | 600 | `#d97706` | <div style={{width: 40, height: 24, backgroundColor: '#d97706', borderRadius: 4}} /> |
+| Warning | 700 | `#ae4f08` | <div style={{width: 40, height: 24, backgroundColor: '#ae4f08', borderRadius: 4}} /> |
 | Error | 600 | `#dc2626` | <div style={{width: 40, height: 24, backgroundColor: '#dc2626', borderRadius: 4}} /> |
+
+Warning 700 is `#ae4f08`, not the `#b45309` it used to be — that measured under
+4.5:1 on the light surface.
 
 ## Semantic Aliases
 
 | Token | Light | Dark |
 |-------|-------|------|
-| `--paul-color-foreground` | neutral-950 | neutral-50 |
-| `--paul-color-background` | #ffffff | neutral-950 |
-| `--paul-color-surface` | neutral-50 | neutral-900 |
-| `--paul-color-border` | neutral-200 | neutral-800 |
-| `--paul-color-muted` | neutral-500 | neutral-400 |
+| `--paul-color-foreground` | `#1d1a15` | `#ece8e1` |
+| `--paul-color-background` | `#fbfaf7` | `#131110` |
+| `--paul-color-surface` | `#f4f2ed` | `#1b1815` |
+| `--paul-color-border` | neutral-200 | `#322e28` |
+| `--paul-color-muted` | `#6d675b` | neutral-400 |
+
+Most of these are ramp steps. The ones that aren't are deliberate: paper sits a
+shade off neutral-50, ink a shade off neutral-950, and light `muted` falls
+between 500 and 600 because 500 measured under 4.5:1 on the surface.
 
 ## Usage
 
