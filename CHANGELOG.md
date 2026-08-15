@@ -16,6 +16,7 @@
 - Light and dark now hold the same six values, where they used to differ. The dark lightness band is tighter than the light one, so the set satisfying both is the intersection, and once the two brand hues are anchored exactly one combination clears it. Both arrays stay declared, so the day a ramp moves they can diverge again.
 - The warmer surface also caught something that had nothing to do with ember: `success-600` (2.95:1) and `warning-600` (2.85:1) fall under the 3:1 floor against `#f4f2ed`. The palette shipping before this change would have failed the moment the semantic tokens moved, regardless of which hues replaced them.
 - `contrast-notes.css` documented ratios for colours that no longer exist, against a white page that no longer exists. Rewritten from measurements against the real semantic surfaces.
+- **The textarea's character count and the InfoTip glyph fell just under AA on the warm neutrals.** Storybook's a11y check flagged the count: both render tiny text in `neutral-500`, which measured about 4.2:1 once the ramp warmed — the old cool gray sat at 4.7:1, so the recolour is what tipped them. Both move to `neutral-600` on light with a `neutral-400` dark override, following the dark-theme pattern the inputs already use. The other `neutral-500` consumers stay: disabled controls are exempt, borders and icons carry the 3:1 rule and clear it.
 
 ### Added
 
