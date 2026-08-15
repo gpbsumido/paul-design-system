@@ -43,6 +43,12 @@ import { Meta } from '@storybook/blocks';
 |-------|-------|
 | `--paul-font-family-sans` | Inter, system-ui, -apple-system, sans-serif |
 | `--paul-font-family-mono` | JetBrains Mono, Fira Code, monospace |
+| `--paul-font-family-display` | Bricolage Grotesque, then the whole sans stack |
+
+Display is for page titles and other display type. It falls back to the entire
+sans stack rather than to a bare `sans-serif`, so a consumer that doesn't load
+Bricolage gets Inter rather than whatever the platform picks. Loading the face is
+the consumer's job — the token only names it.
 
 ## Usage
 

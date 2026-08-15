@@ -30,11 +30,17 @@
     border-color: var(--paul-color-error-600);
   }
 
-  /* Live character count shown alongside a maxLength */
+  /* Live character count shown alongside a maxLength. neutral-600, not 500:
+     at this size the count is text, and the warm 500 sits a hair under the
+     4.5:1 floor on a light surface. Dark flips to 400 for the same reason. */
   .textarea__count {
     text-align: right;
     font-size: var(--paul-font-size-xs);
-    color: var(--paul-color-neutral-500);
+    color: var(--paul-color-neutral-600);
+  }
+
+  [data-theme="dark"] .textarea__count {
+    color: var(--paul-color-neutral-400);
   }
 
   @media (pointer: coarse) {

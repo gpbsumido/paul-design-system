@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.2.34] - 2026-08-15
+
+### Changed
+
+- **The design system hands down Verdigris & Ember, instead of receiving it from a consumer.** paul-explore has been shipping this palette by overriding `--paul-color-*` in its own stylesheet and feeding the values back into the package primitives. That works, and it is backwards — the whole point of the tokens package is to be the place the palette is decided. `primary` is now verdigris, `secondary` is ember, and `neutral` is a warm ink-on-paper gray rather than a true one. The values are taken verbatim from what paul-explore already ships, so the two stay in lockstep and its parity test keeps passing.
+- The semantic aliases move with them: light is warm paper (`#fbfaf7`) rather than `#ffffff`, dark is warm ink (`#131110`) rather than near-black. A warm neutral ramp on a pure white page loses the only thing that made it warm. Light `muted` sits between neutral-500 and 600 because 500 measured under 4.5:1 on the new surface, and `warning-700` moves `#b45309` → `#ae4f08` for the same reason.
+- `--paul-font-family-display`, led by Bricolage Grotesque and falling back to the whole sans stack rather than to a bare `sans-serif` — a consumer that doesn't load the face gets Inter, not whatever the platform picks. The sans and mono stacks do not move; the Angular app resolves those and changing them is a separate decision.
+- The Spotlight glow's default is verdigris at 25% instead of stock Tailwind blue. It's a `var()` fallback, which means it is what most consumers actually get.
+- Bumps `@paul-portfolio/tokens` 0.2.0 → 0.3.0 and `@paul-portfolio/css` 0.6.0 → 0.7.0.
+
+### Fixed
+
+- **The chart palette had to be redesigned, not recoloured.** Dropping ember into `secondary` puts it beside amber in the slot order, and that pair measures ΔE **1.3** under deuteranopia — the identical number to the blue/purple collision `chart-palette.test.ts` was written to catch. Amber leaves the categorical set, a `violet` supporting ramp joins it at slot 3, and verdigris leads at `primary-500` rather than 600 because 600 sits at chroma 0.092, under the floor, and reads gray as a series. I searched every slot order against every viable step: with ember in `secondary`, nothing passes using only the ramps that existed before, so the new ramp is the finding rather than a preference.
+- Light and dark now hold the same six values, where they used to differ. The dark lightness band is tighter than the light one, so the set satisfying both is the intersection, and once the two brand hues are anchored exactly one combination clears it. Both arrays stay declared, so the day a ramp moves they can diverge again.
+- The warmer surface also caught something that had nothing to do with ember: `success-600` (2.95:1) and `warning-600` (2.85:1) fall under the 3:1 floor against `#f4f2ed`. The palette shipping before this change would have failed the moment the semantic tokens moved, regardless of which hues replaced them.
+- `contrast-notes.css` documented ratios for colours that no longer exist, against a white page that no longer exists. Rewritten from measurements against the real semantic surfaces.
+- **The textarea's character count and the InfoTip glyph fell just under AA on the warm neutrals.** Storybook's a11y check flagged the count: both render tiny text in `neutral-500`, which measured about 4.2:1 once the ramp warmed — the old cool gray sat at 4.7:1, so the recolour is what tipped them. Both move to `neutral-600` on light with a `neutral-400` dark override, following the dark-theme pattern the inputs already use. The other `neutral-500` consumers stay: disabled controls are exempt, borders and icons carry the 3:1 rule and clear it.
+
+### Added
+
+- A sync guard over `build.mjs`. It re-declares every ramp as its own literal with a `keep in sync` comment and nothing enforcing it, and that copy is what generates `tokens.css` — so a missed edit means TypeScript consumers get verdigris while every CSS consumer keeps stock blue, with both halves still building green. The test compares the two directly. De-duplicating the two into one source is the better fix and gets its own change; a build refactor does not belong in a recolour.
+- Storybook's token pages restate every hex by hand, so Colors, Chart palette, Typography and Spacing are updated alongside — including the new violet ramp and the measured separation figures for the new slots.
+
 ## [0.2.33] - 2026-08-10
 
 ### Added
