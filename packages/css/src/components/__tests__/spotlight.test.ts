@@ -34,4 +34,11 @@ describe('Spotlight CSS component', () => {
   it('uses design tokens for motion', () => {
     expect(css).toContain('--paul-');
   });
+
+  it('glows in the brand colour when nothing overrides it', () => {
+    // The fallback is what most consumers actually get, so it has to be the
+    // design system's own colour rather than stock Tailwind blue-500.
+    expect(css).not.toContain('rgb(59 130 246');
+    expect(css).toContain('var(--paul-spotlight-color, rgb(33 155 132 / 0.25))');
+  });
 });
