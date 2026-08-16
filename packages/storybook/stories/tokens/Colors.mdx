@@ -93,6 +93,48 @@ Most of these are ramp steps. The ones that aren't are deliberate: paper sits a
 shade off neutral-50, ink a shade off neutral-950, and light `muted` falls
 between 500 and 600 because 500 measured under 4.5:1 on the surface.
 
+## Label Tokens
+
+The ink a component paints on a fill it painted itself, rather than on the page.
+These exist because those labels used to be unreachable: `.btn--primary` wrote
+`color: #fff` straight into the stylesheet, which assumes the primary is dark
+enough to carry white. On a light brand colour that measures around 2:1, and the
+only fix available was to override the component's own selectors.
+
+| Token | Light | Dark | Painted on |
+|-------|-------|------|------------|
+| `--paul-color-on-primary` | `#ffffff` | `#ffffff` | primary-600, primary-700 on hover |
+| `--paul-color-on-primary-tint` | primary-700 | primary-200 | primary-50/100 light, primary-900/950 dark |
+| `--paul-color-on-error` | `#ffffff` | `#ffffff` | error-600, error-700 on hover |
+| `--paul-color-on-error-tint` | error-700 | error-200 | error-100 light, error-900 dark |
+| `--paul-color-on-success-tint` | success-700 | success-200 | success-100 light, success-900 dark |
+| `--paul-color-on-warning-tint` | warning-700 | warning-200 | warning-100 light, warning-900 dark |
+| `--paul-color-on-inverse` | `#ffffff` | neutral-900 | neutral-900 light, neutral-100 dark |
+
+Every default reproduces exactly what the components painted before these tokens
+existed, so adding them changes nothing until one is set.
+
+`on-primary-tint` is the sharper half of the problem. The pale-fill family — the
+secondary button, the info badge, the avatar fallback — took its label from
+`primary-700`, which is also the primary button's hover fill. One step cannot
+both stay a saturated brand fill and be dark enough to read on a 50 tint; on a
+light brand colour those requirements pull apart and nothing satisfies both.
+`error-700` had the identical collision between `.badge--error` and
+`.btn--danger:hover`.
+
+Re-pointing a ramp means owning the pair. The full list of what has to stay
+readable, with the ratios this palette ships, is in `contrast-notes.css`, and
+both halves are enforced: `tinted-contrast.test.ts` measures the ratios,
+`label-tokens.test.ts` measures that the labels are reachable at all.
+
+```css
+/* A light brand colour needs a dark label, not white. */
+:root {
+  --paul-color-primary-600: #f2c14e;
+  --paul-color-on-primary: #2a1f00;
+}
+```
+
 ## Usage
 
 ```css

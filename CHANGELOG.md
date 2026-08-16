@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.2.36] - 2026-08-16
+
+### Added
+
+- **A label layer, because component labels were unreachable.** `.btn--primary` wrote `color: #fff` straight into the stylesheet. That is not a default — it is a decision taken on the consumer's behalf in the one place they cannot reach, and it assumes the primary is dark enough to carry white. ketsup's primary is a light gold, so its most-used control measured **2.02:1**, and the only fix available was scoped CSS that forks the component's own selectors (gpbsumido/ketsup#70). Seven `--paul-color-on-*` tokens now carry those labels: `on-primary`, `on-primary-tint`, `on-error`, `on-error-tint`, `on-success-tint`, `on-warning-tint`, `on-inverse`. Every default reproduces exactly what the components painted before, and every reference carries an inline fallback, so a consumer still on an older tokens build renders identically too. Nothing moves until someone sets one.
+- **`on-primary-tint` is the half that could not be fixed by a literal.** The pale-fill family — secondary button, info badge, avatar fallback — took its label from `primary-700`, which is also the primary button's hover fill. One step has to stay a saturated brand fill and be dark enough to read on a `50` tint; on a light brand colour those pull apart and no value satisfies both, which is why ketsup could not fix it by retoning the ramp. The label gets a name of its own and the fill keeps the ramp step. `error-700` had the identical collision between `.badge--error` and `.btn--danger:hover`, so it gets the same treatment.
+- **`label-tokens.test.ts`, which measures something the ratio tests structurally cannot.** `tinted-contrast.test.ts` checks whether the pairs this package ships are readable; it passes right up until someone changes the values. The new file checks whether a consumer who re-points the palette *can* keep them readable: no label is a literal, no label token is ever painted as a fill, every reference carries a fallback, and every fallback equals the token's shipped default. That last one is what makes "this change is visually inert" a check rather than a claim. 38 assertions.
+- The contrast suite grows 18 pairs to 28. Solid fills were never measured — only the tinted family was — so `.btn--primary` and `.btn--danger` had no guard at all in either theme, and neither did the tooltip. White on primary-600 is 5.09:1, on primary-700 (hover) 7.12:1; white on error-600 is 4.83:1, on error-700 6.47:1; the tooltip is 16.04:1 light and 13.97:1 dark. Its resolver also now reads the token a declaration names rather than the fallback inside it, which was green either way today and wrong the moment the two are allowed to differ.
+- `contrast-notes.css` gains the pair table a consumer needs: which token to set, which fill it lands on, and the ratio this palette ships. Storybook's Tokens/Colors page gains the same, with a worked example of a light brand colour taking a dark label.
+- Bumps `@paul-portfolio/tokens` 0.3.0 → 0.4.0 and `@paul-portfolio/css` 0.7.1 → 0.8.0.
+
+### Fixed
+
+- The busy spinner was a fourth copy of `#fff`, laundered through `border-color`. It is the label by another name — the label is hidden with `color: transparent` while it spins — so a consumer darkening `on-primary` for a pale fill would have got a white ring on it. It follows the label token now, which meant splitting the shared rule so `.btn--danger` reads `on-error` rather than the primary's.
+- `.tooltip` set `color: white` in light while its dark override was already tokenised — one branch correct, its mirror not.
+
+### Known, and left alone
+
+- **`.btn--gel` puts white on a `primary-500` → `primary-700` gradient under a 55% white gloss, and white on the 500 stop is 3.45:1.** Under AA before the gloss lightens it further, and true of the variant as it shipped. Found by extending the measurement to solid fills. Not asserted here: the fix is to retone the gradient or drop the gloss, which moves pixels, and this change is meant to move none. Its label is tokenised, so a consumer can already fix it without forking the selector.
+- `.badge--starburst` takes its label from the 900/950 of its own ramp over a gradient of the same ramp. Self-consistent, so it survives re-pointing as long as the ramp stays monotonic in lightness — which is already the contract. No collision, so no token.
+- `.select`'s chevron is a data-URI SVG with the stroke baked in. A data-URI cannot read a custom property, so it is the one place an icon cannot follow the theme. Fixing it means switching to `mask-image` — a change of technique, not of colour.
+- `.switch__thumb` is a hard `#fff` puck on the primary fill. A figure rather than a label, with no text on it, so it waits for the switch to be looked at properly.
+
 ## [0.2.35] - 2026-08-16
 
 ### Fixed

@@ -80,6 +80,76 @@
  * error is the one that takes 950 rather than 900: the error ramp's 400 is
  * darker than the other ramps' 400s, and 900 measured 3.62:1 there.
  *
+ * ----------------------------------------------------------------------
+ * The label layer, and what a consumer owes it.
+ *
+ * Every ratio above is measured against the palette this package ships. A
+ * consumer who re-points the ramps owns these ratios instead, and until now had
+ * no way to satisfy them: the labels were either literals (.btn--primary wrote
+ * `color: #fff`) or ramp steps doing double duty. The `--paul-color-on-*` tokens
+ * are the handle. Each defaults to exactly what the component painted before, so
+ * setting none of them changes nothing.
+ *
+ * These are the pairs to keep readable. Left is the token to set; right is the
+ * fill it lands on, which the component takes from the ramp.
+ *
+ *   --paul-color-on-primary        on primary-600 / primary-700 (hover)
+ *     .btn--primary, .btn--gel, and the busy spinner on both
+ *     ships white: 5.09:1 rest, 7.12:1 hover
+ *
+ *   --paul-color-on-primary-tint   on primary-50/100 light, primary-900/950 dark
+ *     .btn--secondary, .badge--info, .avatar--fallback
+ *     ships primary-700 light (6.06–6.66:1), primary-200 dark (8.19–11.68:1)
+ *
+ *   --paul-color-on-error          on error-600 / error-700 (hover)
+ *     .btn--danger and its busy spinner
+ *     ships white: 4.83:1 rest, 6.47:1 hover
+ *
+ *   --paul-color-on-error-tint     on error-100 light, error-900 dark
+ *     .badge--error — ships error-700 (5.30:1) / error-200 (6.93:1)
+ *
+ *   --paul-color-on-success-tint   on success-100 light, success-900 dark
+ *     .badge--success — ships success-700 (4.57:1) / success-200 (7.52:1)
+ *
+ *   --paul-color-on-warning-tint   on warning-100 light, warning-900 dark
+ *     .badge--warning — ships warning-700 (4.81:1) / warning-200 (7.28:1)
+ *
+ *   --paul-color-on-inverse        on neutral-900 light, neutral-100 dark
+ *     .tooltip — ships white (16.04:1) / neutral-900 (13.97:1)
+ *
+ * The pairing that made this necessary: primary-700 was the tint label AND the
+ * primary button's hover fill. One step cannot stay a saturated brand fill and
+ * be dark enough to read on a 50 tint — on a light brand colour those pull
+ * apart, and no value satisfies both. error-700 had the identical collision
+ * across .badge--error and .btn--danger:hover.
+ *
+ * Both halves are enforced. tinted-contrast.test.ts measures the ratios;
+ * label-tokens.test.ts measures that the labels are reachable at all, which is
+ * the part a ratio test cannot see.
+ *
+ * Left alone, with reasons:
+ *
+ *   .badge--starburst takes its label from the 900/950 of its own ramp over a
+ *   gradient of the same ramp. Same-ramp and self-consistent, so it survives
+ *   re-pointing as long as the ramp stays monotonic in lightness — which is
+ *   already the contract. No token, because there is no collision to break.
+ *
+ *   .select's chevron is a data-URI SVG with the stroke baked in (#737373 light,
+ *   #a3a3a3 dark). A data-URI cannot read a custom property, so this is the one
+ *   place in the package an icon cannot follow the theme. Worth fixing by
+ *   switching to a mask-image, which is a change of technique, not of colour.
+ *
+ *   .switch__thumb is a hard #fff puck on the primary fill. It is a figure
+ *   rather than a label — no text sits on it and no contrast rule applies at
+ *   3:1 for a UI component boundary here — so it stays until the switch is
+ *   looked at properly.
+ *
+ *   .btn--gel puts white on a primary-500 → primary-700 gradient under a 55%
+ *   white gloss. White on the 500 stop is 3.45:1, under AA before the gloss
+ *   lightens it further. That is how the variant shipped; the label is now
+ *   tokenised so a consumer can fix it, but retoning the gradient is a visual
+ *   change and belongs in its own.
+ *
  * Not measured, and deliberately: .btn[disabled] drops the whole control to
  * opacity 0.5, which composites the light-mode pair down to 2.28:1. WCAG 2.1
  * exempts inactive controls (1.4.3), so it is left alone rather than fixed

@@ -192,6 +192,22 @@ export type ChartSequential = typeof chartSequential;
  * sits a shade off neutral-50, ink a shade off neutral-950, and light `muted`
  * falls between 500 and 600 because 500 measured under 4.5:1 on the surface.
  * Changing the surface moves the chart palette's contrast floor with it.
+ *
+ * The `on-*` group is the label layer: the ink a component paints on a fill it
+ * painted itself, rather than on the page. It exists because those labels used
+ * to be unreachable. `.btn--primary` wrote `color: #fff` directly, which assumes
+ * the primary is dark enough to carry white — on a light brand colour that
+ * measures around 2:1 and the only fix available to a consumer was to override
+ * the component's own selectors.
+ *
+ * `on-primary-tint` is the sharper half. The pale-fill family (secondary button,
+ * info badge, avatar fallback) took its label from `primary-700`, which is also
+ * the primary button's hover fill. One step cannot both stay a saturated brand
+ * fill and be dark enough to read on a 50/100 tint once the ramp lightens, so
+ * the label gets a name of its own and the fill keeps the ramp step.
+ *
+ * Every default here reproduces exactly what the components painted before these
+ * tokens existed, so adding them changes nothing until a consumer sets one.
  */
 export const semanticColors = {
   light: {
@@ -201,6 +217,13 @@ export const semanticColors = {
     border: colors.neutral[200],
     muted: '#6d675b',
     'muted-foreground': colors.neutral[400],
+    'on-primary': '#ffffff',
+    'on-primary-tint': colors.primary[700],
+    'on-success-tint': colors.success[700],
+    'on-warning-tint': colors.warning[700],
+    'on-error': '#ffffff',
+    'on-error-tint': colors.error[700],
+    'on-inverse': '#ffffff',
   },
   dark: {
     foreground: '#ece8e1',
@@ -209,6 +232,13 @@ export const semanticColors = {
     border: '#322e28',
     muted: colors.neutral[400],
     'muted-foreground': colors.neutral[500],
+    'on-primary': '#ffffff',
+    'on-primary-tint': colors.primary[200],
+    'on-success-tint': colors.success[200],
+    'on-warning-tint': colors.warning[200],
+    'on-error': '#ffffff',
+    'on-error-tint': colors.error[200],
+    'on-inverse': colors.neutral[900],
   },
 } as const;
 

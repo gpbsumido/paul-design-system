@@ -32,7 +32,11 @@ const resolveColor = (value: string, theme: Theme): string => {
   const literal = value.trim();
   if (literal.startsWith('#')) return literal;
 
-  const token = literal.match(/var\(\s*(--paul-color-[a-z0-9-]+)\s*\)/i)?.[1];
+  // Take the token the declaration names, not the fallback inside it. Label
+  // declarations now read `var(--paul-color-on-x, <old literal>)`, and matching
+  // the inner fallback would measure the value the token is meant to replace —
+  // green either way today, and wrong the moment the two are allowed to differ.
+  const token = literal.match(/var\(\s*(--paul-color-[a-z0-9-]+)\s*[,)]/i)?.[1];
   if (!token) throw new Error(`cannot resolve colour: ${value}`);
 
   const name = token.replace('--paul-color-', '');
@@ -138,6 +142,44 @@ const BUTTON: readonly Combo[] = [
   },
 ];
 
+/**
+ * Solid fills — the other half of the family, and the half that went unmeasured
+ * for longer. These paint a saturated ramp step and put white on it, which was a
+ * literal until the label tokens landed. Measuring them here is what makes the
+ * ketsup case a test rather than a bug report: re-point `on-primary` or the
+ * ramp and this is what says whether the label still reads.
+ *
+ * Both themes are listed even though neither button has a dark override, because
+ * `on-primary` and `on-error` are now themeable and a consumer can move one
+ * theme without the other.
+ *
+ * `.btn--gel` is deliberately absent — see the note at the end of this file.
+ */
+const SOLID: readonly Combo[] = (['light', 'dark'] as const).flatMap((theme) => [
+  { label: `primary rest, ${theme}`, theme, chain: ['.btn--primary'] },
+  {
+    label: `primary hover, ${theme}`,
+    theme,
+    chain: ['.btn--primary', '.btn--primary:hover'],
+  },
+  { label: `danger rest, ${theme}`, theme, chain: ['.btn--danger'] },
+  {
+    label: `danger hover, ${theme}`,
+    theme,
+    chain: ['.btn--danger', '.btn--danger:hover'],
+  },
+]);
+
+/** The tooltip inverts the surface, so its label is the one that flips by theme. */
+const TOOLTIP: readonly Combo[] = [
+  { label: 'bubble, light', theme: 'light', chain: ['.tooltip'] },
+  {
+    label: 'bubble, dark',
+    theme: 'dark',
+    chain: ['.tooltip', '[data-theme="dark"] .tooltip'],
+  },
+];
+
 const BADGE_VARIANTS = ['success', 'warning', 'error', 'info'] as const;
 
 const BADGE: readonly Combo[] = [
@@ -182,10 +224,25 @@ describe('tinted-fill contrast', () => {
   const button = read('button.css');
   const badge = read('badge.css');
   const avatar = read('avatar.css');
+  const tooltip = read('tooltip.css');
 
   describe('secondary button', () => {
     it.each(BUTTON)('keeps the label over AA — $label', (combo) => {
       const { ratio, fill } = worstRatio(button, combo);
+      expect(ratio, `${combo.label}: label on ${fill}`).toBeGreaterThanOrEqual(AA_NORMAL);
+    });
+  });
+
+  describe('solid buttons', () => {
+    it.each(SOLID)('keeps the label over AA — $label', (combo) => {
+      const { ratio, fill } = worstRatio(button, combo);
+      expect(ratio, `${combo.label}: label on ${fill}`).toBeGreaterThanOrEqual(AA_NORMAL);
+    });
+  });
+
+  describe('tooltip', () => {
+    it.each(TOOLTIP)('keeps the label over AA — $label', (combo) => {
+      const { ratio, fill } = worstRatio(tooltip, combo);
       expect(ratio, `${combo.label}: label on ${fill}`).toBeGreaterThanOrEqual(AA_NORMAL);
     });
   });
@@ -209,3 +266,17 @@ describe('tinted-fill contrast', () => {
     });
   });
 });
+
+/*
+ * `.btn--gel` is measured but not asserted, and that is a finding rather than an
+ * oversight. Its fill is a gradient from `primary-500` to `primary-700` under a
+ * 55% white gloss, and white on the `primary-500` stop is 3.45:1 — under AA
+ * before the gloss lightens it further. That is true of the gel variant as it
+ * shipped; the label tokens neither caused it nor fixed it.
+ *
+ * Asserting it here would go red for a reason this change is not responsible
+ * for, and the fix is a visual one — retone the gradient or drop the gloss —
+ * which belongs in a change that is allowed to move pixels. Tokenising the
+ * label is what this change owes it: a consumer can now set `on-primary` and
+ * get a readable gel button without forking the selector.
+ */
