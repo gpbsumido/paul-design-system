@@ -134,8 +134,12 @@
     );
   }
 
+  /* The error ramp's 400 is a good deal darker than the other ramps' 400s, so
+     the 900 label the siblings use only reached 3.62:1 at the gradient's outer
+     stop. The label drops to 950 rather than the fill lightening — the red is
+     what makes the seal read as an error, and 10px bold needs the full 4.5. */
   .badge--starburst.badge--error {
-    color: var(--paul-color-error-900);
+    color: var(--paul-color-error-950);
     background: radial-gradient(
       circle at 40% 35%,
       var(--paul-color-error-100),

@@ -46,3 +46,7 @@ export const Starburst: Story = {
 export const StarburstWarning: Story = {
   args: { starburst: true, variant: 'warning', children: 'new' },
 };
+
+export const StarburstError: Story = {
+  args: { starburst: true, variant: 'error', children: 'stop' },
+};

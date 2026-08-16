@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.35] - 2026-08-16
+
+### Fixed
+
+- **The error starburst badge printed a 10px bold label at 3.62:1.** The starburst seals fill with a radial gradient running the ramp's 100 to its 400 and set the label to the 900 of the same ramp. That clears AA on primary (4.57:1), success (5.23:1) and warning (5.43:1), but the error ramp's 400 is `#f87171` — materially darker than the other ramps' 400s — so the same 900 label lands at 3.62:1 against the outer stop. The label drops to `error-950`, which measures 5.84:1. I moved the label rather than lightening the fill because the saturated red is what makes the seal read as an error at 44px, and at 10px bold the text is under the large-text cut, so it carries the full 4.5:1 rather than 3:1. Nothing else about the seal changes, and it still has no dark override, so the new ratio holds in both themes.
+- Bumps `@paul-portfolio/css` 0.7.0 → 0.7.1.
+
+### Added
+
+- **A contrast guard over the tinted-fill family, which had none.** `contrast()` existed in this repo but was only ever pointed at the chart palette, so every component that paints a pale fill and a same-ramp label — badge, avatar, the secondary button — was unmeasured. A ramp edit could push any of their labels under AA with the whole suite still green, which is exactly how the starburst shipped. `tinted-contrast.test.ts` reads the declarations out of the real stylesheets rather than restating the colours, folds each variant's cascade down to the label and the fill actually behind it, and asserts 4.5:1. Gradient fills contribute every stop, so the label has to clear the worst one. 18 pairs across variant, state and theme.
+- The starburst investigation started somewhere else: the report was that the secondary button's ember label sat at about 3.2:1 on its ember fill. It does not. `.btn--secondary` tracks the **primary** ramp, not `secondary` — verdigris `700` on `50` in light, `200` on `950` in dark — and measures 6.66:1, 6.06:1, 11.68:1 and 8.19:1 across rest and hover in both themes. It measured comfortably over AA before the palette change too, in the old blue. There is no `color-mix()` or alpha tint anywhere in the package; every fill in this family is a flat ramp step. So the ember ramp is untouched: retoning it would have changed every consumer's brand to fix a button that was never failing.
+- `contrast-notes.css` gains the component section it was missing. It documented ramp-on-surface pairs only, which is the layer this defect was invisible at. Every ratio already in the file was re-measured and none had drifted.
+
 ## [0.2.34] - 2026-08-15
 
 ### Changed
