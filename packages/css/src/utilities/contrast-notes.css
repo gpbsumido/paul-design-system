@@ -46,4 +46,42 @@
  * measured under 4.5:1 on the light surface.
  *
  * Large text (18px+ or 14px+ bold) only needs 3:1
+ *
+ * ----------------------------------------------------------------------
+ * Tinted fills: a pale fill from one ramp with the label a darker step of
+ * the same ramp. These are measured against the fill the component paints,
+ * not against the page, and they are enforced by tinted-contrast.test.ts —
+ * change a step here and that test is what tells you.
+ *
+ * .btn--secondary (verdigris, not ember — it tracks the primary ramp):
+ *   - light rest   primary-700 on primary-50:  6.66:1 ✓
+ *   - light hover  primary-700 on primary-100: 6.06:1 ✓
+ *   - dark rest    primary-200 on primary-950: 11.68:1 ✓
+ *   - dark hover   primary-200 on primary-900: 8.19:1 ✓
+ *
+ * .badge (700 on 100 in light, 200 on 900 in dark):
+ *   - success light: 4.57:1 ✓   success dark: 7.52:1 ✓
+ *   - warning light: 4.81:1 ✓   warning dark: 7.28:1 ✓
+ *   - error   light: 5.30:1 ✓   error   dark: 6.93:1 ✓
+ *   - info    light: 6.06:1 ✓   info    dark: 8.19:1 ✓
+ *
+ * .avatar--fallback:
+ *   - light primary-700 on primary-100: 6.06:1 ✓
+ *   - dark  primary-200 on primary-900: 8.19:1 ✓
+ *
+ * .badge--starburst is 10px bold, which is under the large-text cut, so it
+ * carries the full 4.5:1. The gradient runs 100 -> 400 and the outer stop is
+ * the worst case. No dark override, so these hold in both themes:
+ *   - primary  900 on primary-400: 4.57:1 ✓
+ *   - success  900 on success-400: 5.23:1 ✓
+ *   - warning  900 on warning-400: 5.43:1 ✓
+ *   - error    950 on error-400:   5.84:1 ✓
+ *
+ * error is the one that takes 950 rather than 900: the error ramp's 400 is
+ * darker than the other ramps' 400s, and 900 measured 3.62:1 there.
+ *
+ * Not measured, and deliberately: .btn[disabled] drops the whole control to
+ * opacity 0.5, which composites the light-mode pair down to 2.28:1. WCAG 2.1
+ * exempts inactive controls (1.4.3), so it is left alone rather than fixed
+ * with an opacity the disabled state would stop reading as disabled at.
  */
