@@ -33,18 +33,24 @@
   /* ----------------------------------------------------------------
    * Variants
    * ---------------------------------------------------------------- */
+  /* The label reads a token rather than a literal so a consumer with a light
+     brand colour can darken it. White is what this painted before, and it is
+     the fallback, so nothing moves until someone sets the token. */
   .btn--primary {
     background-color: var(--paul-color-primary-600);
-    color: #fff;
+    color: var(--paul-color-on-primary, #fff);
   }
 
   .btn--primary:hover {
     background-color: var(--paul-color-primary-700);
   }
 
+  /* Not `primary-700` any more. That step is also the primary button's hover
+     fill, and one value cannot stay a saturated brand fill and be dark enough to
+     read on a 50 tint. The tint label gets its own token; the fill keeps 700. */
   .btn--secondary {
     background-color: var(--paul-color-primary-50);
-    color: var(--paul-color-primary-700);
+    color: var(--paul-color-on-primary-tint, var(--paul-color-primary-700));
   }
 
   .btn--secondary:hover {
@@ -70,7 +76,7 @@
 
   .btn--danger {
     background-color: var(--paul-color-error-600);
-    color: #fff;
+    color: var(--paul-color-on-error, #fff);
   }
 
   .btn--danger:hover {
@@ -92,7 +98,7 @@
         var(--paul-color-primary-500),
         var(--paul-color-primary-700)
       );
-    color: #fff;
+    color: var(--paul-color-on-primary, #fff);
     border-color: rgba(0, 0, 0, 0.28);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.6),
@@ -147,7 +153,9 @@
 
   /* The label is hidden with color:transparent, which also zeroes out
      currentColor — so the spinner needs an explicit color. Default to the
-     foreground (visible on light fills), and go white on the solid variants. */
+     foreground (visible on light fills), and follow the label token on the solid
+     variants. It is the label by another name: a consumer who darkens
+     `on-primary` for a pale brand fill would otherwise get a white ring on it. */
   .btn[aria-busy="true"]::after {
     content: "";
     position: absolute;
@@ -160,9 +168,13 @@
   }
 
   .btn--primary[aria-busy="true"]::after,
-  .btn--danger[aria-busy="true"]::after,
   .btn--gel[aria-busy="true"]::after {
-    border-color: #fff;
+    border-color: var(--paul-color-on-primary, #fff);
+    border-right-color: transparent;
+  }
+
+  .btn--danger[aria-busy="true"]::after {
+    border-color: var(--paul-color-on-error, #fff);
     border-right-color: transparent;
   }
 
@@ -185,7 +197,7 @@
    * ---------------------------------------------------------------- */
   [data-theme="dark"] .btn--secondary {
     background-color: var(--paul-color-primary-950);
-    color: var(--paul-color-primary-200);
+    color: var(--paul-color-on-primary-tint, var(--paul-color-primary-200));
   }
 
   [data-theme="dark"] .btn--secondary:hover {

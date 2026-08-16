@@ -4,7 +4,7 @@
      file styles the look and the little arrow; it does not set position offsets. */
   .tooltip {
     background: var(--paul-color-neutral-900);
-    color: white;
+    color: var(--paul-color-on-inverse, #fff);
     font-size: var(--paul-font-size-xs);
     padding: var(--paul-spacing-1_5) var(--paul-spacing-3);
     border-radius: var(--paul-radius-sm);
@@ -60,7 +60,7 @@
   /* Dark mode */
   [data-theme="dark"] .tooltip {
     background: var(--paul-color-neutral-100);
-    color: var(--paul-color-neutral-900);
+    color: var(--paul-color-on-inverse, var(--paul-color-neutral-900));
   }
 
   [data-theme="dark"] .tooltip--top::before {
