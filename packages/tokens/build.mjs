@@ -129,6 +129,13 @@ const semanticColors = {
     border: colors.neutral[200],
     muted: '#6d675b',
     'muted-foreground': colors.neutral[400],
+    'on-primary': '#ffffff',
+    'on-primary-tint': colors.primary[700],
+    'on-success-tint': colors.success[700],
+    'on-warning-tint': colors.warning[700],
+    'on-error': '#ffffff',
+    'on-error-tint': colors.error[700],
+    'on-inverse': '#ffffff',
   },
   dark: {
     foreground: '#ece8e1',
@@ -137,6 +144,13 @@ const semanticColors = {
     border: '#322e28',
     muted: colors.neutral[400],
     'muted-foreground': colors.neutral[500],
+    'on-primary': '#ffffff',
+    'on-primary-tint': colors.primary[200],
+    'on-success-tint': colors.success[200],
+    'on-warning-tint': colors.warning[200],
+    'on-error': '#ffffff',
+    'on-error-tint': colors.error[200],
+    'on-inverse': colors.neutral[900],
   },
 };
 

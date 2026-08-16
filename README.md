@@ -144,6 +144,7 @@ Tokens are the single source of truth for every visual value in the system.
 | Category | Examples | CSS custom property |
 |----------|----------|-------------------|
 | Colors | 3 palettes (primary, secondary, neutral) with 11 stops each, plus semantic aliases (success, error, warning) | `--paul-color-primary-500` |
+| Labels | The ink a component paints on its own fill, so a light brand colour can take a dark label without overriding component selectors | `--paul-color-on-primary` |
 | Spacing | 17 steps from `0` to `96px` | `--paul-spacing-4` |
 | Typography | Font sizes (xs--5xl), line heights, font weights, letter spacing | `--paul-font-size-base` |
 | Shadows | 6 elevation levels (xs--2xl) | `--paul-shadow-md` |
