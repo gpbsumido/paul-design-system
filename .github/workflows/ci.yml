@@ -16,18 +16,14 @@ concurrency:
 jobs:
   test:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        # chromatic.yml builds on 20, publish.yml ships from 24. Until those
-        # agree, the suite has to hold on both.
-        node-version: [20, 24]
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          # publish.yml ships from 24, so 24 is the version that decides whether
+          # a release works. Node 20 went end-of-life in April 2026.
+          node-version: 24
           cache: npm
 
       - name: Install dependencies
