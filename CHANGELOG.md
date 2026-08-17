@@ -13,6 +13,19 @@
 - **`chromatic.yml` still builds Storybook on 20, and I aligned it to 24 on this branch before backing it out.** Not because aligning is wrong, but because I could not verify it. A Node bump underneath the snapshot builder is exactly the change that could move rendered output, so it wants a snapshot diff to justify it, and this account has been out of Chromatic snapshots for the month since before the branch existed. Those builds publish Storybook and compare nothing; the green check is `exitZeroOnChanges: true` rather than evidence of no change. `autoAcceptChanges` is set to `main`, so any drift it did introduce would be adopted as the new baseline on the release merge with nobody looking at it. It gets its own change when there is quota to prove it, which also keeps a visual risk out of a CI-config diff.
 - The version stays written out per workflow rather than centralised. After this, 24 appears twice in `ci.yml` and once in `publish.yml`, with Chromatic still on 20. Sharing one value across workflows needs either a repo-level variable, which lives in settings where a diff cannot see it, or a composite action, and the repo has neither today. Both are more machinery than three numbers deserve. There is also no `engines` field in any `package.json` and no `.nvmrc`, so nothing in the repo asserts a lower floor that 24 would break, and `tag-release.yml` pins nothing because it only shells out to `node -p` on the runner default.
 
+## [0.2.39] - 2026-08-16
+
+### Fixed
+
+- **The tokens suite was running every test twice, and only if I had built first.** A clean checkout reported 4 files and 42 tests; `npm run build` followed by the same command reported 8 and 84. `packages/tokens/tsconfig.json` compiled `src/__tests__` along with everything else, and vitest's default exclude list covers `dist/` but not `build/` — which is the directory this one package happens to emit into — so the compiled copies were collected as tests in their own right. `packages/react` has carried `"exclude": ["src/__tests__"]` since it was written and never had the problem; tokens was simply missing the line.
+- **The doubled number was the least of it.** The second copy is compiled output, so it can pass while the source it came from would fail, and whether it ran at all depended on whether somebody had built recently. A suite whose result turns on the state of a gitignored directory has stopped reporting on the code. Both counts were green, which is why this survived as long as it did.
+- **It was also shipping the tests to npm.** `@paul-portfolio/tokens` declares `files: ["build/"]`, so all ten compiled test artifacts went into the published tarball — 31 entries, 68 kB unpacked. Narrowing the vitest glob would have fixed the count and left that untouched, which is the reason the fix is in the tsconfig instead. The tarball is now 21 entries and 50 kB with no test files in it. Nothing else moves: the only importer of `palette-check` outside this package reaches for it in `src/`, not `build/`.
+- Bumps `@paul-portfolio/tokens` 0.4.0 → 0.4.1. No token values move, but the published contents do.
+
+### Added
+
+- A guard that asks vitest what it collected — `vitest list --filesOnly --json` — and fails if any of it came from outside `src/`. Re-deriving the glob in the test would only have proved that two copies of my own guess agree, and the thing that went wrong here was a real default I had not read.
+
 ## [0.2.38] - 2026-08-16
 
 ### Fixed
