@@ -506,15 +506,17 @@ describe('tinted-fill contrast', () => {
 });
 
 /*
- * `.btn--gel` is measured but not asserted, and that is a finding rather than an
- * oversight. Its fill is a gradient from `primary-500` to `primary-700` under a
- * 55% white gloss, and white on the `primary-500` stop is 3.45:1 — under AA
- * before the gloss lightens it further. That is true of the gel variant as it
- * shipped; the label tokens neither caused it nor fixed it.
+ * `.btn--gel` is asserted now, and the way it got here is the useful part.
  *
- * Asserting it here would go red for a reason this change is not responsible
- * for, and the fix is a visual one — retone the gradient or drop the gloss —
- * which belongs in a change that is allowed to move pixels. Tokenising the
- * label is what this change owes it: a consumer can now set `on-primary` and
- * get a readable gel button without forking the selector.
+ * It sat unasserted with a note saying white on its `primary-500` stop was
+ * 3.45:1. That was accurate and it was the wrong measurement: the stop is
+ * underneath a 55% white gloss and the gloss is on top of it. Composited, the
+ * floor was 1.69:1 — and the gloss peaks at the top of the fill, which is also
+ * where the gradient's lighter stop is, so the two worst things landed on the
+ * same pixel.
+ *
+ * The lesson worth keeping is that reading a declared stop is not the same as
+ * measuring the paint, and it errs toward saying a thing passes. Any variant
+ * that stacks a translucent layer over a fill needs the composited sampler
+ * above rather than `worstRatio`.
  */

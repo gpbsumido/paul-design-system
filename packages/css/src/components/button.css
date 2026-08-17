@@ -86,17 +86,26 @@
   /* Gel — glossy gradient fill with a hard offset shadow, from the ketsup
      redesign. Theme-agnostic: the gradient is built from the primary tokens, so
      it takes on whatever palette the consumer themes. The gloss is a background
-     layer (not a pseudo-element), so it never sits over the label. */
+     layer (not a pseudo-element), so it never sits over the label.
+
+     The tones are set by contrast, not by taste. This ran 500 -> 700 under a 55%
+     gloss and put white on 1.69:1 at the top edge, where the lightest part of
+     the gradient and the strongest part of the gloss land together. The gloss is
+     the binding constraint: at 55% white it caps the fill at 3.35:1 even over
+     pure black, so no amount of darkening the ramp could have fixed this on its
+     own. 700 is then the lightest anchor that can carry a visible gloss at all,
+     and 0.14 sits under its 0.16 ceiling with margin. tinted-contrast.test.ts
+     samples every half-percent of this, so retuning either number moves it. */
   .btn--gel {
     background-image: linear-gradient(
         180deg,
-        rgba(255, 255, 255, 0.55),
+        rgba(255, 255, 255, 0.14),
         rgba(255, 255, 255, 0) 46%
       ),
       linear-gradient(
         180deg,
-        var(--paul-color-primary-500),
-        var(--paul-color-primary-700)
+        var(--paul-color-primary-700),
+        var(--paul-color-primary-900)
       );
     color: var(--paul-color-on-primary, #fff);
     border-color: rgba(0, 0, 0, 0.28);
