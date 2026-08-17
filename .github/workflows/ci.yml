@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [develop, main]
+  push:
+    branches: [develop, main]
+
+# A superseded PR run tells us nothing, so cancel it. Pushes to develop and main
+# are left alone: main is what publish.yml gates on, and a cancelled run there
+# would read as "never tested".
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # chromatic.yml builds on 20, publish.yml ships from 24. Until those
+        # agree, the suite has to hold on both.
+        node-version: [20, 24]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # No build step here on purpose. The tokens build emits compiled copies of
+      # its own tests into packages/tokens/build/__tests__, and vitest picks them
+      # up, so building first runs that workspace's suite twice. Build gets its
+      # own job below on a clean checkout.
+      - name: Run tests
+        run: npm test
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          # Matches publish.yml. This job exists to prove the artifacts that get
+          # published still build, so it uses the version that publishes them.
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build all workspaces
+        run: npm run build
