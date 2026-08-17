@@ -14,7 +14,10 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          # Was 20, which is where the ambiguity came from. Everything builds on
+          # 24 now, and this build feeds the snapshots, so it is the one that
+          # most wants to match what ships.
+          node-version: 24
           cache: npm
 
       - name: Install dependencies
