@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.40] - 2026-08-16
+
+### Changed
+
+- **The `test` job runs on Node 24 alone.** 0.2.37 put it on a 20/24 matrix and was explicit that this was a hedge: `chromatic.yml` builds on 20, `publish.yml` ships from 24, nothing in the repo said which was the real target, so the suite had to hold on both. Settled now, in favour of 24. `publish.yml` ships from 24, which makes 24 the version that actually decides whether a release works, and Node 20 reached end-of-life in April 2026 — the second leg was buying coverage for a runtime nothing should still be running. The 864 tests run once per push instead of twice.
+- Three jobs become two, and the leg that went was not a passenger. `test (20)` took 55s against `test (24)`'s 38s and `build`'s 29s, so it was the slowest job in the run and set the wall clock every time. I am not claiming a fixed saving from that, because run-to-run variance and queue time on hosted runners are both wider than the gap between the two legs. What is certain is that the run no longer waits on a runtime we do not ship.
+- Nothing else moves. Triggers, the concurrency rule, npm caching and the `test`/`build` split are all as 0.2.37 left them.
+
+### Known, and left alone
+
+- **`chromatic.yml` still builds Storybook on 20, and I aligned it to 24 on this branch before backing it out.** Not because aligning is wrong, but because I could not verify it. A Node bump underneath the snapshot builder is exactly the change that could move rendered output, so it wants a snapshot diff to justify it, and this account has been out of Chromatic snapshots for the month since before the branch existed. Those builds publish Storybook and compare nothing; the green check is `exitZeroOnChanges: true` rather than evidence of no change. `autoAcceptChanges` is set to `main`, so any drift it did introduce would be adopted as the new baseline on the release merge with nobody looking at it. It gets its own change when there is quota to prove it, which also keeps a visual risk out of a CI-config diff.
+- The version stays written out per workflow rather than centralised. After this, 24 appears twice in `ci.yml` and once in `publish.yml`, with Chromatic still on 20. Sharing one value across workflows needs either a repo-level variable, which lives in settings where a diff cannot see it, or a composite action, and the repo has neither today. Both are more machinery than three numbers deserve. There is also no `engines` field in any `package.json` and no `.nvmrc`, so nothing in the repo asserts a lower floor that 24 would break, and `tag-release.yml` pins nothing because it only shells out to `node -p` on the runner default.
+
 ## [0.2.38] - 2026-08-16
 
 ### Fixed
