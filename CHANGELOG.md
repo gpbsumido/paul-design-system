@@ -1,5 +1,31 @@
 # Changelog
 
+## [0.2.38] - 2026-08-16
+
+### Fixed
+
+- **The gel button was the last known AA failure, and the recorded figure was understating it.** 0.2.36 logged `.btn--gel` as known-and-unfixed at 3.45:1 — white on the `primary-500` stop of its gradient. That number reproduces exactly and it is the wrong measurement: the stop sits *underneath* a 55% white gloss, and the gloss is on top. Composited, the floor was **1.69:1 at rest and 1.52:1 on hover**, not 3.45:1. The gloss peaks at the top of the fill, which is also where the gradient's lighter stop is, so the two worst things land on the same pixel.
+- **The gloss was the binding constraint, not the ramp.** A 55% white gloss caps a fill at 3.35:1 even over pure black, so no retoning of the gradient could have reached AA while it stayed. Once it comes down, `primary-700` is the lightest anchor that can still carry a visible gloss — its ceiling is 0.16, where `primary-600` could only have carried 0.02, which is no gloss at all. So the fill runs `primary-700` → `primary-900` under a 14% gloss, and measures **5.12:1 at rest and 4.73:1 on hover** at its worst stop, climbing to 11.39:1 at the foot. The fade length turned out not to matter: the floor is always the top edge, where the gloss is at peak. The hard offset shadow and the 1px specular hairline are untouched — that hairline is most of what still reads as gel, and no text reaches it through 8px of padding.
+- Bumps `@paul-portfolio/css` 0.8.0 → 0.8.1. No token values move, so `@paul-portfolio/tokens` stays at 0.4.0 and `@paul-portfolio/react` at 0.5.1.
+
+### Added
+
+- **The contrast suite learned to measure paint instead of declarations.** Its sampler read the discrete stops a background names and took the worst, which is correct for the starburst badge because its stops are opaque — but it cannot see an interpolated midpoint and it cannot see a translucent layer on top, and gel does both. The new sampler walks every `background-image` layer, interpolates with premultiplied alpha the way CSS does, composites the stack, and checks every half-percent of the fill. Hover carries its `brightness()` filter through, which matters more than it sounds: brightness lightens the fill while a white label just clamps at white, so hover is the *worse* state for gel, not the safer one. Six new pairs — rest, hover and active across both themes — taking the suite to 35.
+- A guard on the instrument itself. A white gloss can only ever lighten a fill, so the composited floor must stay strictly below the bare-stop reading. Without it, a refactor that quietly stopped compositing would make every ratio improve while the button got worse, and the suite would stay green through it.
+- `contrast-notes.css` records gel as measured rather than deferred, with the ceiling maths for why 700/0.14 and not something brighter. The disabled state stays exempt under WCAG 2.1 SC 1.4.3 and stays stated rather than skipped in silence.
+## [0.2.37] - 2026-08-16
+
+### Added
+
+- **CI actually runs the tests now.** There were three workflows in `.github/workflows` and not one of them ran `npm test`. The suite is 857 tests across tokens, css, react and angular, and it included the palette contrast and deuteranopia gates plus the 28 component contrast pairs that caught real AA failures this week. All of it was green only because I remembered to run it before pushing. That is not a guard, it is a habit, and habits do not survive a busy week. `ci.yml` runs on pull requests into `develop` and `main` and on pushes to both, so the branch that publishes to npm cannot take an untested merge.
+- Two jobs, deliberately split. `test` runs `npm test` on a Node matrix of 20 and 24, because `chromatic.yml` builds on 20 and `publish.yml` ships from 24 and nothing in the repo says which one is the real target; until those agree the suite has to hold on both. `build` runs `npm run build` on 24 alone, matching `publish.yml`, since its whole job is to prove the artifacts that get published still compile. They run in parallel, so the wall clock is the slower of the two rather than the sum. Locally the suite is 9s and a clean build of all three publishable packages is 3s, so this costs the runner setup and little else.
+- Superseded pull request runs get cancelled. Pushes to `develop` and `main` do not, because `publish.yml` gates on `main` and a cancelled run there would read as "never tested" rather than "tested and passed".
+
+### Known, and left alone
+
+- Storybook is not in this workflow. `chromatic.yml` already builds it on every pull request into `develop` and `main`, so adding a second build buys a slower pipeline and no new signal. It is not even the expensive part, which I had assumed it would be: it builds in about 5s here. If Chromatic ever stops running per-PR, this is the first thing that needs to move.
+- The tokens build emits compiled copies of its own tests into `packages/tokens/build/__tests__`, and vitest discovers them. Build that workspace before testing it and its suite runs twice, 42 tests becoming 84. Harmless today because the copies are identical, misleading the day a stale `build/` outlives a source change. The `test` job sidesteps it by never building, and `build` gets its own clean checkout, so CI is honest either way. The discovery glob wants narrowing to `src/`, but that is a change to the test config and not to CI, so it gets its own.
+
 ## [0.2.36] - 2026-08-16
 
 ### Added
