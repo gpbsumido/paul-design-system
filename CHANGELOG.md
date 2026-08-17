@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.37] - 2026-08-16
+
+### Added
+
+- **CI actually runs the tests now.** There were three workflows in `.github/workflows` and not one of them ran `npm test`. The suite is 857 tests across tokens, css, react and angular, and it included the palette contrast and deuteranopia gates plus the 28 component contrast pairs that caught real AA failures this week. All of it was green only because I remembered to run it before pushing. That is not a guard, it is a habit, and habits do not survive a busy week. `ci.yml` runs on pull requests into `develop` and `main` and on pushes to both, so the branch that publishes to npm cannot take an untested merge.
+- Two jobs, deliberately split. `test` runs `npm test` on a Node matrix of 20 and 24, because `chromatic.yml` builds on 20 and `publish.yml` ships from 24 and nothing in the repo says which one is the real target; until those agree the suite has to hold on both. `build` runs `npm run build` on 24 alone, matching `publish.yml`, since its whole job is to prove the artifacts that get published still compile. They run in parallel, so the wall clock is the slower of the two rather than the sum. Locally the suite is 9s and a clean build of all three publishable packages is 3s, so this costs the runner setup and little else.
+- Superseded pull request runs get cancelled. Pushes to `develop` and `main` do not, because `publish.yml` gates on `main` and a cancelled run there would read as "never tested" rather than "tested and passed".
+
+### Known, and left alone
+
+- Storybook is not in this workflow. `chromatic.yml` already builds it on every pull request into `develop` and `main`, so adding a second build buys a slower pipeline and no new signal. It is not even the expensive part, which I had assumed it would be: it builds in about 5s here. If Chromatic ever stops running per-PR, this is the first thing that needs to move.
+- The tokens build emits compiled copies of its own tests into `packages/tokens/build/__tests__`, and vitest discovers them. Build that workspace before testing it and its suite runs twice, 42 tests becoming 84. Harmless today because the copies are identical, misleading the day a stale `build/` outlives a source change. The `test` job sidesteps it by never building, and `build` gets its own clean checkout, so CI is honest either way. The discovery glob wants narrowing to `src/`, but that is a change to the test config and not to CI, so it gets its own.
+
 ## [0.2.36] - 2026-08-16
 
 ### Added
