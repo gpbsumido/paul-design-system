@@ -80,6 +80,28 @@
  * error is the one that takes 950 rather than 900: the error ramp's 400 is
  * darker than the other ramps' 400s, and 900 measured 3.62:1 there.
  *
+ * .btn--gel is the layered one: a primary-700 -> primary-900 gradient under a
+ * 14% white gloss that fades out at 46%. Because the gloss is translucent, the
+ * colour under the label is neither stop the declaration names, so these are
+ * measured on the composited fill at every half-percent of the height rather
+ * than at the stops. Ratios climb monotonically down the fill, so the floor is
+ * the top edge in every state:
+ *   - rest    white on #34796f (top edge):  5.12:1 ✓  rising to 11.39:1 at the foot
+ *   - hover   white on #377f74 (top edge):  4.73:1 ✓  rising to 10.89:1
+ *   - active  identical to rest — it moves the button, not its colours
+ *
+ * Hover is the worse state, not the safer one: brightness(1.05) lightens the
+ * fill while a white label just clamps at white.
+ *
+ * The tones are not a taste call. A 55% white gloss caps the fill at 3.35:1 even
+ * over pure black, so the gloss had to come down before any ramp choice could
+ * matter. Once it did, primary-700 was the lightest anchor that could still
+ * carry a visible gloss (its ceiling is 0.16, hence 0.14), and primary-600 could
+ * only have carried 0.02, which is no gloss at all.
+ *
+ * The 1px inset highlight is not counted. It is a hairline on the top border,
+ * 8px of padding above any text, and it is most of what still reads as gel.
+ *
  * ----------------------------------------------------------------------
  * The label layer, and what a consumer owes it.
  *
@@ -93,9 +115,11 @@
  * These are the pairs to keep readable. Left is the token to set; right is the
  * fill it lands on, which the component takes from the ramp.
  *
- *   --paul-color-on-primary        on primary-600 / primary-700 (hover)
+ *   --paul-color-on-primary        on primary-600 / primary-700 (hover),
+ *                                  and on the gel gradient 700 -> 900 under gloss
  *     .btn--primary, .btn--gel, and the busy spinner on both
- *     ships white: 5.09:1 rest, 7.12:1 hover
+ *     ships white: 5.09:1 rest, 7.12:1 hover on .btn--primary;
+ *     5.12:1 rest, 4.73:1 hover at the gel button's worst stop
  *
  *   --paul-color-on-primary-tint   on primary-50/100 light, primary-900/950 dark
  *     .btn--secondary, .badge--info, .avatar--fallback
@@ -144,11 +168,11 @@
  *   3:1 for a UI component boundary here — so it stays until the switch is
  *   looked at properly.
  *
- *   .btn--gel puts white on a primary-500 → primary-700 gradient under a 55%
- *   white gloss. White on the 500 stop is 3.45:1, under AA before the gloss
- *   lightens it further. That is how the variant shipped; the label is now
- *   tokenised so a consumer can fix it, but retoning the gradient is a visual
- *   change and belongs in its own.
+ * Fixed since, and worth keeping the reasoning: .btn--gel used to sit in this
+ * list at 3.45:1. That figure was white on its primary-500 stop, measured
+ * underneath the gloss while the gloss sat on top of it — composited, the real
+ * floor was 1.69:1 at rest and 1.52:1 on hover. Retoning it moved pixels, which
+ * is why it waited for a change allowed to.
  *
  * Not measured, and deliberately: .btn[disabled] drops the whole control to
  * opacity 0.5, which composites the light-mode pair down to 2.28:1. WCAG 2.1

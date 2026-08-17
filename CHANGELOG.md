@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.38] - 2026-08-16
+
+### Fixed
+
+- **The gel button was the last known AA failure, and the recorded figure was understating it.** 0.2.36 logged `.btn--gel` as known-and-unfixed at 3.45:1 — white on the `primary-500` stop of its gradient. That number reproduces exactly and it is the wrong measurement: the stop sits *underneath* a 55% white gloss, and the gloss is on top. Composited, the floor was **1.69:1 at rest and 1.52:1 on hover**, not 3.45:1. The gloss peaks at the top of the fill, which is also where the gradient's lighter stop is, so the two worst things land on the same pixel.
+- **The gloss was the binding constraint, not the ramp.** A 55% white gloss caps a fill at 3.35:1 even over pure black, so no retoning of the gradient could have reached AA while it stayed. Once it comes down, `primary-700` is the lightest anchor that can still carry a visible gloss — its ceiling is 0.16, where `primary-600` could only have carried 0.02, which is no gloss at all. So the fill runs `primary-700` → `primary-900` under a 14% gloss, and measures **5.12:1 at rest and 4.73:1 on hover** at its worst stop, climbing to 11.39:1 at the foot. The fade length turned out not to matter: the floor is always the top edge, where the gloss is at peak. The hard offset shadow and the 1px specular hairline are untouched — that hairline is most of what still reads as gel, and no text reaches it through 8px of padding.
+- Bumps `@paul-portfolio/css` 0.8.0 → 0.8.1. No token values move, so `@paul-portfolio/tokens` stays at 0.4.0 and `@paul-portfolio/react` at 0.5.1.
+
+### Added
+
+- **The contrast suite learned to measure paint instead of declarations.** Its sampler read the discrete stops a background names and took the worst, which is correct for the starburst badge because its stops are opaque — but it cannot see an interpolated midpoint and it cannot see a translucent layer on top, and gel does both. The new sampler walks every `background-image` layer, interpolates with premultiplied alpha the way CSS does, composites the stack, and checks every half-percent of the fill. Hover carries its `brightness()` filter through, which matters more than it sounds: brightness lightens the fill while a white label just clamps at white, so hover is the *worse* state for gel, not the safer one. Six new pairs — rest, hover and active across both themes — taking the suite to 35.
+- A guard on the instrument itself. A white gloss can only ever lighten a fill, so the composited floor must stay strictly below the bare-stop reading. Without it, a refactor that quietly stopped compositing would make every ratio improve while the button got worse, and the suite would stay green through it.
+- `contrast-notes.css` records gel as measured rather than deferred, with the ceiling maths for why 700/0.14 and not something brighter. The disabled state stays exempt under WCAG 2.1 SC 1.4.3 and stays stated rather than skipped in silence.
 ## [0.2.37] - 2026-08-16
 
 ### Added
