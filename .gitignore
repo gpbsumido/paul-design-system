@@ -36,3 +36,6 @@ storybook-static/
 
 # Harness
 .harness/
+
+# Local planning working files
+plans/
