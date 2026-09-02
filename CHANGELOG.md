@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.3.0] - 2026-09-02
+
+### Added
+
+- **Ten new React components aimed at AI/LLM app work**, each customizable, keyboard-operable, and axe-clean. They're the pieces I keep rebuilding by hand every time I start an assistant UI, so they belong in the system:
+  - **RichTextEditor** — a contentEditable editor with a configurable toolbar (bold/italic/underline/heading/lists/code/link), Ctrl/Cmd+B/I/U shortcuts, and HTML emitted on every edit. It exposes the textbox/toolbar ARIA pattern so a screen reader treats it as a real multiline field.
+  - **ChatMessage** — a chat bubble keyed by role (user/assistant/system), with avatar, name, timestamp, and a `pending` state that swaps in the typing indicator. Renders as an `article` so each turn is a landmark.
+  - **ChatComposer** — an auto-growing prompt field: Enter sends, Shift+Enter adds a newline, empty messages don't send, and the whole control locks while `busy`.
+  - **StreamingText** — reveals text a few characters at a time the way a streamed model reply arrives, with a caret, announced through a polite live region. Honours `prefers-reduced-motion` by showing the whole string at once — and reads the preference synchronously so a reduced-motion user never sees the animation begin.
+  - **TypingDots** — the three-dot "assistant is typing" indicator. The animation is decorative and hidden from assistive tech; the label carries the meaning.
+  - **CodeBlock** — a read-only code panel with a language label and a copy button that reports success back to assistive tech. Line numbers are decorative and kept out of the a11y tree so the code is what gets read.
+  - **CommandPalette** — a ⌘K menu: type to filter (label + keywords), arrow keys to move, Enter to run, Escape to close, optional group headings. Follows the combobox/listbox pattern with `aria-activedescendant`, so the active option is announced without focus leaving the input.
+  - **Combobox** — an accessible autocomplete for model/tool pickers, same `aria-activedescendant` approach, closing when focus leaves the control.
+  - **Toast** — `ToastProvider` + `useToast()`. Toasts stack in a fixed live region, errors announce assertively and everything else politely, and they auto-dismiss unless `duration` is 0. Ids come from a ref counter, so there's no non-determinism in the render.
+  - **TokenUsageMeter** — a budget bar for LLM token usage: prompt and completion tokens as two segments of a track sized against `maxTokens`, with the used total, percent, and an optional cost estimate. Progressbar semantics, and it shifts to a warning tone near the budget and an over-budget tone past it.
+- Matching stylesheets in `@paul-portfolio/css` under the existing `components` layer, built entirely from the token custom properties — no new hardcoded colours or spacing.
+- Storybook stories for all ten, with interaction `play` tests on the composer, palette, combobox and toast.
+- Full test coverage: unit/behaviour tests per component plus an axe pass for each. `@paul-portfolio/react` 0.5.1 → 0.6.0, `@paul-portfolio/css` 0.8.1 → 0.9.0.
+
+### Known, and left alone
+
+- **These land in React only.** The chart components mirror into `@paul-portfolio/angular` because their geometry is shared and unit-tested on both sides; these ten are interaction-heavy React components with no shared geometry, so an Angular port is its own piece of work rather than a copy. Noted here so the gap is deliberate, not forgotten.
+
 ## [0.2.40] - 2026-08-16
 
 ### Changed
