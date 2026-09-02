@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
-import { render, screen, act } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { CodeBlock } from '../CodeBlock';
 
 describe('CodeBlock', () => {
@@ -16,10 +15,11 @@ describe('CodeBlock', () => {
 
   it('copies the code to the clipboard and reports success', async () => {
     const writeText = vi.fn().mockResolvedValue(undefined);
+    // Use fireEvent here: userEvent.setup() installs its own clipboard stub,
+    // which would shadow this one.
     vi.stubGlobal('navigator', { clipboard: { writeText } });
-    const user = userEvent.setup();
     render(<CodeBlock code="echo hi" language="bash" />);
-    await user.click(screen.getByRole('button', { name: /copy/i }));
+    fireEvent.click(screen.getByRole('button', { name: /copy/i }));
     expect(writeText).toHaveBeenCalledWith('echo hi');
     expect(await screen.findByRole('button', { name: /copied/i })).toBeInTheDocument();
     vi.unstubAllGlobals();

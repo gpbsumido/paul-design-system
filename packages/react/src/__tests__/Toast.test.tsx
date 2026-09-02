@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
-import { render, screen, act } from '@testing-library/react';
+import { render, screen, act, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ToastProvider, useToast } from '../Toast';
 
@@ -28,9 +28,8 @@ describe('Toast', () => {
     expect(screen.getByText('All good')).toBeInTheDocument();
   });
 
-  it('auto-dismisses after the given duration', async () => {
+  it('auto-dismisses after the given duration', () => {
     vi.useFakeTimers();
-    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
     function T() {
       const { toast } = useToast();
       return <button onClick={() => toast({ title: 'Bye', duration: 1000 })}>Fire</button>;
@@ -40,7 +39,8 @@ describe('Toast', () => {
         <T />
       </ToastProvider>,
     );
-    await user.click(screen.getByRole('button', { name: 'Fire' }));
+    // fireEvent avoids the userEvent + fake-timers deadlock.
+    fireEvent.click(screen.getByRole('button', { name: 'Fire' }));
     expect(screen.getByText('Bye')).toBeInTheDocument();
     act(() => {
       vi.advanceTimersByTime(1100);
