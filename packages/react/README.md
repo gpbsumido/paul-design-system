@@ -146,6 +146,126 @@ Renders content that's available to screen readers but hidden visually.
 <VisuallyHidden>Loading</VisuallyHidden>
 ```
 
+## AI / LLM app components
+
+A set of interaction-heavy components for building assistant and chat surfaces.
+All are keyboard-operable and carry an axe test like the rest of the package.
+
+### RichTextEditor
+
+A small rich-text editor on a `contentEditable` region. The toolbar is
+configurable (`bold`, `italic`, `underline`, `h2`, `bulletList`, `orderedList`,
+`code`, `link`), Ctrl/Cmd+B/I/U work from the keyboard, and it emits HTML on
+every edit.
+
+```tsx
+<RichTextEditor
+  label="Prompt"
+  toolbar={["bold", "italic", "code"]}
+  onChange={(html) => setDraft(html)}
+/>
+```
+
+### ChatMessage
+
+A chat bubble aligned and coloured by `role` (`user` | `assistant` | `system`),
+with optional `avatar`, `name`, and `timestamp`. Pass `pending` while a reply is
+streaming to show the typing indicator.
+
+```tsx
+<ChatMessage role="assistant" name="Assistant" timestamp="10:30">
+  Here's the summary you asked for.
+</ChatMessage>
+<ChatMessage role="assistant" pending />
+```
+
+### ChatComposer
+
+An auto-growing prompt field. Enter sends, Shift+Enter inserts a newline, empty
+messages don't send, and the control locks while `busy`.
+
+```tsx
+<ChatComposer label="Message" onSubmit={send} busy={waiting} maxLength={2000} />
+```
+
+### StreamingText
+
+Reveals text a few characters at a time, the way a streamed model reply arrives,
+with a caret and a polite live region. Honours `prefers-reduced-motion` by
+showing the whole string at once.
+
+```tsx
+<StreamingText text={reply} speed={2} interval={30} onDone={scrollToEnd} />
+```
+
+### TypingDots
+
+The three-dot "assistant is typing" indicator. The animation is decorative and
+hidden from assistive tech; the `label` carries the meaning.
+
+```tsx
+<TypingDots label="Assistant is typing" />
+```
+
+### CodeBlock
+
+A read-only code panel with a language label and a copy button that reports
+success to assistive tech. Optional decorative line numbers.
+
+```tsx
+<CodeBlock code={snippet} language="ts" filename="stream.ts" showLineNumbers />
+```
+
+### CommandPalette
+
+A ⌘K command menu. Type to filter (label + `keywords`), arrow keys to move, Enter
+to run, Escape to close, with optional group headings. Follows the
+combobox/listbox pattern with `aria-activedescendant`.
+
+```tsx
+<CommandPalette
+  open={open}
+  onClose={() => setOpen(false)}
+  commands={[{ id: "new", label: "New chat", onSelect: startChat }]}
+/>
+```
+
+### Combobox
+
+An accessible autocomplete — a filtering text input with a listbox popup and
+full keyboard support. Handy for model/tool pickers.
+
+```tsx
+<Combobox label="Model" options={models} value={model} onChange={setModel} />
+```
+
+### Toast
+
+Wrap the app in `ToastProvider` and raise notifications with `useToast()`. Toasts
+stack in a live region (errors announce assertively) and auto-dismiss unless
+`duration` is `0`.
+
+```tsx
+const { toast } = useToast();
+toast({ title: "Saved", description: "Your changes are safe.", variant: "success" });
+```
+
+### TokenUsageMeter
+
+A budget bar for LLM token usage: prompt and completion tokens as two segments of
+a track sized against `maxTokens`, with the used total, percent, and an optional
+cost estimate. Shifts to a warning tone near the budget and an over tone past it.
+
+```tsx
+<TokenUsageMeter
+  label="Context window"
+  promptTokens={3200}
+  completionTokens={1400}
+  maxTokens={8000}
+  costPerMTok={3}
+/>
+```
+
 ### cx
 
 A tiny classname joiner used internally, exported for convenience.

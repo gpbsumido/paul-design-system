@@ -18,6 +18,7 @@
 - Matching stylesheets in `@paul-portfolio/css` under the existing `components` layer, built entirely from the token custom properties — no new hardcoded colours or spacing.
 - Storybook stories for all ten, with interaction `play` tests on the composer, palette, combobox and toast.
 - Full test coverage: unit/behaviour tests per component plus an axe pass for each. `@paul-portfolio/react` 0.5.1 → 0.6.0, `@paul-portfolio/css` 0.8.1 → 0.9.0.
+- Docs: all ten written up in the `@paul-portfolio/react` README, with a React-only AI/LLM section added to the root README. Also refreshed the React component counts, which had drifted (the root README still said "10 components" long after the charts landed).
 
 ### Known, and left alone
 
