@@ -18,7 +18,7 @@ Paul Design System provides a complete UI foundation that works with any web fra
 |---------|-------------|--------|
 | `@paul-portfolio/tokens` | Design tokens: colors, spacing, typography, shadows, motion, radii, z-index | Ready |
 | `@paul-portfolio/css` | Framework-agnostic CSS components using CSS layers | Ready |
-| `@paul-portfolio/react` | React component library (10 components) | Ready |
+| `@paul-portfolio/react` | React component library — primitives, charts, and AI/LLM app components | Ready |
 | `@paul-portfolio/angular` | Angular component library (16 standalone components) | Ready |
 
 ## Dependency graph
@@ -35,7 +35,7 @@ Paul Design System provides a complete UI foundation that works with any web fra
        |                  |
        v                  v
   @paul-portfolio/react        @paul-portfolio/angular
-  (10 components)    (16 standalone components)
+  (UI, charts, AI)   (16 standalone components)
 ```
 
 Tokens flow downward. Each layer builds on the one below it. Consumers pick the layer that fits their stack.
@@ -137,6 +137,26 @@ The Angular package exports 16 standalone components because compound components
 
 Button supports an icon-only pattern (documented in Storybook as "IconButton") using the `aria-label` prop for accessibility.
 
+### React — AI / LLM app components
+
+The React package also ships a set of interaction-heavy components for building
+assistant and chat surfaces. These are React-only (no shared CSS-primitive or
+Angular counterpart yet) and are fully documented in the
+[`@paul-portfolio/react` README](packages/react/README.md).
+
+| Component | What it's for |
+|-----------|---------------|
+| `RichTextEditor` | Configurable-toolbar rich-text editor with keyboard shortcuts |
+| `ChatMessage` | Chat bubble by role (user/assistant/system), with a pending state |
+| `ChatComposer` | Auto-growing prompt field — Enter sends, Shift+Enter newlines |
+| `StreamingText` | Token-by-token reveal with a caret, reduced-motion aware |
+| `TypingDots` | "Assistant is typing" indicator |
+| `CodeBlock` | Code panel with a language label and copy-to-clipboard |
+| `CommandPalette` | ⌘K command menu with filtering and full keyboard nav |
+| `Combobox` | Accessible autocomplete for model/tool pickers |
+| `Toast` | `ToastProvider` + `useToast()` notifications in a live region |
+| `TokenUsageMeter` | LLM token budget bar (prompt/completion split, cost) |
+
 ## Design tokens
 
 Tokens are the single source of truth for every visual value in the system.
@@ -175,7 +195,7 @@ npm run storybook
 
 Stories are organized into two sections:
 
-- **Components** -- Button, Input, Chip, Card, Modal, Tooltip, Avatar, Badge, Skeleton, IconButton
+- **Components** -- Button, Input, Chip, Card, Modal, Tooltip, Avatar, Badge, Skeleton, IconButton, the chart set, and the AI/LLM app components (RichTextEditor, ChatMessage, ChatComposer, StreamingText, TypingDots, CodeBlock, CommandPalette, Combobox, Toast, TokenUsageMeter)
 - **Tokens** -- Colors, Spacing, Typography (visual reference pages in MDX)
 
 ## Chromatic

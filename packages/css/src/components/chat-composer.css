@@ -1,0 +1,94 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * ChatComposer – auto-growing prompt field with a send button.
+   * ---------------------------------------------------------------- */
+  .chat-composer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--paul-spacing-1);
+    font-family: var(--paul-font-family-sans);
+  }
+
+  .chat-composer__label {
+    font-size: var(--paul-font-size-sm);
+    font-weight: var(--paul-font-weight-medium);
+    color: var(--paul-color-foreground);
+  }
+
+  .chat-composer__row {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--paul-spacing-2);
+    padding: var(--paul-spacing-2);
+    border: 1px solid var(--paul-color-border);
+    border-radius: var(--paul-radius-lg);
+    background-color: var(--paul-color-surface);
+    transition: border-color var(--paul-duration-fast) var(--paul-easing-default);
+  }
+
+  .chat-composer__row:focus-within {
+    border-color: var(--paul-color-primary-600);
+    outline: 2px solid var(--paul-color-primary-600);
+    outline-offset: -1px;
+  }
+
+  .chat-composer__field {
+    flex: 1;
+    min-width: 0;
+    max-height: 12.5rem;
+    padding: var(--paul-spacing-1);
+    border: none;
+    background: none;
+    color: var(--paul-color-foreground);
+    font: inherit;
+    font-size: var(--paul-font-size-base);
+    line-height: var(--paul-line-height-normal);
+    resize: none;
+  }
+
+  .chat-composer__field:focus-visible {
+    outline: none;
+  }
+
+  .chat-composer__field::placeholder {
+    color: var(--paul-color-muted);
+  }
+
+  .chat-composer__field:disabled {
+    color: var(--paul-color-muted);
+    cursor: not-allowed;
+  }
+
+  .chat-composer__send {
+    flex-shrink: 0;
+    padding: var(--paul-spacing-2) var(--paul-spacing-4);
+    border: none;
+    border-radius: var(--paul-radius-md);
+    background-color: var(--paul-color-primary-600);
+    color: var(--paul-color-on-primary, #fff);
+    font-size: var(--paul-font-size-sm);
+    font-weight: var(--paul-font-weight-semibold);
+    cursor: pointer;
+    transition: background-color var(--paul-duration-fast) var(--paul-easing-default);
+  }
+
+  .chat-composer__send:hover:not(:disabled) {
+    background-color: var(--paul-color-primary-700);
+  }
+
+  .chat-composer__send:focus-visible {
+    outline: 2px solid var(--paul-color-primary-600);
+    outline-offset: 2px;
+  }
+
+  .chat-composer__send:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .chat-composer__count {
+    align-self: flex-end;
+    font-size: var(--paul-font-size-xs);
+    color: var(--paul-color-muted);
+  }
+}

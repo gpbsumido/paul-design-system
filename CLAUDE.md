@@ -6,7 +6,7 @@ All four packages are implemented and feature-complete:
 
 - `@paul-portfolio/tokens` -- Design tokens (colors, spacing, typography, shadows, motion, radii, z-index)
 - `@paul-portfolio/css` -- 9 CSS components + 4 utilities (focus-ring, sr-only, visually-hidden, contrast-notes)
-- `@paul-portfolio/react` -- 32 React components with full test coverage including axe-core a11y tests
+- `@paul-portfolio/react` -- 42 React components with full test coverage including axe-core a11y tests
 - `@paul-portfolio/angular` -- 32 standalone Angular components (compound components for Card and Modal)
 - `packages/storybook` -- Storybook stories for all components + token documentation pages, Chromatic configured
 
@@ -46,6 +46,7 @@ All four packages are implemented and feature-complete:
 ## React
 
 - 10 components: Button, Input, Chip, Card, Modal, Tooltip, Avatar, Badge, Skeleton, VisuallyHidden.
+- AI/LLM app components (React-only, no CSS-primitive or Angular counterpart yet): RichTextEditor, ChatMessage, ChatComposer, StreamingText, TypingDots, CodeBlock, CommandPalette, Combobox, Toast (`ToastProvider` + `useToast`), TokenUsageMeter.
 - Components wrap CSS primitives; they do not reimplement styles.
 - `cx` utility exported for class name merging.
 
