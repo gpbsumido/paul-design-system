@@ -65,7 +65,7 @@
     border: none;
     border-radius: var(--paul-radius-md);
     background-color: var(--paul-color-primary-600);
-    color: var(--paul-color-on-primary);
+    color: var(--paul-color-on-primary, #fff);
     font-size: var(--paul-font-size-sm);
     font-weight: var(--paul-font-weight-semibold);
     cursor: pointer;

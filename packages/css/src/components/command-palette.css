@@ -80,7 +80,7 @@
 
   .command-palette__option--active {
     background-color: var(--paul-color-primary-600);
-    color: var(--paul-color-on-primary);
+    color: var(--paul-color-on-primary, #fff);
   }
 
   .command-palette__icon {

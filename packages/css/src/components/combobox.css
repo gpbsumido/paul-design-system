@@ -58,7 +58,7 @@
 
   .combobox__option--active {
     background-color: var(--paul-color-primary-600);
-    color: var(--paul-color-on-primary);
+    color: var(--paul-color-on-primary, #fff);
   }
 
   .combobox__option[aria-selected='true'] {

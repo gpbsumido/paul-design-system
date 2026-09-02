@@ -71,7 +71,7 @@
 
   .chat-message--user .chat-message__bubble {
     background-color: var(--paul-color-primary-600);
-    color: var(--paul-color-on-primary);
+    color: var(--paul-color-on-primary, #fff);
     border-top-right-radius: var(--paul-radius-sm);
   }
 }
