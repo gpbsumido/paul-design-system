@@ -1,0 +1,77 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * ChatMessage – a chat bubble, aligned and coloured by role.
+   * ---------------------------------------------------------------- */
+  .chat-message {
+    display: flex;
+    gap: var(--paul-spacing-2);
+    max-width: 100%;
+    font-family: var(--paul-font-family-sans);
+  }
+
+  .chat-message__avatar {
+    flex-shrink: 0;
+  }
+
+  .chat-message__main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--paul-spacing-1);
+    min-width: 0;
+    max-width: 42rem;
+  }
+
+  .chat-message__meta {
+    display: flex;
+    align-items: baseline;
+    gap: var(--paul-spacing-2);
+    font-size: var(--paul-font-size-xs);
+  }
+
+  .chat-message__name {
+    font-weight: var(--paul-font-weight-semibold);
+    color: var(--paul-color-foreground);
+  }
+
+  .chat-message__time {
+    color: var(--paul-color-muted);
+  }
+
+  .chat-message__bubble {
+    padding: var(--paul-spacing-2_5) var(--paul-spacing-3);
+    border-radius: var(--paul-radius-lg);
+    font-size: var(--paul-font-size-base);
+    line-height: var(--paul-line-height-relaxed);
+    overflow-wrap: break-word;
+  }
+
+  /* Assistant / system: left-aligned, surface bubble. */
+  .chat-message--assistant .chat-message__bubble,
+  .chat-message--system .chat-message__bubble {
+    background-color: var(--paul-color-neutral-100);
+    color: var(--paul-color-foreground);
+    border-top-left-radius: var(--paul-radius-sm);
+  }
+
+  .chat-message--system .chat-message__bubble {
+    font-size: var(--paul-font-size-sm);
+    color: var(--paul-color-muted);
+    background-color: transparent;
+    border: 1px dashed var(--paul-color-border);
+  }
+
+  /* User: right-aligned, primary bubble. */
+  .chat-message--user {
+    flex-direction: row-reverse;
+  }
+
+  .chat-message--user .chat-message__main {
+    align-items: flex-end;
+  }
+
+  .chat-message--user .chat-message__bubble {
+    background-color: var(--paul-color-primary-600);
+    color: var(--paul-color-on-primary, #fff);
+    border-top-right-radius: var(--paul-radius-sm);
+  }
+}

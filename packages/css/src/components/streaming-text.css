@@ -1,0 +1,32 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * StreamingText – text revealed a few characters at a time, with a caret.
+   * ---------------------------------------------------------------- */
+  .streaming-text {
+    font-family: inherit;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+  }
+
+  .streaming-text__cursor {
+    display: inline-block;
+    width: 0.5rem;
+    height: 1em;
+    margin-left: 1px;
+    vertical-align: text-bottom;
+    background-color: var(--paul-color-primary-600);
+    animation: paul-streaming-blink 1s steps(2, start) infinite;
+  }
+
+  @keyframes paul-streaming-blink {
+    to {
+      visibility: hidden;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .streaming-text__cursor {
+      animation: none;
+    }
+  }
+}

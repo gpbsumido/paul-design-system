@@ -32,6 +32,17 @@ import { ParetoChart } from '../ParetoChart';
 import { GaugeChart } from '../GaugeChart';
 import { WordCloud } from '../WordCloud';
 import { StackedLineChart } from '../StackedLineChart';
+import { RichTextEditor } from '../RichTextEditor';
+import { ChatMessage } from '../ChatMessage';
+import { ChatComposer } from '../ChatComposer';
+import { StreamingText } from '../StreamingText';
+import { TypingDots } from '../TypingDots';
+import { CodeBlock } from '../CodeBlock';
+import { CommandPalette } from '../CommandPalette';
+import { Combobox } from '../Combobox';
+import { ToastProvider, useToast } from '../Toast';
+import { TokenUsageMeter } from '../TokenUsageMeter';
+import { useEffect } from 'react';
 
 expect.extend(matchers);
 
@@ -342,6 +353,101 @@ describe('Accessibility', () => {
   it('Sparkline with several series has no a11y violations', async () => {
     const { container } = render(
       <Sparkline label="Two teams" series={[[1, 5, 3], [2, 4, 8]]} />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('RichTextEditor has no a11y violations', async () => {
+    const { container } = render(<RichTextEditor label="Message" placeholder="Write…" />);
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('ChatMessage has no a11y violations', async () => {
+    const { container } = render(
+      <ChatMessage role="assistant" name="Assistant" timestamp="10:30">
+        Hello there
+      </ChatMessage>,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('ChatComposer has no a11y violations', async () => {
+    const { container } = render(
+      <ChatComposer label="Message" onSubmit={() => {}} maxLength={500} />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('StreamingText has no a11y violations', async () => {
+    const { container } = render(<StreamingText text="Streaming reply" />);
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('TypingDots has no a11y violations', async () => {
+    const { container } = render(<TypingDots label="Assistant is typing" />);
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('CodeBlock has no a11y violations', async () => {
+    const { container } = render(
+      <CodeBlock code={'const x = 1;\nconst y = 2;'} language="ts" showLineNumbers />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('CommandPalette has no a11y violations', async () => {
+    const { container } = render(
+      <CommandPalette
+        open
+        onClose={() => {}}
+        commands={[
+          { id: 'a', label: 'New chat', onSelect: () => {} },
+          { id: 'b', label: 'Clear history', group: 'Danger', onSelect: () => {} },
+        ]}
+      />,
+    );
+    expect(await axe(document.body)).toHaveNoViolations();
+  });
+
+  it('Combobox has no a11y violations', async () => {
+    const { container } = render(
+      <Combobox
+        label="Model"
+        options={[
+          { value: 'gpt', label: 'GPT-4o' },
+          { value: 'claude', label: 'Claude Opus' },
+        ]}
+        onChange={() => {}}
+      />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('Toast has no a11y violations', async () => {
+    function Raise() {
+      const { toast } = useToast();
+      useEffect(() => {
+        toast({ title: 'Saved', description: 'Your work is safe' });
+      }, [toast]);
+      return null;
+    }
+    render(
+      <ToastProvider>
+        <Raise />
+      </ToastProvider>,
+    );
+    expect(await axe(document.body)).toHaveNoViolations();
+  });
+
+  it('TokenUsageMeter has no a11y violations', async () => {
+    const { container } = render(
+      <TokenUsageMeter
+        label="Context window"
+        promptTokens={1200}
+        completionTokens={800}
+        maxTokens={8000}
+        costPerMTok={3}
+      />,
     );
     expect(await axe(container)).toHaveNoViolations();
   });

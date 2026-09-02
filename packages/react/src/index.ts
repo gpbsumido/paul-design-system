@@ -31,6 +31,21 @@ export { GaugeChart, type GaugeTone } from './GaugeChart';
 export { StackedLineChart, type LineSeries } from './StackedLineChart';
 export { WordCloud, type WordCloudDatum } from './WordCloud';
 export * as chartGeometry from './chartGeometry';
+export { RichTextEditor, type RichTextControl } from './RichTextEditor';
+export { ChatMessage, type ChatRole } from './ChatMessage';
+export { ChatComposer } from './ChatComposer';
+export { StreamingText } from './StreamingText';
+export { TypingDots } from './TypingDots';
+export { CodeBlock } from './CodeBlock';
+export { CommandPalette, type Command } from './CommandPalette';
+export { Combobox, type ComboboxOption } from './Combobox';
+export {
+  ToastProvider,
+  useToast,
+  type ToastOptions,
+  type ToastVariant,
+} from './Toast';
+export { TokenUsageMeter } from './TokenUsageMeter';
 export { VisuallyHidden } from './VisuallyHidden';
 export { usePrefersReducedMotion } from './usePrefersReducedMotion';
 export { cx } from './cx';
