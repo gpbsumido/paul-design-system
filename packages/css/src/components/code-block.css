@@ -1,0 +1,86 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * CodeBlock – a read-only code panel with a language label and copy button.
+   * ---------------------------------------------------------------- */
+  .code-block {
+    border: 1px solid var(--paul-color-border);
+    border-radius: var(--paul-radius-md);
+    overflow: hidden;
+    background-color: var(--paul-color-neutral-900);
+    font-family: var(--paul-font-family-mono);
+  }
+
+  .code-block__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--paul-spacing-2);
+    padding: var(--paul-spacing-1_5) var(--paul-spacing-3);
+    background-color: var(--paul-color-neutral-800);
+    border-bottom: 1px solid var(--paul-color-neutral-700);
+  }
+
+  .code-block__lang {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--paul-spacing-2);
+    font-size: var(--paul-font-size-xs);
+    font-weight: var(--paul-font-weight-medium);
+    color: var(--paul-color-neutral-300);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .code-block__file {
+    color: var(--paul-color-neutral-100);
+    text-transform: none;
+    letter-spacing: normal;
+  }
+
+  .code-block__copy {
+    padding: var(--paul-spacing-1) var(--paul-spacing-2);
+    border: 1px solid var(--paul-color-neutral-600);
+    border-radius: var(--paul-radius-sm);
+    background: none;
+    color: var(--paul-color-neutral-100);
+    font-family: var(--paul-font-family-sans);
+    font-size: var(--paul-font-size-xs);
+    cursor: pointer;
+    transition: background-color var(--paul-duration-fast) var(--paul-easing-default);
+  }
+
+  .code-block__copy:hover {
+    background-color: var(--paul-color-neutral-700);
+  }
+
+  .code-block__copy:focus-visible {
+    outline: 2px solid var(--paul-color-primary-400);
+    outline-offset: 1px;
+  }
+
+  .code-block__pre {
+    margin: 0;
+    padding: var(--paul-spacing-3);
+    overflow-x: auto;
+    color: var(--paul-color-neutral-100);
+    font-size: var(--paul-font-size-sm);
+    line-height: var(--paul-line-height-relaxed);
+  }
+
+  .code-block__line {
+    display: flex;
+  }
+
+  .code-block__ln {
+    flex-shrink: 0;
+    width: 2.5rem;
+    padding-right: var(--paul-spacing-3);
+    text-align: right;
+    color: var(--paul-color-neutral-500);
+    user-select: none;
+  }
+
+  .code-block__code {
+    white-space: pre;
+  }
+}

@@ -1,0 +1,107 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * TokenUsageMeter – an LLM token budget bar (prompt + completion split).
+   * ---------------------------------------------------------------- */
+  .token-meter {
+    display: flex;
+    flex-direction: column;
+    gap: var(--paul-spacing-1_5);
+    font-family: var(--paul-font-family-sans);
+    --token-meter-prompt: var(--paul-color-primary-600);
+    --token-meter-completion: var(--paul-color-primary-300);
+  }
+
+  .token-meter__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--paul-spacing-2);
+  }
+
+  .token-meter__label {
+    font-size: var(--paul-font-size-sm);
+    font-weight: var(--paul-font-weight-medium);
+    color: var(--paul-color-foreground);
+  }
+
+  .token-meter__stat {
+    font-size: var(--paul-font-size-sm);
+    font-variant-numeric: tabular-nums;
+    color: var(--paul-color-muted);
+  }
+
+  .token-meter__track {
+    display: flex;
+    height: 0.5rem;
+    border-radius: var(--paul-radius-full);
+    overflow: hidden;
+    background-color: var(--paul-color-neutral-200);
+  }
+
+  .token-meter__seg {
+    height: 100%;
+    transition: width var(--paul-duration-normal) var(--paul-easing-out);
+  }
+
+  .token-meter__seg--prompt {
+    background-color: var(--token-meter-prompt);
+  }
+
+  .token-meter__seg--completion {
+    background-color: var(--token-meter-completion);
+  }
+
+  .token-meter__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--paul-spacing-2);
+    font-size: var(--paul-font-size-xs);
+    color: var(--paul-color-muted);
+  }
+
+  .token-meter__legend {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--paul-spacing-1);
+  }
+
+  .token-meter__key {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: var(--paul-radius-full);
+  }
+
+  .token-meter__key--prompt {
+    background-color: var(--token-meter-prompt);
+    margin-left: var(--paul-spacing-1);
+  }
+
+  .token-meter__key--completion {
+    background-color: var(--token-meter-completion);
+    margin-left: var(--paul-spacing-2);
+  }
+
+  .token-meter__cost {
+    font-variant-numeric: tabular-nums;
+    font-weight: var(--paul-font-weight-medium);
+    color: var(--paul-color-foreground);
+  }
+
+  /* Approaching the budget: amber. Over it: red. */
+  .token-meter--warn {
+    --token-meter-prompt: var(--paul-color-warning-500);
+    --token-meter-completion: var(--paul-color-warning-200);
+  }
+
+  .token-meter--over {
+    --token-meter-prompt: var(--paul-color-error-600);
+    --token-meter-completion: var(--paul-color-error-400);
+  }
+
+  .token-meter--over .token-meter__stat {
+    color: var(--paul-color-error-600);
+    font-weight: var(--paul-font-weight-semibold);
+  }
+}

@@ -1,0 +1,67 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * Combobox – an autocomplete input with a filtered listbox popup.
+   * ---------------------------------------------------------------- */
+  .combobox {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--paul-spacing-1);
+    font-family: var(--paul-font-family-sans);
+  }
+
+  .combobox__label {
+    font-size: var(--paul-font-size-sm);
+    font-weight: var(--paul-font-weight-medium);
+    color: var(--paul-color-foreground);
+  }
+
+  .combobox__input {
+    width: 100%;
+    padding: var(--paul-spacing-2) var(--paul-spacing-3);
+    border: 1px solid var(--paul-color-border);
+    border-radius: var(--paul-radius-md);
+    background-color: var(--paul-color-surface);
+    color: var(--paul-color-foreground);
+    font-size: var(--paul-font-size-base);
+  }
+
+  .combobox__input:focus-visible {
+    outline: 2px solid var(--paul-color-primary-600);
+    outline-offset: -1px;
+  }
+
+  .combobox__list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: var(--paul-z-dropdown);
+    margin: var(--paul-spacing-1) 0 0;
+    padding: var(--paul-spacing-1);
+    list-style: none;
+    max-height: 15rem;
+    overflow-y: auto;
+    border: 1px solid var(--paul-color-border);
+    border-radius: var(--paul-radius-md);
+    background-color: var(--paul-color-surface);
+    box-shadow: var(--paul-shadow-lg);
+  }
+
+  .combobox__option {
+    padding: var(--paul-spacing-2) var(--paul-spacing-3);
+    border-radius: var(--paul-radius-sm);
+    color: var(--paul-color-foreground);
+    font-size: var(--paul-font-size-base);
+    cursor: pointer;
+  }
+
+  .combobox__option--active {
+    background-color: var(--paul-color-primary-600);
+    color: var(--paul-color-on-primary);
+  }
+
+  .combobox__option[aria-selected='true'] {
+    font-weight: var(--paul-font-weight-semibold);
+  }
+}

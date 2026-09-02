@@ -1,0 +1,89 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * RichTextEditor – a contentEditable surface with a formatting toolbar.
+   * ---------------------------------------------------------------- */
+  .rich-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--paul-spacing-1_5);
+    font-family: var(--paul-font-family-sans);
+  }
+
+  .rich-text__label {
+    font-size: var(--paul-font-size-sm);
+    font-weight: var(--paul-font-weight-medium);
+    color: var(--paul-color-foreground);
+  }
+
+  .rich-text__toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--paul-spacing-0_5);
+    padding: var(--paul-spacing-1);
+    border: 1px solid var(--paul-color-border);
+    border-radius: var(--paul-radius-md) var(--paul-radius-md) 0 0;
+    background-color: var(--paul-color-surface);
+  }
+
+  .rich-text__tool {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2rem;
+    height: 2rem;
+    padding: 0 var(--paul-spacing-1_5);
+    border: 1px solid transparent;
+    border-radius: var(--paul-radius-sm);
+    background: none;
+    color: var(--paul-color-foreground);
+    font-size: var(--paul-font-size-sm);
+    font-weight: var(--paul-font-weight-semibold);
+    cursor: pointer;
+    transition: background-color var(--paul-duration-fast) var(--paul-easing-default);
+  }
+
+  .rich-text__tool:hover {
+    background-color: var(--paul-color-neutral-100);
+  }
+
+  .rich-text__tool:focus-visible {
+    outline: 2px solid var(--paul-color-primary-600);
+    outline-offset: 1px;
+  }
+
+  .rich-text__editable {
+    min-height: 8rem;
+    padding: var(--paul-spacing-3);
+    border: 1px solid var(--paul-color-border);
+    border-top: none;
+    border-radius: 0 0 var(--paul-radius-md) var(--paul-radius-md);
+    background-color: var(--paul-color-surface);
+    color: var(--paul-color-foreground);
+    font-size: var(--paul-font-size-base);
+    line-height: var(--paul-line-height-relaxed);
+    overflow-wrap: break-word;
+  }
+
+  .rich-text__editable:focus-visible {
+    outline: 2px solid var(--paul-color-primary-600);
+    outline-offset: -1px;
+  }
+
+  .rich-text__editable:empty::before {
+    content: attr(data-placeholder);
+    color: var(--paul-color-muted);
+    pointer-events: none;
+  }
+
+  .rich-text__editable :where(pre) {
+    padding: var(--paul-spacing-2) var(--paul-spacing-3);
+    border-radius: var(--paul-radius-sm);
+    background-color: var(--paul-color-neutral-100);
+    font-family: var(--paul-font-family-mono);
+    font-size: var(--paul-font-size-sm);
+  }
+
+  .rich-text--disabled {
+    opacity: 0.6;
+  }
+}
