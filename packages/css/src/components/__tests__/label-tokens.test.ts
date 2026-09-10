@@ -169,6 +169,7 @@ const EXPECTED: ReadonlyArray<readonly [file: string, selector: string, token: s
   ['avatar.css', '[data-theme="dark"] .avatar--fallback', '--paul-color-on-primary-tint'],
   ['tooltip.css', '.tooltip', '--paul-color-on-inverse'],
   ['tooltip.css', '[data-theme="dark"] .tooltip', '--paul-color-on-inverse'],
+  ['guided-tour.css', '.tour__next', '--paul-color-on-primary'],
 ];
 
 describe('label tokens', () => {
