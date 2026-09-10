@@ -45,6 +45,7 @@ export {
   type ToastOptions,
   type ToastVariant,
 } from './Toast';
+export { Toaster, toast, type ToastInput } from './Toaster';
 export { TokenUsageMeter } from './TokenUsageMeter';
 export { VisuallyHidden } from './VisuallyHidden';
 export { GuidedTour, type GuidedTourStep } from './GuidedTour';
