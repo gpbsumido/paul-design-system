@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.0] - 2026-09-10
+
+### Added
+
+- **GuidedTour** — a click-through coach-mark primitive, generalised from the tours I'd built by hand in the apps. It walks an array of `steps` one at a time: each step spotlights a target element by id (measured live with `getBoundingClientRect`, so it tracks scroll and resize) or shows a centred card when it has no target, with a step counter and Back / Next / Skip / Finish controls. It's controlled (`open` + `onClose`, plus an optional `onFinish`), portals to the body, traps focus and closes on Escape — the same shell as `Modal` — and reuses `usePrefersReducedMotion` so the spotlight glide and scrim blur drop for a reduced-motion user. Purely presentational: the host owns `open` and decides what finishing or skipping does.
+- Matching `guided-tour.css` in `@paul-portfolio/css` under the `components` layer, built entirely from token custom properties (its label text carries the `--paul-color-on-primary` fallback the label-token guard requires), with dark-mode and reduced-motion blocks.
+- A Storybook story with an interaction `play` test, and full coverage: behaviour tests plus an axe pass. `@paul-portfolio/react` 0.6.0 → 0.7.0, `@paul-portfolio/css` 0.9.0 → 0.10.0.
+
 ## [0.3.0] - 2026-09-02
 
 ### Added
