@@ -47,5 +47,6 @@ export {
 } from './Toast';
 export { TokenUsageMeter } from './TokenUsageMeter';
 export { VisuallyHidden } from './VisuallyHidden';
+export { GuidedTour, type GuidedTourStep } from './GuidedTour';
 export { usePrefersReducedMotion } from './usePrefersReducedMotion';
 export { cx } from './cx';

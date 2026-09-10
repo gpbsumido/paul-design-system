@@ -1,7 +1,11 @@
 import { describe, it, expect, vi } from 'vitest';
 import React from 'react';
 import { render, screen, fireEvent, within } from '@testing-library/react';
+import { axe } from 'vitest-axe';
+import * as matchers from 'vitest-axe/matchers';
 import { GuidedTour, type GuidedTourStep } from '../GuidedTour';
+
+expect.extend(matchers);
 
 const STEPS: GuidedTourStep[] = [
   { title: 'Welcome', body: 'A quick tour.' },
@@ -58,5 +62,11 @@ describe('GuidedTour', () => {
     render(<GuidedTour open steps={STEPS} onClose={onClose} />);
     fireEvent.keyDown(document, { key: 'Escape' });
     expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it('has no a11y violations while open', async () => {
+    render(<GuidedTour open steps={STEPS} onClose={() => {}} />);
+    // Portals to the body, so scan there rather than the render container.
+    expect(await axe(document.body)).toHaveNoViolations();
   });
 });
