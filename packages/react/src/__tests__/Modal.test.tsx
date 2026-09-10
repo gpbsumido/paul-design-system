@@ -129,6 +129,50 @@ describe('Modal', () => {
     expect(document.activeElement).toBe(only);
   });
 
+  it('focuses the first focusable element on open, not just the dialog', () => {
+    render(
+      <Modal open onClose={() => {}} aria-label="X">
+        <button>first</button>
+        <button>second</button>
+      </Modal>,
+    );
+    expect(document.activeElement).toBe(screen.getByRole('button', { name: 'first' }));
+  });
+
+  it('locks body scroll while open and restores it on close', () => {
+    const { rerender } = render(
+      <Modal open onClose={() => {}} aria-label="X">
+        <p>Body</p>
+      </Modal>,
+    );
+    expect(document.body.style.overflow).toBe('hidden');
+    rerender(
+      <Modal open={false} onClose={() => {}} aria-label="X">
+        <p>Body</p>
+      </Modal>,
+    );
+    expect(document.body.style.overflow).not.toBe('hidden');
+  });
+
+  it('marks background siblings aria-hidden while open and clears them on close', () => {
+    const sibling = document.createElement('div');
+    sibling.id = 'bg-sibling';
+    document.body.appendChild(sibling);
+    const { rerender } = render(
+      <Modal open onClose={() => {}} aria-label="X">
+        <p>Body</p>
+      </Modal>,
+    );
+    expect(sibling.getAttribute('aria-hidden')).toBe('true');
+    rerender(
+      <Modal open={false} onClose={() => {}} aria-label="X">
+        <p>Body</p>
+      </Modal>,
+    );
+    expect(sibling.getAttribute('aria-hidden')).toBeNull();
+    sibling.remove();
+  });
+
   it('restores focus to the opener on close', () => {
     function Harness() {
       const [open, setOpen] = React.useState(false);

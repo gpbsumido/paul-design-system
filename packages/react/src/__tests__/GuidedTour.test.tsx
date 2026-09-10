@@ -64,6 +64,23 @@ describe('GuidedTour', () => {
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
+  it('fires each step\'s onEnter as it becomes active', () => {
+    const enter0 = vi.fn();
+    const enter1 = vi.fn();
+    const steps: GuidedTourStep[] = [
+      { title: 'Welcome', body: 'A quick tour.', onEnter: enter0 },
+      { target: 'thing-a', title: 'First stop', body: 'Thing.', onEnter: enter1 },
+    ];
+    render(<GuidedTour open steps={steps} onClose={() => {}} />);
+    expect(enter0).toHaveBeenCalledTimes(1);
+    expect(enter1).not.toHaveBeenCalled();
+
+    fireEvent.click(
+      screen.getByRole('button', { name: /next/i }),
+    );
+    expect(enter1).toHaveBeenCalledTimes(1);
+  });
+
   it('has no a11y violations while open', async () => {
     render(<GuidedTour open steps={STEPS} onClose={() => {}} />);
     // Portals to the body, so scan there rather than the render container.

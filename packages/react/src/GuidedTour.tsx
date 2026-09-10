@@ -13,6 +13,13 @@ export type GuidedTourStep = {
   target?: string;
   title: string;
   body: ReactNode;
+  /**
+   * Run when this step becomes active — switch a tab, scroll a panel into view,
+   * anything the step needs set up before its target is measured. Fired from the
+   * navigation handler, so a tab switch has rendered before the spotlight reads
+   * the target's box.
+   */
+  onEnter?: () => void;
 };
 
 type GuidedTourLabels = {
@@ -83,6 +90,14 @@ export function GuidedTour({
     return () => cancelAnimationFrame(raf);
   }, [open]);
 
+  // Fire the first step's onEnter as the tour opens (later steps fire from the
+  // navigation handler). Runs the consumer's callback, never this component's
+  // own setState, so it's clear of the set-state-in-effect rule.
+  useEffect(() => {
+    if (open) steps[0]?.onEnter?.();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
+
   // Measure the current target and keep the spotlight on it through scroll and
   // resize. Non-target steps (and a closed tour) clear the rect.
   useEffect(() => {
@@ -147,13 +162,18 @@ export function GuidedTour({
 
   if (!open || !current) return null;
 
-  const back = () => setIndex((i) => Math.max(0, i - 1));
+  const go = (target: number) => {
+    const clamped = Math.max(0, Math.min(steps.length - 1, target));
+    steps[clamped]?.onEnter?.();
+    setIndex(clamped);
+  };
+  const back = () => go(index - 1);
   const next = () => {
     if (isLast) {
       onFinish?.();
       onClose();
     } else {
-      setIndex((i) => i + 1);
+      go(index + 1);
     }
   };
 

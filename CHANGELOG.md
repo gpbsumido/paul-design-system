@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.5.0] - 2026-09-10
+
+### Added
+
+- **GuidedTour gains a per-step `onEnter` hook** — a callback fired as each step becomes active (from the navigation handler, so a tab switch renders before the spotlight measures the target). This is what a host needs to drive a tabbed tour, e.g. paul-explore's ZeroProof lobby switching tabs as the tour walks them. Backwards compatible — steps without `onEnter` are unaffected.
+
+### Changed
+
+- **Modal, polished to match the hand-tuned one in the app** so consumers can adopt it without losing anything. Behaviour: it now focuses the first focusable element on open (not just the dialog); locks body scroll while open, padding out the scrollbar's width so the page behind doesn't shift; marks background siblings `aria-hidden` so assistive tech ignores them; and reads `onClose` from a ref, so a parent re-render (e.g. a polling query changing the `onClose` identity) can't tear the keydown listener down and steal focus from an input. Visuals: a spring-ish entrance (panel scale/translate/opacity on `--paul-easing-bounce`, backdrop fade), an iridescent top hairline painted from `--paul-color-primary`/`--paul-color-secondary` (a background gradient, so it stays pinned when the panel scrolls), and a panel blur — all disabled under `prefers-reduced-motion`. No API change. `@paul-portfolio/react` 0.7.0 → 0.8.0, `@paul-portfolio/css` 0.10.0 → 0.11.0.
+
 ## [0.4.0] - 2026-09-10
 
 ### Added
