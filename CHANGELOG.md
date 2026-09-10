@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.6.0] - 2026-09-10
+
+### Added
+
+- **Toaster** — an imperative, global toast surface. Mount `<Toaster />` once near the app root and call `toast.error(...)` / `toast.success(...)` / `toast.info(...)` / `toast.warning(...)` from anywhere, including outside React — a query-client error handler, a plain module — because the queue lives in a module-level store, so the call site needs no context or hook. Errors announce assertively, everything else politely; toasts auto-dismiss (or `duration: 0` to keep), portal to the body, and no-op on the server. Reuses the existing toast styles, and complements the hook-based `ToastProvider`/`useToast` for the cases a hook can't reach. `@paul-portfolio/react` 0.8.1 → 0.9.0.
+
 ## [0.5.1] - 2026-09-10
 
 ### Fixed
