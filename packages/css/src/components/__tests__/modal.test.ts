@@ -58,4 +58,21 @@ describe('Modal CSS component', () => {
   it('uses design tokens', () => {
     expect(css).toContain('--paul-');
   });
+
+  it('animates the panel in, from tokens', () => {
+    expect(css).toContain('@keyframes paul-modal-content-in');
+    expect(css).toMatch(/\.modal__content[\s\S]*animation:[\s\S]*paul-modal-content-in/);
+    expect(css).toContain('--paul-easing-bounce');
+  });
+
+  it('paints an iridescent hairline from the primary and secondary tokens', () => {
+    expect(css).toMatch(/\.modal__content[\s\S]*--paul-color-primary/);
+    expect(css).toContain('--paul-color-secondary');
+  });
+
+  it('disables the entrance animation under reduced motion', () => {
+    expect(css).toMatch(
+      /prefers-reduced-motion: reduce[\s\S]*\.modal__content[\s\S]*animation:\s*none/,
+    );
+  });
 });

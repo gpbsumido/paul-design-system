@@ -44,29 +44,60 @@ export function Modal({
   const titleId = useId();
   const dialogRef = useRef<HTMLDivElement>(null);
 
-  // Move focus into the dialog on open and restore it on close, and trap Tab
-  // so keyboard focus can't wander behind the modal.
+  // Read the latest onClose from a ref so the keydown listener below never has
+  // to be torn down and re-added when onClose changes identity.
+  const onCloseRef = useRef(onClose);
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
+
+  // On open: focus into the dialog, trap Tab, lock body scroll, and hide the
+  // rest of the page from assistive tech. All of it is undone on close. The
+  // effect depends only on `open` — never on onClose — so a parent re-render
+  // (e.g. a polling query) can't re-run it and steal focus from an input.
   useEffect(() => {
     if (!open) return;
     const previouslyFocused = document.activeElement as HTMLElement | null;
     const dialog = dialogRef.current;
-    dialog?.focus();
+
+    // Lock body scroll, padding out the scrollbar's width so the page behind
+    // doesn't shift as it disappears.
+    const originalOverflow = document.body.style.overflow;
+    const originalPaddingRight = document.body.style.paddingRight;
+    const scrollbarWidth =
+      window.innerWidth - document.documentElement.clientWidth;
+    document.body.style.overflow = 'hidden';
+    if (scrollbarWidth > 0) {
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+    }
+
+    // Hide the background from assistive tech, without clobbering an
+    // aria-hidden that was already there.
+    const hidden = Array.from(document.body.children).filter(
+      (el) =>
+        el !== dialog && !el.contains(dialog) && !el.hasAttribute('aria-hidden'),
+    );
+    for (const el of hidden) el.setAttribute('aria-hidden', 'true');
+
+    // Focus the first focusable element, or the dialog itself if it has none.
+    const focusables = dialog
+      ? Array.from(dialog.querySelectorAll<HTMLElement>(FOCUSABLE))
+      : [];
+    (focusables[0] ?? dialog)?.focus();
 
     function handleKey(e: KeyboardEvent) {
       if (e.key === 'Escape') {
-        onClose();
+        onCloseRef.current();
         return;
       }
       if (e.key !== 'Tab' || !dialog) return;
-      const focusables = Array.from(
-        dialog.querySelectorAll<HTMLElement>(FOCUSABLE),
-      );
-      if (focusables.length === 0) {
+      const tabbable = Array.from(dialog.querySelectorAll<HTMLElement>(FOCUSABLE));
+      if (tabbable.length === 0) {
         e.preventDefault();
         return;
       }
-      const first = focusables[0];
-      const last = focusables[focusables.length - 1];
+      const first = tabbable[0];
+      const last = tabbable[tabbable.length - 1];
       if (e.shiftKey && document.activeElement === first) {
         e.preventDefault();
         last.focus();
@@ -79,9 +110,12 @@ export function Modal({
     document.addEventListener('keydown', handleKey);
     return () => {
       document.removeEventListener('keydown', handleKey);
+      document.body.style.overflow = originalOverflow;
+      document.body.style.paddingRight = originalPaddingRight;
+      for (const el of hidden) el.removeAttribute('aria-hidden');
       previouslyFocused?.focus?.();
     };
-  }, [open, onClose]);
+  }, [open]);
 
   if (!open) return null;
 
