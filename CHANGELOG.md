@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.5.1] - 2026-09-10
+
+### Fixed
+
+- **GuidedTour no longer crashes when it's rendered open during server rendering.** It portals to `document.body`, which doesn't exist on the server, so a host that opens the tour in its initial (SSR) render — a first-visit auto-open, say — hit `document is not defined` and failed the prerender. It now returns nothing when there's no `document`, the same guard a portal component should carry, and opens for real on the client. `@paul-portfolio/react` 0.8.0 → 0.8.1.
+
 ## [0.5.0] - 2026-09-10
 
 ### Added

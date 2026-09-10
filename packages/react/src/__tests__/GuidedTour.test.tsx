@@ -3,6 +3,7 @@ import React from 'react';
 import { render, screen, fireEvent, within } from '@testing-library/react';
 import { axe } from 'vitest-axe';
 import * as matchers from 'vitest-axe/matchers';
+import { renderToStaticMarkup } from 'react-dom/server';
 import { GuidedTour, type GuidedTourStep } from '../GuidedTour';
 
 expect.extend(matchers);
@@ -79,6 +80,21 @@ describe('GuidedTour', () => {
       screen.getByRole('button', { name: /next/i }),
     );
     expect(enter1).toHaveBeenCalledTimes(1);
+  });
+
+  it('renders nothing on the server, even when open (no document)', () => {
+    const original = globalThis.document;
+    // Simulate SSR: the overlay portals to document.body, which isn't there.
+    // @ts-expect-error deliberately removing document to emulate the server
+    delete globalThis.document;
+    try {
+      const markup = renderToStaticMarkup(
+        <GuidedTour open steps={STEPS} onClose={() => {}} />,
+      );
+      expect(markup).toBe('');
+    } finally {
+      globalThis.document = original;
+    }
   });
 
   it('has no a11y violations while open', async () => {

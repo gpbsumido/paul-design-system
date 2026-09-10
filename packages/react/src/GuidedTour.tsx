@@ -160,7 +160,10 @@ export function GuidedTour({
     };
   }, [open, onClose]);
 
-  if (!open || !current) return null;
+  // No document on the server, and the overlay portals to it — render nothing
+  // there rather than reaching createPortal(document.body). A host that opens
+  // the tour during SSR then gets a clean no-op instead of a crash.
+  if (!open || !current || typeof document === 'undefined') return null;
 
   const go = (target: number) => {
     const clamped = Math.max(0, Math.min(steps.length - 1, target));
