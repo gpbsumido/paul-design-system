@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.6.1] - 2026-09-11
+
+### Fixed
+
+- **ChatMessage assistant bubble is readable in dark mode.** The assistant/system bubble set its background to `--paul-color-neutral-100` — a fixed light shade with no dark-theme override — while its text used the themed `--paul-color-foreground`, which flips to near-white in dark mode. The result was near-white text on a light bubble: invisible. It now uses `--paul-color-surface`, which flips with the theme (as the code comment always claimed it did), so the bubble contrasts with the foreground in both light and dark. `@paul-portfolio/css` 0.11.0 → 0.11.1.
+
 ## [0.6.0] - 2026-09-10
 
 ### Added
