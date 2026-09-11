@@ -45,10 +45,13 @@
     overflow-wrap: break-word;
   }
 
-  /* Assistant / system: left-aligned, surface bubble. */
+  /* Assistant / system: left-aligned, surface bubble. Use the theme-aware
+     surface token (not neutral-100, which has no dark override) so the bubble
+     flips with the theme instead of staying a light paper that renders the
+     themed foreground text near-invisible in dark mode. */
   .chat-message--assistant .chat-message__bubble,
   .chat-message--system .chat-message__bubble {
-    background-color: var(--paul-color-neutral-100);
+    background-color: var(--paul-color-surface);
     color: var(--paul-color-foreground);
     border-top-left-radius: var(--paul-radius-sm);
   }
