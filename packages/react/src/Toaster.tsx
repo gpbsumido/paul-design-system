@@ -81,11 +81,15 @@ export const toast = Object.assign(
  * — errors announced assertively, everything else politely — and portals to the
  * body so it's never clipped. Returns nothing on the server (no document there).
  */
+// The server snapshot must be the SAME array every call — React invokes it
+// repeatedly during hydration and treats a changing result as an infinite loop.
+const NO_TOASTS: ToastRecord[] = [];
+
 export function Toaster() {
   const items = useSyncExternalStore(
     subscribe,
     () => records,
-    () => [] as ToastRecord[],
+    () => NO_TOASTS,
   );
 
   if (typeof document === 'undefined') return null;
