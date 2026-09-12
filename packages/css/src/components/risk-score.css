@@ -10,6 +10,13 @@
     font-family: var(--paul-font-family-sans);
   }
 
+  /* Detailed sits on its own line and stretches, so the track fills the width
+     rather than collapsing to its min. Compact stays inline for a table cell. */
+  .risk-score--detailed {
+    display: flex;
+    inline-size: 100%;
+  }
+
   .risk-score__level {
     display: inline-flex;
     align-items: baseline;
