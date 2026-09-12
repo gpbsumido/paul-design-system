@@ -64,7 +64,10 @@ describe('Toaster', () => {
     let root: ReturnType<typeof hydrateRoot> | undefined;
     try {
       act(() => {
-        root = hydrateRoot(host, <Toaster />);
+        // The portal has no server HTML in this bare harness, so hydration
+        // recovers via client render; swallow that recoverable error — the
+        // warning under test arrives through console.error, not this channel.
+        root = hydrateRoot(host, <Toaster />, { onRecoverableError: () => {} });
       });
       expect(
         seen.filter((m) => m.includes('getServerSnapshot should be cached')),
