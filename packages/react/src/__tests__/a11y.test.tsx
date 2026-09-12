@@ -42,6 +42,10 @@ import { CommandPalette } from '../CommandPalette';
 import { Combobox } from '../Combobox';
 import { ToastProvider, useToast } from '../Toast';
 import { TokenUsageMeter } from '../TokenUsageMeter';
+import { RiskScore } from '../RiskScore';
+import { AgentDecisionCard } from '../AgentDecisionCard';
+import { Timeline } from '../Timeline';
+import { StatCard } from '../StatCard';
 import { useEffect } from 'react';
 
 expect.extend(matchers);
@@ -447,6 +451,60 @@ describe('Accessibility', () => {
         completionTokens={800}
         maxTokens={8000}
         costPerMTok={3}
+      />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('RiskScore has no a11y violations', async () => {
+    const { container } = render(<RiskScore value={87} label="Session risk" />);
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('RiskScore compact has no a11y violations', async () => {
+    const { container } = render(
+      <RiskScore value={23} level="low" variant="compact" label="Session risk" />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('AgentDecisionCard has no a11y violations', async () => {
+    const { container } = render(
+      <AgentDecisionCard
+        decision="decline"
+        title="Payment $4,200 to a new payee"
+        agentName="Risk Agent"
+        confidence={0.92}
+        rationale={['New payee', 'Device seen with 3 accounts']}
+        actions={<button type="button">Override</button>}
+      />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('Timeline has no a11y violations', async () => {
+    const { container } = render(
+      <Timeline
+        label="Case activity"
+        items={[
+          { id: '1', title: 'Session started', time: '10:02' },
+          { id: '2', title: 'Device flagged', time: '10:03', status: 'warning' },
+          { id: '3', title: 'Payment declined', time: '10:05', status: 'error' },
+        ]}
+      />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('StatCard has no a11y violations', async () => {
+    const { container } = render(
+      <StatCard
+        label="Approval rate"
+        value="98.2%"
+        delta={{ value: '+1.4pt', direction: 'up' }}
+        trend={[3, 6, 4, 9, 7, 11]}
+        trendLabel="Approval rate trend"
+        footnote="Last 24h"
       />,
     );
     expect(await axe(container)).toHaveNoViolations();

@@ -170,6 +170,13 @@ const EXPECTED: ReadonlyArray<readonly [file: string, selector: string, token: s
   ['tooltip.css', '.tooltip', '--paul-color-on-inverse'],
   ['tooltip.css', '[data-theme="dark"] .tooltip', '--paul-color-on-inverse'],
   ['guided-tour.css', '.tour__next', '--paul-color-on-primary'],
+  ['risk-score.css', '.risk-score__level--low', '--paul-color-on-success-tint'],
+  ['risk-score.css', '[data-theme="dark"] .risk-score__level--low', '--paul-color-on-success-tint'],
+  ['risk-score.css', '.risk-score__level--medium', '--paul-color-on-warning-tint'],
+  ['risk-score.css', '[data-theme="dark"] .risk-score__level--medium', '--paul-color-on-warning-tint'],
+  ['risk-score.css', '.risk-score__level--high', '--paul-color-on-error-tint'],
+  ['risk-score.css', '[data-theme="dark"] .risk-score__level--high', '--paul-color-on-error-tint'],
+  ['risk-score.css', '.risk-score__level--critical', '--paul-color-on-error'],
 ];
 
 describe('label tokens', () => {

@@ -434,6 +434,38 @@ const AVATAR: readonly Combo[] = [
   },
 ];
 
+/**
+ * RiskScore's band pill is the one place these components paint a label on a
+ * tinted fill. Low/medium/high reuse the badge's ramp pairs and carry dark
+ * overrides; critical is a solid saturated fill (like `.btn--danger`) with a
+ * white label and no dark override, so it's measured once for both themes.
+ */
+const RISK_TINTS = ['low', 'medium', 'high'] as const;
+
+const RISK_SCORE: readonly Combo[] = [
+  ...RISK_TINTS.map(
+    (v): Combo => ({
+      label: `${v}, light`,
+      theme: 'light',
+      chain: [`.risk-score__level--${v}`],
+    }),
+  ),
+  ...RISK_TINTS.map(
+    (v): Combo => ({
+      label: `${v}, dark`,
+      theme: 'dark',
+      chain: [`.risk-score__level--${v}`, `[data-theme="dark"] .risk-score__level--${v}`],
+    }),
+  ),
+  ...(['light', 'dark'] as const).map(
+    (theme): Combo => ({
+      label: `critical, ${theme}`,
+      theme,
+      chain: ['.risk-score__level--critical'],
+    }),
+  ),
+];
+
 describe('tinted-fill contrast', () => {
   const button = read('button.css');
   const badge = read('badge.css');
@@ -501,6 +533,14 @@ describe('tinted-fill contrast', () => {
     it.each(AVATAR)('keeps the initials over AA — $label', (combo) => {
       const { ratio, fill } = worstRatio(avatar, combo);
       expect(ratio, `${combo.label}: initials on ${fill}`).toBeGreaterThanOrEqual(AA_NORMAL);
+    });
+  });
+
+  describe('risk-score band', () => {
+    const riskScore = read('risk-score.css');
+    it.each(RISK_SCORE)('keeps the band label over AA — $label', (combo) => {
+      const { ratio, fill } = worstRatio(riskScore, combo);
+      expect(ratio, `${combo.label}: label on ${fill}`).toBeGreaterThanOrEqual(AA_NORMAL);
     });
   });
 });

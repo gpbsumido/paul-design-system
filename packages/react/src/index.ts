@@ -47,6 +47,15 @@ export {
 } from './Toast';
 export { Toaster, toast, type ToastInput } from './Toaster';
 export { TokenUsageMeter } from './TokenUsageMeter';
+export { RiskScore, type RiskLevel } from './RiskScore';
+export { AgentDecisionCard, type AgentDecision } from './AgentDecisionCard';
+export { Timeline, type TimelineItem, type TimelineStatus } from './Timeline';
+export {
+  StatCard,
+  type StatDelta,
+  type StatDirection,
+  type StatIntent,
+} from './StatCard';
 export { VisuallyHidden } from './VisuallyHidden';
 export { GuidedTour, type GuidedTourStep } from './GuidedTour';
 export { usePrefersReducedMotion } from './usePrefersReducedMotion';

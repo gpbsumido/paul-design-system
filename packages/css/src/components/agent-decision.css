@@ -1,0 +1,48 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * AgentDecisionCard – the shell for an AI-made risk decision. Layout
+   * only; the surface, border and radius come from `.card`.
+   * ---------------------------------------------------------------- */
+  .agent-decision__header {
+    display: flex;
+    align-items: center;
+    gap: var(--paul-spacing-2);
+    flex-wrap: wrap;
+  }
+
+  .agent-decision__agent {
+    font-size: var(--paul-font-size-sm);
+    font-weight: var(--paul-font-weight-semibold);
+    color: var(--paul-color-foreground);
+  }
+
+  .agent-decision__confidence {
+    margin-inline-start: auto;
+    font-size: var(--paul-font-size-xs);
+    color: var(--paul-color-muted-foreground);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .agent-decision__title {
+    margin: 0;
+    font-size: var(--paul-font-size-base);
+    font-weight: var(--paul-font-weight-medium);
+    color: var(--paul-color-foreground);
+  }
+
+  .agent-decision__rationale {
+    display: flex;
+    flex-direction: column;
+    gap: var(--paul-spacing-1);
+    margin: var(--paul-spacing-2) 0 0;
+    padding-inline-start: var(--paul-spacing-4);
+    font-size: var(--paul-font-size-sm);
+    color: var(--paul-color-muted-foreground);
+  }
+
+  .agent-decision__actions {
+    display: flex;
+    gap: var(--paul-spacing-2);
+    flex-wrap: wrap;
+  }
+}
