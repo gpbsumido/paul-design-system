@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.6.2] - 2026-09-11
+
+### Fixed
+
+- **The Toaster no longer trips React's getServerSnapshot warning on hydration.** `useSyncExternalStore` was handed `() => [] as ToastRecord[]` as its server snapshot — a brand-new array every call. React invokes that function twice during hydration and warns "The result of getServerSnapshot should be cached to avoid an infinite loop" when the results aren't referentially equal, so every server-rendered app mounting `<Toaster />` logged a console error on load. The snapshot is now a single module-level constant. Covered by a hydration test that asserts the warning never fires. `@paul-portfolio/react` 0.9.0 → 0.9.1.
+
 ## [0.6.1] - 2026-09-11
 
 ### Fixed
