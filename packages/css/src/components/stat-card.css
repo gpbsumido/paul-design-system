@@ -1,0 +1,70 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * StatCard – a dashboard KPI tile. Value + delta + optional trend.
+   * ---------------------------------------------------------------- */
+  .stat-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--paul-spacing-1);
+    padding: var(--paul-spacing-4);
+    background-color: var(--paul-color-surface);
+    border: 1px solid var(--paul-color-border);
+    border-radius: var(--paul-radius-lg);
+    font-family: var(--paul-font-family-sans);
+  }
+
+  .stat-card__label {
+    font-size: var(--paul-font-size-sm);
+    color: var(--paul-color-muted-foreground);
+  }
+
+  .stat-card__value {
+    font-size: var(--paul-font-size-3xl);
+    font-weight: var(--paul-font-weight-semibold);
+    line-height: 1.1;
+    color: var(--paul-color-foreground);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .stat-card__delta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--paul-spacing-1);
+    font-size: var(--paul-font-size-sm);
+    font-weight: var(--paul-font-weight-medium);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Delta colour is a ramp step on the neutral surface — the arrow glyph and
+     the screen-reader direction word carry the meaning without it. */
+  .stat-card__delta--positive {
+    color: var(--paul-color-success-700);
+  }
+  .stat-card__delta--negative {
+    color: var(--paul-color-error-700);
+  }
+  .stat-card__delta--neutral {
+    color: var(--paul-color-muted-foreground);
+  }
+
+  [data-theme="dark"] .stat-card__delta--positive {
+    color: var(--paul-color-success-400);
+  }
+  [data-theme="dark"] .stat-card__delta--negative {
+    color: var(--paul-color-error-400);
+  }
+
+  .stat-card__arrow {
+    font-size: 0.7em;
+    line-height: 1;
+  }
+
+  .stat-card__trend {
+    margin-block-start: var(--paul-spacing-2);
+  }
+
+  .stat-card__footnote {
+    font-size: var(--paul-font-size-xs);
+    color: var(--paul-color-muted-foreground);
+  }
+}

@@ -1,0 +1,96 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * RiskScore – the score a fraud reviewer reads first. A tinted band
+   * pill (number + word) with an optional proportional track.
+   * ---------------------------------------------------------------- */
+  .risk-score {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--paul-spacing-2);
+    font-family: var(--paul-font-family-sans);
+  }
+
+  .risk-score__level {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--paul-spacing-1_5);
+    padding: var(--paul-spacing-1) var(--paul-spacing-2_5);
+    border-radius: var(--paul-radius-full);
+    font-weight: var(--paul-font-weight-semibold);
+    line-height: 1;
+  }
+
+  .risk-score__value {
+    font-size: var(--paul-font-size-lg);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .risk-score__band {
+    font-size: var(--paul-font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  /* Band tints — the same ramp/label pairs the Badge ships, so the label
+     stays over AA. Critical escalates to a solid saturated fill, like the
+     danger button. */
+  .risk-score__level--low {
+    background-color: var(--paul-color-success-100);
+    color: var(--paul-color-on-success-tint, var(--paul-color-success-700));
+  }
+  .risk-score__level--medium {
+    background-color: var(--paul-color-warning-100);
+    color: var(--paul-color-on-warning-tint, var(--paul-color-warning-700));
+  }
+  .risk-score__level--high {
+    background-color: var(--paul-color-error-100);
+    color: var(--paul-color-on-error-tint, var(--paul-color-error-700));
+  }
+  .risk-score__level--critical {
+    background-color: var(--paul-color-error-600);
+    color: var(--paul-color-on-error, #fff);
+  }
+
+  [data-theme="dark"] .risk-score__level--low {
+    background-color: var(--paul-color-success-900);
+    color: var(--paul-color-on-success-tint, var(--paul-color-success-200));
+  }
+  [data-theme="dark"] .risk-score__level--medium {
+    background-color: var(--paul-color-warning-900);
+    color: var(--paul-color-on-warning-tint, var(--paul-color-warning-200));
+  }
+  [data-theme="dark"] .risk-score__level--high {
+    background-color: var(--paul-color-error-900);
+    color: var(--paul-color-on-error-tint, var(--paul-color-error-200));
+  }
+
+  /* Track — a proportional bar. The fill is an accent only (no text on it),
+     so it carries no contrast obligation of its own. */
+  .risk-score__track {
+    position: relative;
+    flex: 1 1 auto;
+    min-inline-size: 3rem;
+    block-size: var(--paul-spacing-2);
+    background-color: var(--paul-color-muted);
+    border-radius: var(--paul-radius-full);
+    overflow: hidden;
+  }
+
+  .risk-score__fill {
+    display: block;
+    block-size: 100%;
+    border-radius: inherit;
+  }
+  .risk-score__fill--low {
+    background-color: var(--paul-color-success-500);
+  }
+  .risk-score__fill--medium {
+    background-color: var(--paul-color-warning-500);
+  }
+  .risk-score__fill--high {
+    background-color: var(--paul-color-error-500);
+  }
+  .risk-score__fill--critical {
+    background-color: var(--paul-color-error-600);
+  }
+}

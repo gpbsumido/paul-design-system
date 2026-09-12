@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.7.0] - 2026-09-12
+
+### Added
+
+- **Four React components for building a fraud case-review dashboard** — the risk/decision/audit vocabulary the system was missing on top of the chat and chart pieces. Each is WCAG AA and axe-clean, and reuses what's already here rather than reinventing it.
+  - **RiskScore** — a 0–100 score as a `role="meter"`, with four tone bands (low/medium/high/critical) and an optional proportional track. The number and the band word both show, so the tier never rides on colour alone. The band pill reuses the Badge ramp/label token pairs; critical escalates to a solid saturated fill like the danger button.
+  - **AgentDecisionCard** — the shell for an AI-made risk decision: the verdict (approve/decline/review) as a Badge word, model confidence, the signals it fired on as a list, and footer actions. Composes `Card`, `Badge`, and `Button`, and is exposed as a `region` landmark whose accessible name carries the decision.
+  - **Timeline** — a vertical session/case audit rail as an ordered list, with a status-coloured marker per event. Colour is an accent: any non-default status also emits a screen-reader word, so the state survives without it.
+  - **StatCard** — a dashboard KPI tile: the metric, a delta that pairs a colour with an arrow glyph and a screen-reader direction word, and an optional inline trend that reuses `Sparkline`.
+- **Matching CSS in `@paul-portfolio/css`** — `risk-score.css`, `agent-decision.css`, `timeline.css`, and `stat-card.css` under the components layer, built from tokens. Body text stays on the neutral foreground tokens; the only text-on-tint is RiskScore's band pill, whose four selectors join the `label-tokens` and `tinted-contrast` guard lists so the new variants are held to the same AA floor as everything else.
+- **Storybook stories** for all four, CSF3 with autodocs. `@paul-portfolio/react` 0.9.1 → 0.10.0, `@paul-portfolio/css` 0.11.1 → 0.12.0.
+
 ## [0.6.2] - 2026-09-11
 
 ### Fixed
