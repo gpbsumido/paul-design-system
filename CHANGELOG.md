@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.1] - 2026-09-12
+
+### Fixed
+
+- **AgentDecisionCard now shows the decision, not just says it.** The `agent-decision--{decision}` modifier was rendered but never styled, so a decline card looked like any other — the only signal was the Badge word. It gains a decision-coloured spine down the leading edge (approve/decline/review → success/warning/error), a decorative accent clipped to the card's rounded corners, so the verdict reads at a glance without colour being the only carrier (the Badge word still backs it).
+- **RiskScore's detailed track fills its width.** The root was `inline-flex`, so a detailed RiskScore shrank to its content and the proportional track collapsed to its min width — and two of them sat side by side on one line instead of stacking. The detailed variant is now block-level and full-width, so the track spans the row and each score takes its own line; compact stays inline for a table cell. `@paul-portfolio/css` 0.12.0 → 0.12.1.
+
 ## [0.7.0] - 2026-09-12
 
 ### Added
