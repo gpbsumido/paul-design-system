@@ -1,0 +1,95 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * Timeline – a vertical audit rail. Ordered list; a status-coloured
+   * marker per event, joined by a rail line behind the markers.
+   * ---------------------------------------------------------------- */
+  .timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    font-family: var(--paul-font-family-sans);
+  }
+
+  .timeline__item {
+    position: relative;
+    display: flex;
+    gap: var(--paul-spacing-3);
+    padding-block-end: var(--paul-spacing-4);
+  }
+
+  .timeline__item:last-child {
+    padding-block-end: 0;
+  }
+
+  /* The rail line, drawn behind each marker and hidden on the last item. */
+  .timeline__item::before {
+    content: "";
+    position: absolute;
+    inset-block-start: 0.95rem;
+    inset-inline-start: calc(0.375rem - 1px);
+    inline-size: 2px;
+    block-size: 100%;
+    background-color: var(--paul-color-border);
+  }
+
+  .timeline__item:last-child::before {
+    display: none;
+  }
+
+  .timeline__marker {
+    flex: 0 0 auto;
+    inline-size: 0.75rem;
+    block-size: 0.75rem;
+    margin-block-start: 0.2rem;
+    border-radius: var(--paul-radius-full);
+    background-color: var(--paul-color-muted-foreground);
+    box-shadow: 0 0 0 3px var(--paul-color-surface);
+    z-index: 1;
+  }
+
+  .timeline__marker--success {
+    background-color: var(--paul-color-success-500);
+  }
+  .timeline__marker--warning {
+    background-color: var(--paul-color-warning-500);
+  }
+  .timeline__marker--error {
+    background-color: var(--paul-color-error-500);
+  }
+  .timeline__marker--info {
+    background-color: var(--paul-color-primary-500);
+  }
+
+  .timeline__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--paul-spacing-0_5);
+    min-inline-size: 0;
+  }
+
+  .timeline__head {
+    display: flex;
+    align-items: baseline;
+    gap: var(--paul-spacing-2);
+    flex-wrap: wrap;
+  }
+
+  .timeline__title {
+    font-size: var(--paul-font-size-sm);
+    font-weight: var(--paul-font-weight-medium);
+    color: var(--paul-color-foreground);
+  }
+
+  .timeline__time {
+    font-size: var(--paul-font-size-xs);
+    color: var(--paul-color-muted-foreground);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .timeline__desc {
+    font-size: var(--paul-font-size-sm);
+    color: var(--paul-color-muted-foreground);
+  }
+}
