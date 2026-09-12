@@ -1,8 +1,38 @@
 @layer components {
   /* ----------------------------------------------------------------
    * AgentDecisionCard – the shell for an AI-made risk decision. Layout
-   * only; the surface, border and radius come from `.card`.
+   * plus a decision-coloured band; the surface, border and radius come
+   * from `.card`.
    * ---------------------------------------------------------------- */
+
+  /* A coloured spine down the leading edge, keyed to the decision, so the
+     verdict reads at a glance and not only from the Badge word. It's a
+     decorative accent carrying no text, and `.card`'s overflow:hidden clips it
+     to the rounded corners. Default is the neutral border until a decision
+     modifier colours it. */
+  .agent-decision {
+    position: relative;
+  }
+
+  .agent-decision::before {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    inline-size: var(--paul-spacing-1);
+    background-color: var(--paul-color-border);
+  }
+
+  .agent-decision--approve::before {
+    background-color: var(--paul-color-success-500);
+  }
+  .agent-decision--decline::before {
+    background-color: var(--paul-color-error-500);
+  }
+  .agent-decision--review::before {
+    background-color: var(--paul-color-warning-500);
+  }
+
   .agent-decision__header {
     display: flex;
     align-items: center;
