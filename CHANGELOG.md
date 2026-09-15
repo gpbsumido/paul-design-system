@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.7.2] - 2026-09-15
+
+### Fixed
+
+- **Modal and command palette fit the phone when the keyboard is up.** Both capped their height in `vh` — `.modal__content` at `90vh`, the command palette at `70vh` under a `12vh` top offset — and `vh` counts the area the on-screen keyboard covers. So on a phone a tall overlay overflowed the visible viewport and spilled into a page scrollbar the moment a field was focused. All three switch to `dvh`, which tracks the *visible* viewport and shrinks as the keyboard opens, so the overlay stays on screen and scrolls its own content. CSS-only; the React components are unchanged. `@paul-portfolio/css` 0.12.1 → 0.12.2.
+
 ## [0.7.1] - 2026-09-12
 
 ### Fixed

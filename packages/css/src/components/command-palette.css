@@ -9,14 +9,14 @@
     display: flex;
     align-items: flex-start;
     justify-content: center;
-    padding: 12vh var(--paul-spacing-4) var(--paul-spacing-4);
+    padding: 12dvh var(--paul-spacing-4) var(--paul-spacing-4);
     background-color: rgb(0 0 0 / 0.4);
   }
 
   .command-palette {
     width: 100%;
     max-width: 36rem;
-    max-height: 70vh;
+    max-height: 70dvh;
     display: flex;
     flex-direction: column;
     overflow: hidden;

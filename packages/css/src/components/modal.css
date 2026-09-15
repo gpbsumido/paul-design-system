@@ -58,7 +58,7 @@
     backdrop-filter: blur(12px);
     max-width: 32rem;
     width: calc(100% - var(--paul-spacing-8));
-    max-height: 90vh;
+    max-height: 90dvh;
     overflow: auto;
     z-index: var(--paul-z-modal);
     position: relative;

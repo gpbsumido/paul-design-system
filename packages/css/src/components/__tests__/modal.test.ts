@@ -75,4 +75,11 @@ describe('Modal CSS component', () => {
       /prefers-reduced-motion: reduce[\s\S]*\.modal__content[\s\S]*animation:\s*none/,
     );
   });
+
+  it('caps its height in dvh so the mobile keyboard cannot push it off-screen', () => {
+    // `vh` counts the area the on-screen keyboard covers, so a `vh`-capped modal
+    // overflows when the keyboard opens; `dvh` shrinks with the visible viewport.
+    expect(css).toContain('dvh');
+    expect(css).not.toMatch(/max-height:\s*\d+vh;/);
+  });
 });
