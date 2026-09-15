@@ -4,9 +4,47 @@ import { render, screen, fireEvent, within } from '@testing-library/react';
 import { axe } from 'vitest-axe';
 import * as matchers from 'vitest-axe/matchers';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { GuidedTour, type GuidedTourStep } from '../GuidedTour';
+import { GuidedTour, cardStyle, type GuidedTourStep } from '../GuidedTour';
 
 expect.extend(matchers);
+
+const rect = (o: Partial<DOMRect>): DOMRect =>
+  ({ top: 0, left: 0, right: 0, bottom: 0, width: 0, height: 0, x: 0, y: 0, toJSON() {}, ...o }) as DOMRect;
+
+describe('cardStyle', () => {
+  it('centres the card when there is no target', () => {
+    expect(cardStyle(null, { width: 336, height: 200 }, { width: 375, height: 800 })).toMatchObject({
+      top: '50%',
+      left: '50%',
+    });
+  });
+
+  it('pins the card under the target when it fits', () => {
+    const style = cardStyle(
+      rect({ top: 100, bottom: 140, left: 40, width: 120, height: 40 }),
+      { width: 336, height: 180 },
+      { width: 1280, height: 900 },
+    );
+    expect(style.top).toBe(152); // bottom (140) + 12
+    expect(style.left).toBe(40);
+  });
+
+  it('keeps a tall card fully on screen on a small (mobile) viewport', () => {
+    const viewport = { width: 375, height: 640 };
+    const card = { width: 343, height: 380 }; // taller than the old 220px guess
+    const style = cardStyle(
+      rect({ top: 500, bottom: 540, left: 30, width: 120, height: 40 }),
+      card,
+      viewport,
+    );
+    const top = style.top as number;
+    const left = style.left as number;
+    expect(top).toBeGreaterThanOrEqual(12);
+    expect(top + card.height).toBeLessThanOrEqual(viewport.height - 12); // bottom stays on screen
+    expect(left).toBeGreaterThanOrEqual(12);
+    expect(left + card.width).toBeLessThanOrEqual(viewport.width - 12); // right stays on screen
+  });
+});
 
 const STEPS: GuidedTourStep[] = [
   { title: 'Welcome', body: 'A quick tour.' },

@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.7.5] - 2026-09-15
+
+### Fixed
+
+- **`GuidedTour` card stays on screen on mobile.** Its position clamped against hardcoded size guesses (`innerHeight - 220`, `innerWidth - 340`), so a step whose body wraps to more lines than the guess — routine on a narrow phone — was pinned near the bottom and spilled past it, forcing a page scrollbar. The card is now measured and its position clamped to the viewport on both axes (preferring under the target, flipping above when it won't fit), and `.tour__card` gained `max-height: calc(100dvh - …)` with internal scroll so an unusually long step scrolls inside the card instead of pushing it off-screen — the same `dvh` fix the Modal and palette took in 0.7.2. `cardStyle` is now exported and unit-tested (a tall card on a small viewport stays fully within it). `@paul-portfolio/react` 0.10.2 → 0.10.3, `@paul-portfolio/css` 0.12.2 → 0.12.3.
+
 ## [0.7.4] - 2026-09-15
 
 ### Added
