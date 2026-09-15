@@ -11,6 +11,23 @@ function hover(el: HTMLElement, ms = 500) {
 }
 
 describe('Tooltip', () => {
+  it('shrinks the anchor to content by default, and fills its container with fill', () => {
+    const { rerender } = render(
+      <Tooltip content="Tip">
+        <button>Trigger</button>
+      </Tooltip>,
+    );
+    const anchor = () => screen.getByText('Trigger').parentElement!;
+    expect(anchor()).not.toHaveStyle({ width: '100%' });
+
+    rerender(
+      <Tooltip content="Tip" fill>
+        <button>Trigger</button>
+      </Tooltip>,
+    );
+    expect(anchor()).toHaveStyle({ width: '100%', height: '100%' });
+  });
+
   it('is not rendered until shown', () => {
     render(
       <Tooltip content="Tip text">
