@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.7.4] - 2026-09-15
+
+### Added
+
+- **`Tooltip` gains a `fill` prop.** The anchor is content-sized by default, which collapses the layout when the tooltip wraps a full-size element (a grid cell, a full-width chip). `fill` stretches the anchor to `100%` width and height so it doesn't shrink its trigger — the behaviour paul-explore had been forking `Tooltip` to get. `InfoTip` is unaffected (its trigger is a small glyph). `@paul-portfolio/react` 0.10.1 → 0.10.2.
+
+## [0.7.3] - 2026-09-15
+
+### Fixed
+
+- **Chip text is now readable on any fill, not always white.** A coloured `Chip` hardcoded white text, which fails contrast on a light accent (and a mid-tone can fail against both white and ink). The label colour is now measured — whichever of ink or white has more contrast against the fill wins — and where neither clears WCAG AA, the fill is darkened just enough that white does, keeping the caller's hue recognisable. A non-hex colour (CSS variable, named) keeps the previous white text since it can't be measured. Ported from the contrast logic paul-explore had been keeping as a local fork; `readableOn`, `chipColors`, and `contrastRatio` are now exported for reuse. `@paul-portfolio/react` 0.10.0 → 0.10.1.
+
 ## [0.7.2] - 2026-09-15
 
 ### Fixed

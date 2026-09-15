@@ -18,6 +18,12 @@ type TooltipProps = {
   delay?: number;
   /** Max width of the bubble in px. */
   maxWidth?: number;
+  /**
+   * Stretch the anchor to fill its container instead of shrinking to the
+   * trigger's content. Use when the tooltip wraps a full-size element (a grid
+   * cell, a full-width chip) so the layout isn't collapsed to content width.
+   */
+  fill?: boolean;
   children: ReactNode;
 };
 
@@ -28,7 +34,14 @@ const GAP = 8;
  * an overflow:hidden ancestor (grids, cards, chips) and needs no portal. Shows
  * on hover and focus after `delay` ms; Escape dismisses it.
  */
-export function Tooltip({ content, side = 'top', delay = 500, maxWidth, children }: TooltipProps) {
+export function Tooltip({
+  content,
+  side = 'top',
+  delay = 500,
+  maxWidth,
+  fill = false,
+  children,
+}: TooltipProps) {
   const id = useId();
   const [visible, setVisible] = useState(false);
   const [rect, setRect] = useState<DOMRect | null>(null);
@@ -55,7 +68,11 @@ export function Tooltip({ content, side = 'top', delay = 500, maxWidth, children
   return (
     <span
       className="tooltip__anchor"
-      style={{ display: 'inline-flex' }}
+      style={
+        fill
+          ? { display: 'inline-flex', width: '100%', height: '100%' }
+          : { display: 'inline-flex' }
+      }
       onMouseEnter={(e) => show(e.currentTarget)}
       onMouseLeave={hide}
       onFocus={(e) => show(e.currentTarget)}

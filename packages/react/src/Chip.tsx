@@ -1,9 +1,14 @@
 import type { HTMLAttributes, MouseEvent, CSSProperties } from 'react';
 import { cx } from './cx';
+import { chipColors } from './readableOn';
 
 type ChipProps = Omit<HTMLAttributes<HTMLSpanElement>, 'onClick'> & {
   label: string;
-  /** Background color (any CSS color). Text flips to white when set. */
+  /**
+   * Background color (any CSS color). For a hex fill the label colour is
+   * measured for contrast (ink or white, darkening the fill if neither clears
+   * AA); a non-hex colour keeps white text.
+   */
   color?: string;
   size?: 'sm' | 'md';
   /** Stretch to fill the container (e.g. a grid cell). */
@@ -41,9 +46,15 @@ export function Chip({
     className,
   );
 
-  const style: CSSProperties | undefined = color
-    ? { backgroundColor: color, color: '#fff' }
-    : undefined;
+  // A hex fill gets a measured, contrast-safe label (and a darkened fill when a
+  // mid-tone clears neither ink nor white). A CSS variable or named colour can't
+  // be measured, so it keeps the prior white-on-fill behaviour.
+  const pair = color ? chipColors(color) : undefined;
+  const style: CSSProperties | undefined = pair
+    ? { backgroundColor: pair.background, color: pair.color }
+    : color
+      ? { backgroundColor: color, color: '#fff' }
+      : undefined;
 
   const remove = showRemove ? (
     <button
