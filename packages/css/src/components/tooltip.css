@@ -10,7 +10,8 @@
     border-radius: var(--paul-radius-sm);
     z-index: var(--paul-z-popover);
     pointer-events: none;
-    max-width: 250px;
+    /* Never wider than the screen — the default cap, when no maxWidth is set. */
+    max-width: min(250px, calc(100vw - 1rem));
     word-wrap: break-word;
     line-height: var(--paul-line-height-snug);
     box-shadow: var(--paul-shadow-md);

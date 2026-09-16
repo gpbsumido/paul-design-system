@@ -2,11 +2,16 @@ import {
   useState,
   useRef,
   useCallback,
+  useEffect,
+  useLayoutEffect,
   useId,
   type ReactNode,
   type CSSProperties,
 } from 'react';
 import { cx } from './cx';
+
+/** Layout effect on the client, a no-op-safe effect on the server (SSR). */
+const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
 type TooltipSide = 'top' | 'bottom' | 'left' | 'right';
 
@@ -45,7 +50,30 @@ export function Tooltip({
   const id = useId();
   const [visible, setVisible] = useState(false);
   const [rect, setRect] = useState<DOMRect | null>(null);
+  const [nudge, setNudge] = useState({ x: 0, y: 0 });
+  const bubbleRef = useRef<HTMLSpanElement>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Keep the bubble on screen. It's positioned off the trigger's rect, so near a
+  // screen edge it can spill past the viewport and force a scrollbar on mobile.
+  // Measure the rendered bubble (after its transform) and nudge it back inside.
+  // left/top are fixed screen coords, so shifting them by the overflow shifts the
+  // final position by the same amount. Runs before paint, so there's no flash.
+  useIsomorphicLayoutEffect(() => {
+    if (!visible || !rect) return;
+    const el = bubbleRef.current;
+    if (!el || typeof window === 'undefined') return;
+    // `hide` clears the nudge, so on each show the bubble is measured at its base
+    // position — one correction per show, and the effect doesn't depend on the
+    // nudge it sets, so it can't loop (which matters in jsdom, where a measured
+    // rect never reflects the applied style).
+    setNudge(
+      viewportNudge(el.getBoundingClientRect(), { x: 0, y: 0 }, {
+        width: window.innerWidth,
+        height: window.innerHeight,
+      }),
+    );
+  }, [visible, rect, side]);
 
   const show = useCallback(
     (el: HTMLElement) => {
@@ -59,10 +87,19 @@ export function Tooltip({
   const hide = useCallback(() => {
     if (timer.current) clearTimeout(timer.current);
     setVisible(false);
+    setNudge({ x: 0, y: 0 });
   }, []);
 
-  const style: CSSProperties | undefined = rect
-    ? { position: 'fixed', ...place(rect, side), maxWidth }
+  const placed = rect ? place(rect, side) : null;
+  const style: CSSProperties | undefined = placed
+    ? {
+        position: 'fixed',
+        ...placed,
+        left: (placed.left as number) + nudge.x,
+        top: (placed.top as number) + nudge.y,
+        // Never wider than the screen, so a wide bubble can't overflow on its own.
+        maxWidth: maxWidth ? `min(${maxWidth}px, calc(100vw - 1rem))` : undefined,
+      }
     : undefined;
 
   return (
@@ -85,6 +122,7 @@ export function Tooltip({
       {children}
       {visible && rect && (
         <span
+          ref={bubbleRef}
           id={id}
           role="tooltip"
           className={cx('tooltip', `tooltip--${side}`, 'tooltip--visible')}
@@ -95,6 +133,33 @@ export function Tooltip({
       )}
     </span>
   );
+}
+
+type Edges = { left: number; right: number; top: number; bottom: number };
+
+/**
+ * How far to shift the bubble to bring it fully inside the viewport. `box` is the
+ * measured (already-shifted) rect and `applied` the shift currently on it, so the
+ * base position is `box - applied`; the returned nudge clamps that base to a
+ * margin inside the viewport. On-screen already → {0,0}.
+ */
+export function viewportNudge(
+  box: Edges,
+  applied: { x: number; y: number },
+  viewport: { width: number; height: number },
+  margin = 8,
+): { x: number; y: number } {
+  const left = box.left - applied.x;
+  const right = box.right - applied.x;
+  const top = box.top - applied.y;
+  const bottom = box.bottom - applied.y;
+  let x = 0;
+  let y = 0;
+  if (left < margin) x = margin - left;
+  else if (right > viewport.width - margin) x = viewport.width - margin - right;
+  if (top < margin) y = margin - top;
+  else if (bottom > viewport.height - margin) y = viewport.height - margin - bottom;
+  return { x, y };
 }
 
 /** Screen coordinates + transform to anchor the bubble on a side of the rect. */
