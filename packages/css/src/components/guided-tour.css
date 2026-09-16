@@ -35,6 +35,10 @@
   .tour__card {
     z-index: calc(var(--paul-z-popover) + 1);
     width: min(21rem, calc(100vw - var(--paul-spacing-6)));
+    /* Never taller than the viewport — a long step on a small screen scrolls
+       inside the card rather than pushing it off the bottom. */
+    max-height: calc(100dvh - var(--paul-spacing-6));
+    overflow-y: auto;
     background: var(--paul-color-surface);
     border: 1px solid var(--paul-color-border);
     border-radius: var(--paul-radius-xl);

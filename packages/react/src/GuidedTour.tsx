@@ -1,5 +1,6 @@
 import {
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
   type CSSProperties,
@@ -7,6 +8,9 @@ import {
 } from 'react';
 import { createPortal } from 'react-dom';
 import { cx } from './cx';
+
+/** Layout effect on the client, a no-op-safe effect on the server (SSR). */
+const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
 export type GuidedTourStep = {
   /** Id of the element to spotlight. Omit for a centred card (an intro step). */
@@ -46,15 +50,31 @@ type GuidedTourProps = {
 const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-/** Keep the card on screen: pin it under the spotlight, or centre it. */
-function cardStyle(rect: DOMRect | null): CSSProperties {
-  if (!rect || typeof window === 'undefined') {
+type Size = { width: number; height: number };
+
+/**
+ * Keep the whole card on screen. Pin it under the target when it fits there,
+ * flip above when it doesn't, then clamp both axes to the viewport using the
+ * card's measured size — so on a small (mobile) screen it never spills past an
+ * edge and forces a scrollbar. Centres when there's no target (an intro step).
+ * `card` is {0,0} until measured; the fallbacks match the CSS width and a
+ * typical height so the first paint is close before the real size lands.
+ */
+export function cardStyle(rect: DOMRect | null, card: Size, viewport: Size): CSSProperties {
+  if (!rect) {
     return { position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' };
   }
+  const margin = 12;
+  const width = card.width || 336;
+  const height = card.height || 220;
+  const belowTop = rect.bottom + margin;
+  const aboveTop = rect.top - height - margin;
+  const fitsBelow = belowTop + height + margin <= viewport.height;
+  const preferredTop = fitsBelow ? belowTop : aboveTop >= margin ? aboveTop : belowTop;
   return {
     position: 'fixed',
-    top: Math.min(rect.bottom + 12, window.innerHeight - 220),
-    left: Math.max(12, Math.min(rect.left, window.innerWidth - 340)),
+    top: Math.max(margin, Math.min(preferredTop, viewport.height - height - margin)),
+    left: Math.max(margin, Math.min(rect.left, viewport.width - width - margin)),
   };
 }
 
@@ -77,6 +97,7 @@ export function GuidedTour({
 }: GuidedTourProps) {
   const [index, setIndex] = useState(0);
   const [rect, setRect] = useState<DOMRect | null>(null);
+  const [cardSize, setCardSize] = useState<Size>({ width: 0, height: 0 });
   const cardRef = useRef<HTMLDivElement>(null);
 
   const current = steps[index];
@@ -121,6 +142,18 @@ export function GuidedTour({
       window.removeEventListener('scroll', measure, true);
     };
   }, [open, current?.target]);
+
+  // Measure the card so its position can be clamped to the viewport (a tall card
+  // on a small screen would otherwise spill past an edge). Runs before paint, so
+  // the clamped position lands without a flash. Only updates on a real size
+  // change, so it can't loop with the reposition it drives.
+  useIsomorphicLayoutEffect(() => {
+    if (!open) return;
+    const el = cardRef.current;
+    if (!el) return;
+    const { width, height } = el.getBoundingClientRect();
+    setCardSize((prev) => (prev.width === width && prev.height === height ? prev : { width, height }));
+  }, [open, index, rect]);
 
   // Focus the card on open, restore focus on close, and trap Tab + handle
   // Escape while it's up.
@@ -203,7 +236,10 @@ export function GuidedTour({
         aria-modal="true"
         aria-label={ariaLabel}
         tabIndex={-1}
-        style={cardStyle(rect)}
+        style={cardStyle(rect, cardSize, {
+          width: window.innerWidth,
+          height: window.innerHeight,
+        })}
         className={cx('tour__card', className)}
       >
         <p className="tour__step">

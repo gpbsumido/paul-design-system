@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.5] - 2026-09-15
+
+### Fixed
+
+- **`GuidedTour` card stays on screen on mobile.** Its position clamped against hardcoded size guesses (`innerHeight - 220`, `innerWidth - 340`), so a step whose body wraps to more lines than the guess — routine on a narrow phone — was pinned near the bottom and spilled past it, forcing a page scrollbar. The card is now measured and its position clamped to the viewport on both axes (preferring under the target, flipping above when it won't fit), and `.tour__card` gained `max-height: calc(100dvh - …)` with internal scroll so an unusually long step scrolls inside the card instead of pushing it off-screen — the same `dvh` fix the Modal and palette took in 0.7.2. `cardStyle` is now exported and unit-tested (a tall card on a small viewport stays fully within it).
+- **`Tooltip` stays on screen on mobile too — the same class of bug.** The bubble is positioned off the trigger's rect with a fixed screen position and no viewport clamp, so near a screen edge it spilled past the viewport and forced a scrollbar. It's now measured and nudged back inside on both axes, its `max-width` is capped to the screen width (`min(250px, calc(100vw - 1rem))`, and the inline `maxWidth` prop too), and the nudge math (`viewportNudge`) is exported and unit-tested. Found by auditing every component that positions a floating element the way `GuidedTour` did; the rest — `Modal` (already `dvh`-capped and centred), the `Combobox`/`Select` dropdowns (contained `absolute` with a `max-height`), and the `Spotlight`/`TiltCard` pointer effects — don't have it.
+- Bumps for both: `@paul-portfolio/react` 0.10.2 → 0.10.4, `@paul-portfolio/css` 0.12.2 → 0.12.4.
+
 ## [0.7.4] - 2026-09-15
 
 ### Added
