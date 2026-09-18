@@ -57,8 +57,8 @@ export const Default: Story = {
 export const Shafts: Story = {
   args: { variant: 'shaft', direction: 'bottom', spread: 60 },
   render: (args) => (
-    <div style={{ height: 520 }}>
-      <LightBloom {...args} />
-    </div>
+    <LightBloom {...args}>
+      <div style={{ height: 520 }} />
+    </LightBloom>
   ),
 };

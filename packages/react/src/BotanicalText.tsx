@@ -1,4 +1,9 @@
-import { useEffect, useRef, type CSSProperties } from 'react';
+import {
+  useEffect,
+  useRef,
+  type CSSProperties,
+  type PointerEvent as ReactPointerEvent,
+} from 'react';
 import { cx } from './cx';
 import { usePrefersReducedMotion } from './usePrefersReducedMotion';
 
@@ -46,6 +51,7 @@ export function BotanicalText({
   const reduced = usePrefersReducedMotion();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const pointerRef = useRef({ x: -9999, y: -9999 });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -100,16 +106,17 @@ export function BotanicalText({
       ctx.clearRect(0, 0, w, h);
     };
 
-    const drawBloom = (b: Bloom, sway: number) => {
+    const drawBloom = (b: Bloom, sway: number, grow: number) => {
       const x = b.hx + sway;
       const y = b.hy;
+      const s = b.size * grow;
       if (b.leaf) {
         ctx.fillStyle = `hsl(${b.hue}, 45%, 38%)`;
         ctx.save();
         ctx.translate(x, y);
         ctx.rotate(b.phase);
         ctx.beginPath();
-        ctx.ellipse(0, 0, b.size, b.size * 0.45, 0, 0, Math.PI * 2);
+        ctx.ellipse(0, 0, s, s * 0.45, 0, 0, Math.PI * 2);
         ctx.fill();
         ctx.restore();
         return;
@@ -119,10 +126,10 @@ export function BotanicalText({
         const a = (p / 5) * Math.PI * 2 + b.phase;
         ctx.beginPath();
         ctx.ellipse(
-          x + Math.cos(a) * b.size * 0.7,
-          y + Math.sin(a) * b.size * 0.7,
-          b.size * 0.5,
-          b.size * 0.32,
+          x + Math.cos(a) * s * 0.7,
+          y + Math.sin(a) * s * 0.7,
+          s * 0.5,
+          s * 0.32,
           a,
           0,
           Math.PI * 2,
@@ -131,7 +138,7 @@ export function BotanicalText({
       }
       ctx.fillStyle = `hsl(${(b.hue + 45) % 360}, 80%, 58%)`;
       ctx.beginPath();
-      ctx.arc(x, y, b.size * 0.4, 0, Math.PI * 2);
+      ctx.arc(x, y, s * 0.4, 0, Math.PI * 2);
       ctx.fill();
     };
 
@@ -139,8 +146,13 @@ export function BotanicalText({
       const w = canvas.width / dpr;
       const h = canvas.height / dpr;
       ctx.clearRect(0, 0, w, h);
+      const p = pointerRef.current;
       for (const b of blooms) {
-        drawBloom(b, reduced ? 0 : Math.sin(t / 900 + b.phase) * 2.2);
+        // Blooms near the pointer open larger, as if reaching toward it.
+        const near = reduced
+          ? 0
+          : Math.max(0, 1 - Math.hypot(b.hx - p.x, b.hy - p.y) / 70);
+        drawBloom(b, reduced ? 0 : Math.sin(t / 900 + b.phase) * 2.2, 1 + near * 1.3);
       }
     };
 
@@ -165,6 +177,16 @@ export function BotanicalText({
     };
   }, [text, bloomHue, leafHue, leafMix, fontSize, fontWeight, density, reduced]);
 
+  const onPointerMove = (e: ReactPointerEvent<HTMLDivElement>) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const rect = canvas.getBoundingClientRect();
+    pointerRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+  };
+  const onPointerLeave = () => {
+    pointerRef.current = { x: -9999, y: -9999 };
+  };
+
   return (
     <div
       ref={containerRef}
@@ -172,6 +194,8 @@ export function BotanicalText({
       style={{ '--bt-bg': background } as CSSProperties}
       role="img"
       aria-label={text}
+      onPointerMove={onPointerMove}
+      onPointerLeave={onPointerLeave}
     >
       <canvas ref={canvasRef} aria-hidden="true" className="botanical-text__canvas" />
     </div>
