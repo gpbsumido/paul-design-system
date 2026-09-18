@@ -4,12 +4,13 @@
 
 ### Added
 
-- `CorridorPortraitHero`: a third portrait-hero composition where the imagery streams out of the centre to both sides, growing and tilting into a receding corridor wall (an Imageworks-style perspective corridor). All CSS, no dependency; the stream freezes into a still corridor under reduced motion.
+- `CorridorPortraitHero`: a third portrait-hero composition — a horizontal fan where the imagery streams out of the centre to both sides, tilting into a receding wall. All CSS, no dependency; freezes into a still fan under reduced motion.
 
 ### Changed
 
-- Renamed the two existing portrait-hero exports to descriptive names — `SpiralPortraitHero` and `PerspectivePortraitHero` — in place of the source library's numbered codenames. Only the export identifiers change on those two.
-- Reworked `PerspectivePortraitHero` into a genuine radial tunnel: twelve spokes of light radiate from the centre and the portraits fly outward along them from the vanishing point, scaling up as they come. Reduced motion freezes it into a still tunnel.
+- Renamed the two existing portrait-hero exports to descriptive names — `SpiralPortraitHero` and `PerspectivePortraitHero` — in place of the source library's numbered codenames.
+- Rebuilt `SpiralPortraitHero` so the portraits orbit the centred copy like planets around the sun: each sits on one of a few rings, spread by the golden angle, circling at its own speed, with the rings drawn faintly behind them. (Previously each portrait only drifted in place.)
+- Rebuilt `PerspectivePortraitHero` as a one-point-perspective corridor: a wireframe draws the far wall and four edge lines out to the corners, and the portraits are posters pasted on the left and right walls, streaming out of the centre and growing toward the viewer. Reduced motion freezes it into a still corridor.
 - `react` bumps to 0.12.0; importers pinned to 0.11.x keep working and pick up the new names and heroes when they move to 0.12.
 
 ## [0.8.2] - 2026-09-18

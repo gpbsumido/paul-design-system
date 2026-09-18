@@ -25,15 +25,16 @@ function Portrait({ image, index, variant }: { image: PortraitHeroImage; index: 
   // client frame always agree and there is no hydration flash.
   let style: CSSProperties;
   if (variant === 'tunnel') {
-    // Each portrait rides one of twelve spokes out from the centre, flying from
-    // the vanishing point to the rim and scaling up as it comes. The rest
-    // fraction is where it sits when motion is off.
+    // A one-point-perspective corridor: posters pasted on the left (-1) and
+    // right (+1) walls, streaming out of the centre and growing as they near the
+    // viewer. slot is the depth along the wall; the delay staggers each wall
+    // into a continuous run, and rest is where a poster sits when motion is off.
+    const dir = index % 2 === 0 ? -1 : 1;
+    const slot = Math.floor(index / 2);
     style = {
-      '--portrait-x': '50%', '--portrait-y': '50%',
-      '--tunnel-angle': `${(index % 12) * 30}deg`,
-      '--tunnel-dur': `${6 + (index % 5)}s`,
-      '--tunnel-delay': `-${(index * 0.5).toFixed(2)}s`,
-      '--tunnel-rest': `${(0.25 + (index % 5) * 0.15).toFixed(2)}`,
+      '--corr-dir': `${dir}`,
+      '--corr-delay': `-${(slot * 2).toFixed(1)}s`,
+      '--corr-rest': `${(1 - slot / 8).toFixed(3)}`,
       objectPosition: image.objectPosition,
     } as CSSProperties;
   } else if (variant === 'corridor') {
@@ -51,17 +52,14 @@ function Portrait({ image, index, variant }: { image: PortraitHeroImage; index: 
       objectPosition: image.objectPosition,
     } as CSSProperties;
   } else {
-    const angle = index * 137.508 * Math.PI / 180;
-    const ring = 33 + (index % 3) * 6;
+    // Spiral: the copy is the sun and the portraits are planets. Each sits on one
+    // of four rings, spread around by the golden angle so they never bunch, and
+    // circles the centre at its own speed. phase doubles as the rest angle.
     style = {
-      '--portrait-x': `${50 + Math.cos(angle) * ring}%`, '--portrait-y': `${50 + Math.sin(angle) * ring}%`,
-      '--portrait-rotate': `${(index % 5 - 2) * 9}deg`,
-      '--portrait-scale': 0.7 + (index % 3) * 0.15,
-      // Each portrait drifts along its own small circle, upright, at its own
-      // speed and phase — deterministic per index so SSR and hydration agree.
-      '--portrait-orbit-r': `${10 + (index % 4) * 4}px`,
-      '--portrait-orbit-dur': `${16 + (index % 5) * 2}s`,
-      '--portrait-orbit-delay': `-${(index % 7) * 2.4}s`,
+      '--orbit-r': `${15 + (index % 4) * 9}vmin`,
+      '--orbit-phase': `${((index * 137.508) % 360).toFixed(1)}deg`,
+      '--orbit-scale': `${(0.75 - (index % 4) * 0.07).toFixed(2)}`,
+      '--orbit-dur': `${26 + (index % 5) * 7}s`,
       objectPosition: image.objectPosition,
     } as CSSProperties;
   }
@@ -88,6 +86,15 @@ function PortraitHero({ heading, description, headingLevel = 1, images = [], act
     }} onPointerLeave={reset} onPointerCancel={reset}>
     {navigation && <div className="portrait-hero__navigation">{navigation}</div>}
     <div ref={gallery} className="portrait-hero__gallery" aria-hidden="true">
+      {variant === 'tunnel' && (
+        <svg className="portrait-hero__wire" viewBox="0 0 100 100" preserveAspectRatio="none" focusable="false">
+          <rect x="43" y="43" width="14" height="14" />
+          <line x1="0" y1="0" x2="43" y2="43" />
+          <line x1="100" y1="0" x2="57" y2="43" />
+          <line x1="0" y1="100" x2="43" y2="57" />
+          <line x1="100" y1="100" x2="57" y2="57" />
+        </svg>
+      )}
       {images.slice(0, 16).map((image, index) => <Portrait key={`${index}-${image.src}`} image={image} index={index} variant={variant} />)}
     </div>
     <div className="portrait-hero__content">
