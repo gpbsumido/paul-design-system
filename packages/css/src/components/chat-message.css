@@ -40,6 +40,7 @@
   .chat-message__bubble {
     padding: var(--paul-spacing-2_5) var(--paul-spacing-3);
     border-radius: var(--paul-radius-lg);
+    corner-shape: squircle;
     font-size: var(--paul-font-size-base);
     line-height: var(--paul-line-height-relaxed);
     overflow-wrap: break-word;

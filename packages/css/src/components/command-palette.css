@@ -22,6 +22,7 @@
     overflow: hidden;
     border: 1px solid var(--paul-color-border);
     border-radius: var(--paul-radius-xl);
+    corner-shape: squircle;
     background-color: var(--paul-color-surface);
     box-shadow: var(--paul-shadow-2xl);
     font-family: var(--paul-font-family-sans);
@@ -73,6 +74,7 @@
     gap: var(--paul-spacing-2);
     padding: var(--paul-spacing-2) var(--paul-spacing-3);
     border-radius: var(--paul-radius-md);
+    corner-shape: squircle;
     color: var(--paul-color-foreground);
     font-size: var(--paul-font-size-base);
     cursor: pointer;

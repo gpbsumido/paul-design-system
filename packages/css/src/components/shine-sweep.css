@@ -1,0 +1,48 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * ShineSweep – a specular bar travels diagonally across the element.
+   *
+   * A looping ambient shimmer with no information in it, so under reduced
+   * motion the sheen is simply not shown.
+   * ---------------------------------------------------------------- */
+  .shine-sweep {
+    position: relative;
+    display: inline-flex;
+    overflow: hidden;
+    /* Clip the sheen to the same rounded shape as the content it wraps, so it
+       never shows in the square corners outside a rounded button. Inherits the
+       radius the caller sets on this element (or its wrapping context). */
+    border-radius: inherit;
+    corner-shape: inherit;
+  }
+
+  .shine-sweep__sheen {
+    position: absolute;
+    inset: 0;
+    width: 45%;
+    pointer-events: none;
+    background: linear-gradient(
+      100deg,
+      transparent,
+      color-mix(in srgb, var(--paul-color-foreground) 22%, transparent),
+      transparent
+    );
+    animation: paul-shine-sweep 2.6s ease-in-out infinite;
+  }
+
+  @keyframes paul-shine-sweep {
+    0% {
+      transform: translateX(-160%) skewX(-18deg);
+    }
+    100% {
+      transform: translateX(220%) skewX(-18deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .shine-sweep__sheen {
+      animation: none;
+      display: none;
+    }
+  }
+}

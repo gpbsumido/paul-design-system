@@ -5,6 +5,7 @@
   .code-block {
     border: 1px solid var(--paul-color-border);
     border-radius: var(--paul-radius-md);
+    corner-shape: squircle;
     overflow: hidden;
     background-color: var(--paul-color-neutral-900);
     font-family: var(--paul-font-family-mono);
@@ -41,6 +42,7 @@
     padding: var(--paul-spacing-1) var(--paul-spacing-2);
     border: 1px solid var(--paul-color-neutral-600);
     border-radius: var(--paul-radius-sm);
+    corner-shape: squircle;
     background: none;
     color: var(--paul-color-neutral-100);
     font-family: var(--paul-font-family-sans);

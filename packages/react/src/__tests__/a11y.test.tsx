@@ -20,6 +20,26 @@ import { Skeleton } from '../Skeleton';
 import { TiltCard } from '../TiltCard';
 import { GradientBackground } from '../GradientBackground';
 import { Spotlight } from '../Spotlight';
+import { BlurReveal } from '../BlurReveal';
+import { ClickSpark } from '../ClickSpark';
+import { LiquidGlass } from '../LiquidGlass';
+import { ShineSweep } from '../ShineSweep';
+import { StarBorder } from '../StarBorder';
+import { TextLoop } from '../TextLoop';
+import { SquishSwitch } from '../SquishSwitch';
+import { RubberSegment } from '../RubberSegment';
+import { LatticeLoader } from '../LatticeLoader';
+import { DriftWall } from '../DriftWall';
+import { HoverImageReveal } from '../HoverImageReveal';
+import { LinkPreview } from '../LinkPreview';
+import { SmoothScrollSlider } from '../SmoothScrollSlider';
+import { LightBloom } from '../LightBloom';
+import { ParticleText } from '../ParticleText';
+import { CircularGallery } from '../CircularGallery';
+import { PathGallery } from '../PathGallery';
+import { RefineFrame } from '../RefineFrame';
+import { FolderFloat } from '../FolderFloat';
+import { BotanicalText } from '../BotanicalText';
 import { Sparkline } from '../Sparkline';
 import { BarChart } from '../BarChart';
 import { DonutChart } from '../DonutChart';
@@ -507,6 +527,186 @@ describe('Accessibility', () => {
         footnote="Last 24h"
       />,
     );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('BlurReveal has no a11y violations', async () => {
+    const { container } = render(<BlurReveal>Revealed content</BlurReveal>);
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('ClickSpark has no a11y violations', async () => {
+    const { container } = render(
+      <ClickSpark>
+        <button type="button">Pick</button>
+      </ClickSpark>,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('StarBorder has no a11y violations', async () => {
+    const { container } = render(
+      <StarBorder>
+        <p>Bordered content</p>
+      </StarBorder>,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('ShineSweep has no a11y violations', async () => {
+    const { container } = render(
+      <ShineSweep>
+        <button type="button">Place bet</button>
+      </ShineSweep>,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('LiquidGlass has no a11y violations', async () => {
+    const { container } = render(
+      <LiquidGlass>
+        <p>Frosted content</p>
+      </LiquidGlass>,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('TextLoop has no a11y violations', async () => {
+    const { container } = render(<TextLoop items={['fast', 'safe', 'fair']} />);
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('SquishSwitch has no a11y violations', async () => {
+    const { container } = render(
+      <SquishSwitch checked={false} onChange={() => {}} label="Notifications" />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('RubberSegment has no a11y violations', async () => {
+    const { container } = render(
+      <RubberSegment segments={['Day', 'Week']} value="Day" onChange={() => {}} />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('LatticeLoader has no a11y violations', async () => {
+    const { container } = render(<LatticeLoader label="Loading" />);
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('DriftWall has no a11y violations', async () => {
+    const { container } = render(
+      <DriftWall
+        items={[
+          { image: 'a.jpg', title: 'Alpha' },
+          { image: 'b.jpg', title: 'Beta' },
+        ]}
+        columns={2}
+      />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('HoverImageReveal has no a11y violations', async () => {
+    const { container } = render(
+      <HoverImageReveal
+        items={[
+          { label: 'Alpha', image: 'a.jpg', href: '#a' },
+          { label: 'Beta', image: 'b.jpg', href: '#b' },
+        ]}
+      />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('LinkPreview has no a11y violations', async () => {
+    const { container } = render(
+      <p>
+        See the{' '}
+        <LinkPreview href="https://example.com" image="p.jpg">
+          docs
+        </LinkPreview>{' '}
+        for more.
+      </p>,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('SmoothScrollSlider has no a11y violations', async () => {
+    const { container } = render(
+      <SmoothScrollSlider
+        slides={[
+          { image: 'a.jpg', title: 'Alpha', href: '#a' },
+          { image: 'b.jpg', title: 'Beta', href: '#b' },
+        ]}
+      />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('LightBloom has no a11y violations', async () => {
+    const { container } = render(
+      <LightBloom>
+        <h2>Layered content</h2>
+      </LightBloom>,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('ParticleText has no a11y violations', async () => {
+    const { container } = render(<ParticleText text="Accessible words" />);
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('CircularGallery has no a11y violations', async () => {
+    const { container } = render(
+      <CircularGallery
+        items={[
+          { image: 'a.jpg', title: 'Alpha', href: '#a' },
+          { image: 'b.jpg', title: 'Beta', href: '#b' },
+        ]}
+      />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('PathGallery has no a11y violations', async () => {
+    const { container } = render(
+      <PathGallery
+        items={[
+          { image: 'a.jpg', title: 'Alpha', href: '#a' },
+          { image: 'b.jpg', title: 'Beta', href: '#b' },
+        ]}
+      />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('RefineFrame has no a11y violations', async () => {
+    const { container } = render(
+      <RefineFrame status="generating">
+        <img src="a.jpg" alt="A generated landscape" />
+      </RefineFrame>,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('FolderFloat has no a11y violations', async () => {
+    const { container } = render(
+      <FolderFloat
+        label="Projects"
+        items={[
+          { label: 'Alpha', href: '#a' },
+          { label: 'Beta', href: '#b' },
+        ]}
+      />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('BotanicalText has no a11y violations', async () => {
+    const { container } = render(<BotanicalText text="Wildflowers" />);
     expect(await axe(container)).toHaveNoViolations();
   });
 });
