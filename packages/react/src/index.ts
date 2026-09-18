@@ -78,3 +78,4 @@ export { readableOn, chipColors, contrastRatio } from './readableOn';
 export { LiquidCarveButton, type LiquidCarveButtonProps } from './LiquidCarveButton';
 export { Hero06, Hero13, type PortraitHeroProps, type PortraitHeroImage } from './PortraitHero';
 export { LightBloom } from './LightBloom';
+export { ParticleText } from './ParticleText';

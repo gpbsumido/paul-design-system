@@ -34,6 +34,7 @@ import { HoverImageReveal } from '../HoverImageReveal';
 import { LinkPreview } from '../LinkPreview';
 import { SmoothScrollSlider } from '../SmoothScrollSlider';
 import { LightBloom } from '../LightBloom';
+import { ParticleText } from '../ParticleText';
 import { Sparkline } from '../Sparkline';
 import { BarChart } from '../BarChart';
 import { DonutChart } from '../DonutChart';
@@ -645,6 +646,11 @@ describe('Accessibility', () => {
         <h2>Layered content</h2>
       </LightBloom>,
     );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('ParticleText has no a11y violations', async () => {
+    const { container } = render(<ParticleText text="Accessible words" />);
     expect(await axe(container)).toHaveNoViolations();
   });
 });
