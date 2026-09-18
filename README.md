@@ -187,6 +187,9 @@ Storybook.
 | `ParticleText` | Text as a cloud of canvas particles that assemble and scatter (no dependency) |
 | `CircularGallery` | Cards on a rotating 3D cylinder you spin with a drag |
 | `PathGallery` | Images gliding along a curved CSS motion path |
+| `RefineFrame` | Content resolving from blurred to sharp as its status advances |
+| `FolderFloat` | A folder whose chips float out above it, fanned and bobbing |
+| `BotanicalText` | Text grown from tiny flowers and leaves on a canvas (no WebGL) |
 
 ## Design tokens
 

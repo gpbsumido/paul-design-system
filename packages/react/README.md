@@ -303,6 +303,9 @@ Live demos are in Storybook.
 | `ParticleText` | Text as a cloud of canvas particles that assemble and scatter |
 | `CircularGallery` | Cards on a rotating 3D cylinder you spin with a drag |
 | `PathGallery` | Images gliding along a curved CSS motion path |
+| `RefineFrame` | Content resolving from blurred/desaturated to sharp as its status advances (CSS filters, inline SVG status icons) |
+| `FolderFloat` | A folder whose chips float out above it, fanned and bobbing (CSS, no physics engine) |
+| `BotanicalText` | Text grown from tiny flowers and leaves on the 2D canvas (no WebGL) |
 
 ## Accessibility
 
