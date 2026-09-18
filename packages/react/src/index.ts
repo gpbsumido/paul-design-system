@@ -81,3 +81,4 @@ export { LightBloom } from './LightBloom';
 export { ParticleText } from './ParticleText';
 export { CircularGallery, type CircularGalleryItem } from './CircularGallery';
 export { PathGallery, type PathGalleryItem } from './PathGallery';
+export { RefineFrame, type RefineStatus } from './RefineFrame';

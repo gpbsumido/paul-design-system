@@ -1,0 +1,138 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * RefineFrame – content resolving from blurred/desaturated to sharp as its
+   * status advances. Reinterpreted from ReactBits: the original pixelates on a
+   * canvas; this drives CSS filter/scale/opacity per stage (no canvas, no icon
+   * dependency), with a glint sweep while working.
+   *
+   * Under reduced motion the sweep is dropped and the spinner pulses instead of
+   * spinning (so no rotation survives).
+   * ---------------------------------------------------------------- */
+  .refine-frame {
+    position: relative;
+    width: 100%;
+    max-width: 320px;
+    overflow: hidden;
+    border-radius: var(--rf-radius, 16px);
+    corner-shape: squircle;
+    background: var(--paul-color-neutral-800, #27272a);
+    isolation: isolate;
+  }
+
+  .refine-frame__content {
+    position: absolute;
+    inset: 0;
+    filter: blur(var(--rf-blur, 0px)) saturate(var(--rf-sat, 1));
+    transform: scale(var(--rf-scale, 1));
+    opacity: var(--rf-opacity, 1);
+    transition:
+      filter var(--rf-dur, 400ms) ease,
+      transform var(--rf-dur, 400ms) ease,
+      opacity var(--rf-dur, 400ms) ease;
+  }
+
+  .refine-frame__content > * {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .refine-frame__sweep {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: linear-gradient(
+      100deg,
+      transparent 20%,
+      rgb(255 255 255 / 0.22) 45%,
+      transparent 70%
+    );
+    background-size: 220% 100%;
+    animation: paul-refine-sweep 1.6s linear infinite;
+  }
+
+  .refine-frame__status {
+    position: absolute;
+    left: 0.6rem;
+    bottom: 0.6rem;
+    z-index: 3;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: var(--paul-radius-full);
+    corner-shape: round;
+    background: var(--paul-color-primary-600);
+    color: var(--paul-color-on-primary, #fff);
+    font-size: 0.82rem;
+    font-weight: var(--paul-font-weight-medium);
+    backdrop-filter: blur(6px);
+  }
+
+  .refine-frame[data-status='complete'] .refine-frame__status {
+    background: var(--paul-color-success);
+  }
+
+  .refine-frame[data-status='error'] .refine-frame__status {
+    background: var(--paul-color-error);
+  }
+
+  .refine-frame__retry {
+    appearance: none;
+    border: none;
+    cursor: pointer;
+    margin-left: 0.2rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: var(--paul-radius-full);
+    corner-shape: round;
+    background: rgb(255 255 255 / 0.16);
+    color: inherit;
+    font: inherit;
+    font-weight: 600;
+  }
+
+  .refine-frame__icon {
+    display: inline-flex;
+  }
+
+  .refine-frame__spinner {
+    animation: paul-refine-spin 0.8s linear infinite;
+  }
+
+  @keyframes paul-refine-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes paul-refine-sweep {
+    from {
+      background-position: 0 0;
+    }
+    to {
+      background-position: 220% 0;
+    }
+  }
+
+  @keyframes paul-refine-pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.4;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .refine-frame__sweep {
+      animation: none;
+      display: none;
+    }
+    .refine-frame__spinner {
+      animation: paul-refine-pulse 1.4s ease-in-out infinite;
+    }
+  }
+}

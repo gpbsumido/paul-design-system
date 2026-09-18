@@ -37,6 +37,7 @@ import { LightBloom } from '../LightBloom';
 import { ParticleText } from '../ParticleText';
 import { CircularGallery } from '../CircularGallery';
 import { PathGallery } from '../PathGallery';
+import { RefineFrame } from '../RefineFrame';
 import { Sparkline } from '../Sparkline';
 import { BarChart } from '../BarChart';
 import { DonutChart } from '../DonutChart';
@@ -676,6 +677,15 @@ describe('Accessibility', () => {
           { image: 'b.jpg', title: 'Beta', href: '#b' },
         ]}
       />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('RefineFrame has no a11y violations', async () => {
+    const { container } = render(
+      <RefineFrame status="generating">
+        <img src="a.jpg" alt="A generated landscape" />
+      </RefineFrame>,
     );
     expect(await axe(container)).toHaveNoViolations();
   });
