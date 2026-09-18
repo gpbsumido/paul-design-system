@@ -82,3 +82,4 @@ export { ParticleText } from './ParticleText';
 export { CircularGallery, type CircularGalleryItem } from './CircularGallery';
 export { PathGallery, type PathGalleryItem } from './PathGallery';
 export { RefineFrame, type RefineStatus } from './RefineFrame';
+export { FolderFloat, type FolderFloatItem } from './FolderFloat';

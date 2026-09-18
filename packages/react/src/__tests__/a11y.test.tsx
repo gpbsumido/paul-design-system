@@ -38,6 +38,7 @@ import { ParticleText } from '../ParticleText';
 import { CircularGallery } from '../CircularGallery';
 import { PathGallery } from '../PathGallery';
 import { RefineFrame } from '../RefineFrame';
+import { FolderFloat } from '../FolderFloat';
 import { Sparkline } from '../Sparkline';
 import { BarChart } from '../BarChart';
 import { DonutChart } from '../DonutChart';
@@ -686,6 +687,19 @@ describe('Accessibility', () => {
       <RefineFrame status="generating">
         <img src="a.jpg" alt="A generated landscape" />
       </RefineFrame>,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('FolderFloat has no a11y violations', async () => {
+    const { container } = render(
+      <FolderFloat
+        label="Projects"
+        items={[
+          { label: 'Alpha', href: '#a' },
+          { label: 'Beta', href: '#b' },
+        ]}
+      />,
     );
     expect(await axe(container)).toHaveNoViolations();
   });
