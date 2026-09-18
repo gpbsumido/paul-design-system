@@ -1,0 +1,49 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * ClickSpark – a burst of rays from the press point.
+   *
+   * The rays are decorative (aria-hidden in the component) and clear
+   * themselves on animation end. Under reduced motion the component spawns
+   * nothing; the block below is the belt-and-braces so the stylesheet answers
+   * the preference on its own too.
+   * ---------------------------------------------------------------- */
+  .click-spark {
+    position: relative;
+    display: inline-flex;
+  }
+
+  .click-spark__burst {
+    position: absolute;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+  }
+
+  .click-spark__ray {
+    position: absolute;
+    height: 2px;
+    width: 11px;
+    border-radius: var(--paul-radius-full);
+    background: var(--paul-color-primary-500);
+    transform-origin: left center;
+    animation: paul-spark-ray 0.45s ease-out forwards;
+  }
+
+  @keyframes paul-spark-ray {
+    from {
+      transform: rotate(var(--paul-spark-angle)) translateX(3px) scaleX(1);
+      opacity: 1;
+    }
+    to {
+      transform: rotate(var(--paul-spark-angle)) translateX(22px) scaleX(0.2);
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .click-spark__ray {
+      animation: none;
+      display: none;
+    }
+  }
+}

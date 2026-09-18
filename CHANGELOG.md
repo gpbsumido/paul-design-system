@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.8.0] - 2026-09-18
+
+### Added
+
+- **Five motion primitives, reimplemented on the tokens instead of pulled from a library.** The vocabulary a page needs to feel alive without reaching for ReactBits or OriginKit: **ClickSpark** (a ring of rays bursts from a press point, then clears itself — wrap it round a control, it doesn't intercept the click), **BlurReveal** (content resolves from a blur as it rises in, with an optional stagger delay), **StarBorder** (a conic gradient sweeps the border, tinted from `currentColor`, clipped to a thin animated edge), **ShineSweep** (a specular bar travels diagonally across a button or badge) and **LiquidGlass** (an iOS-style frosted surface with a specular highlight that drifts across it). Each pairs a React component (`cx` + the shared `usePrefersReducedMotion`) with a `@paul-portfolio/css` stylesheet, and every one answers `prefers-reduced-motion` — the spark spawns nothing, the reveal is present at rest, the ring stops dead rather than spinning slowly, the sheens hold still. Axe-clean (the decorative layers are `aria-hidden`). `@paul-portfolio/react` 0.10.4 → 0.11.0, `@paul-portfolio/css` 0.12.4 → 0.13.0.
+
 ## [0.7.5] - 2026-09-15
 
 ### Fixed

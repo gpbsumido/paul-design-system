@@ -1,0 +1,58 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * LiquidGlass – a frosted, translucent surface with a specular highlight
+   * that drifts across it (iOS "Liquid Glass").
+   *
+   * The frosted surface carries the look; the drift is decoration, so under
+   * reduced motion the sheen holds still and the surface stays.
+   * ---------------------------------------------------------------- */
+  .liquid-glass {
+    position: relative;
+    overflow: hidden;
+    border-radius: inherit;
+    background-color: color-mix(
+      in srgb,
+      var(--paul-color-foreground) 6%,
+      color-mix(in srgb, var(--paul-color-surface) 66%, transparent)
+    );
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--paul-color-border);
+  }
+
+  .liquid-glass__sheen {
+    position: absolute;
+    inset: -30%;
+    pointer-events: none;
+    background: radial-gradient(
+      50% 40% at 50% 40%,
+      color-mix(in srgb, var(--paul-color-foreground) 16%, transparent),
+      transparent 70%
+    );
+    animation: paul-liquid-glass-drift 7s ease-in-out infinite;
+  }
+
+  .liquid-glass__content {
+    position: relative;
+    z-index: 1;
+  }
+
+  @keyframes paul-liquid-glass-drift {
+    0%,
+    100% {
+      transform: translate3d(-14%, -10%, 0) rotate(0deg);
+      opacity: 0.45;
+    }
+    50% {
+      transform: translate3d(14%, 10%, 0) rotate(8deg);
+      opacity: 0.9;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .liquid-glass__sheen {
+      animation: none;
+      display: none;
+    }
+  }
+}

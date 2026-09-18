@@ -20,6 +20,11 @@ import { Skeleton } from '../Skeleton';
 import { TiltCard } from '../TiltCard';
 import { GradientBackground } from '../GradientBackground';
 import { Spotlight } from '../Spotlight';
+import { BlurReveal } from '../BlurReveal';
+import { ClickSpark } from '../ClickSpark';
+import { LiquidGlass } from '../LiquidGlass';
+import { ShineSweep } from '../ShineSweep';
+import { StarBorder } from '../StarBorder';
 import { Sparkline } from '../Sparkline';
 import { BarChart } from '../BarChart';
 import { DonutChart } from '../DonutChart';
@@ -506,6 +511,47 @@ describe('Accessibility', () => {
         trendLabel="Approval rate trend"
         footnote="Last 24h"
       />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('BlurReveal has no a11y violations', async () => {
+    const { container } = render(<BlurReveal>Revealed content</BlurReveal>);
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('ClickSpark has no a11y violations', async () => {
+    const { container } = render(
+      <ClickSpark>
+        <button type="button">Pick</button>
+      </ClickSpark>,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('StarBorder has no a11y violations', async () => {
+    const { container } = render(
+      <StarBorder>
+        <p>Bordered content</p>
+      </StarBorder>,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('ShineSweep has no a11y violations', async () => {
+    const { container } = render(
+      <ShineSweep>
+        <button type="button">Place bet</button>
+      </ShineSweep>,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('LiquidGlass has no a11y violations', async () => {
+    const { container } = render(
+      <LiquidGlass>
+        <p>Frosted content</p>
+      </LiquidGlass>,
     );
     expect(await axe(container)).toHaveNoViolations();
   });

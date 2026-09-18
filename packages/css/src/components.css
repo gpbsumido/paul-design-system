@@ -42,4 +42,9 @@
 @import './components/agent-decision.css';
 @import './components/timeline.css';
 @import './components/stat-card.css';
+@import './components/blur-reveal.css';
+@import './components/click-spark.css';
+@import './components/liquid-glass.css';
+@import './components/shine-sweep.css';
+@import './components/star-border.css';
 @import './utilities/visually-hidden.css';

@@ -1,0 +1,51 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * StarBorder – a conic gradient rotates around the border, clipped to the
+   * card so only a thin animated edge shows.
+   *
+   * Rotation is a vestibular trigger, so under reduced motion the ring stops
+   * dead and holds as a static gradient frame — it must not keep spinning, even
+   * slowly.
+   * ---------------------------------------------------------------- */
+  .star-border {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border-radius: inherit;
+    padding: 1px;
+  }
+
+  .star-border__ring {
+    position: absolute;
+    inset: -35%;
+    z-index: -1;
+    border-radius: inherit;
+    background: conic-gradient(
+      from 0deg,
+      transparent 0deg,
+      currentColor 60deg,
+      transparent 150deg,
+      currentColor 240deg,
+      transparent 330deg
+    );
+    animation: paul-star-spin 4s linear infinite;
+  }
+
+  .star-border__content {
+    position: relative;
+    border-radius: inherit;
+    background: var(--paul-color-surface);
+  }
+
+  @keyframes paul-star-spin {
+    to {
+      transform: rotate(1turn);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .star-border__ring {
+      animation: none;
+    }
+  }
+}

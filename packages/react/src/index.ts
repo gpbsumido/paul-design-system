@@ -58,6 +58,11 @@ export {
 } from './StatCard';
 export { VisuallyHidden } from './VisuallyHidden';
 export { GuidedTour, type GuidedTourStep } from './GuidedTour';
+export { BlurReveal } from './BlurReveal';
+export { ClickSpark } from './ClickSpark';
+export { LiquidGlass } from './LiquidGlass';
+export { ShineSweep } from './ShineSweep';
+export { StarBorder } from './StarBorder';
 export { usePrefersReducedMotion } from './usePrefersReducedMotion';
 export { cx } from './cx';
 export { readableOn, chipColors, contrastRatio } from './readableOn';
