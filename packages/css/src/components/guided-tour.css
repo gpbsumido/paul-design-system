@@ -17,6 +17,7 @@
   .tour__spotlight {
     position: fixed;
     border-radius: var(--paul-radius-lg);
+    corner-shape: squircle;
     box-shadow:
       0 0 0 9999px rgba(0, 0, 0, 0.5),
       0 0 0 2px var(--paul-color-primary);
@@ -42,6 +43,7 @@
     background: var(--paul-color-surface);
     border: 1px solid var(--paul-color-border);
     border-radius: var(--paul-radius-xl);
+    corner-shape: squircle;
     box-shadow: var(--paul-shadow-2xl);
     padding: var(--paul-spacing-4);
   }
@@ -87,6 +89,7 @@
     font: inherit;
     font-size: 0.875rem;
     border-radius: 9999px;
+    corner-shape: round;
     padding: 0.375rem 0.875rem;
     cursor: pointer;
     border: 1px solid transparent;

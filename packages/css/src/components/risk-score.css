@@ -23,6 +23,7 @@
     gap: var(--paul-spacing-1_5);
     padding: var(--paul-spacing-1) var(--paul-spacing-2_5);
     border-radius: var(--paul-radius-full);
+    corner-shape: round;
     font-weight: var(--paul-font-weight-semibold);
     line-height: 1;
   }
@@ -80,6 +81,7 @@
     block-size: var(--paul-spacing-2);
     background-color: var(--paul-color-muted);
     border-radius: var(--paul-radius-full);
+    corner-shape: round;
     overflow: hidden;
   }
 
@@ -87,6 +89,7 @@
     display: block;
     block-size: 100%;
     border-radius: inherit;
+    corner-shape: inherit;
   }
   .risk-score__fill--low {
     background-color: var(--paul-color-success-500);

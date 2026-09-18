@@ -47,12 +47,14 @@
     width: var(--ll-cell);
     height: var(--ll-cell);
     border-radius: max(1px, calc(var(--ll-cell) * 0.25));
+    corner-shape: squircle;
     background: var(--ll-color);
     opacity: var(--ll-idle);
   }
 
   .lattice-loader[data-shape='round'] .lattice-loader__cell {
     border-radius: 50%;
+    corner-shape: round;
   }
 
   .lattice-loader[data-glow] .lattice-loader__run .lattice-loader__cell:not([data-hole]) {

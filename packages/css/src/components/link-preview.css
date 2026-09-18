@@ -25,6 +25,7 @@
     width: var(--lp-w);
     height: var(--lp-h);
     border-radius: var(--lp-radius);
+    corner-shape: squircle;
     overflow: hidden;
     pointer-events: none;
     background: var(--paul-color-surface);

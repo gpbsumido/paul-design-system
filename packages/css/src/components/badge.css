@@ -8,6 +8,7 @@
     justify-content: center;
     padding: var(--paul-spacing-0_5) var(--paul-spacing-2);
     border-radius: var(--paul-radius-full);
+    corner-shape: round;
     font-size: var(--paul-font-size-xs);
     font-weight: var(--paul-font-weight-medium);
     line-height: 1;
@@ -44,6 +45,7 @@
     height: 8px;
     padding: 0;
     border-radius: var(--paul-radius-full);
+    corner-shape: round;
     font-size: 0;
     overflow: hidden;
   }
@@ -98,6 +100,7 @@
     height: 44px;
     padding: 0;
     border-radius: 0;
+    corner-shape: squircle;
     font-size: 10px;
     font-weight: var(--paul-font-weight-bold);
     letter-spacing: 0.04em;

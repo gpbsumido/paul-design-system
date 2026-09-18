@@ -31,6 +31,7 @@
     position: absolute;
     inset: 0;
     border-radius: inherit;
+    corner-shape: inherit;
     pointer-events: none;
     opacity: 0;
     transition: opacity var(--paul-duration-normal) var(--paul-easing-default);

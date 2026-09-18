@@ -12,6 +12,7 @@
     isolation: isolate;
     overflow: hidden;
     border-radius: inherit;
+    corner-shape: inherit;
     padding: 1px;
   }
 
@@ -20,6 +21,7 @@
     inset: -35%;
     z-index: -1;
     border-radius: inherit;
+    corner-shape: inherit;
     background: conic-gradient(
       from 0deg,
       transparent 0deg,
@@ -34,6 +36,7 @@
   .star-border__content {
     position: relative;
     border-radius: inherit;
+    corner-shape: inherit;
     background: var(--paul-color-surface);
   }
 

@@ -54,6 +54,7 @@
     background-size: 100% 1px;
     background-position: top;
     border-radius: var(--paul-radius-xl);
+    corner-shape: squircle;
     box-shadow: var(--paul-shadow-2xl);
     backdrop-filter: blur(12px);
     max-width: 32rem;

@@ -73,6 +73,7 @@
     inset: calc(var(--dw-gap) / 2);
     display: block;
     border-radius: var(--dw-radius);
+    corner-shape: squircle;
     overflow: hidden;
     background: #0b0b12;
     opacity: var(--dw-dim);

@@ -12,6 +12,7 @@
     padding-right: var(--paul-spacing-8);
     border: 1px solid var(--paul-color-border);
     border-radius: var(--paul-radius-md);
+    corner-shape: squircle;
     background-color: var(--paul-color-surface);
     color: var(--paul-color-foreground);
     font-size: var(--paul-font-size-sm);

@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.8.2] - 2026-09-18
+
+### Added
+
+- LiquidCarveButton: subtractive SVG carve, independent critically damped springs, native button/link semantics, disabled state and reduced-motion cancellation. The animation loop runs only while moving; the label keeps a solid backing for contrast.
+- Hero06 and Hero13: reusable portrait sections with supplied copy, imagery, navigation and actions. Hero06 uses a spiral composition; Hero13 is a CSS perspective interpretation of the public OriginKit poster. Pointer movement is limited to the decorative gallery and disabled under reduced motion. Empty or failed images retain usable content. No new runtime dependencies; the seven renderer/library-heavy effects remain deferred.
+
+### Fixed
+
+- Component corner shapes now ship with every radius through both CSS entry points. The old universal rule lived only in base.css, which components.css intentionally omits. Ordinary surfaces use squircles; circles and capsules stay round. Unsupported browsers retain standard border-radius.
+- Storybook resolves CSS and tokens from its own worktree so symlinked dependencies cannot silently preview another checkout.
+- React 0.11.2 and CSS 0.13.2; synchronize the touched package-lock version metadata.
+
 ## [0.8.1] - 2026-09-18
 
 ### Tests

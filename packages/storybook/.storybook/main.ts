@@ -32,6 +32,8 @@ const config: StorybookConfig = {
     config.resolve.alias = {
       ...config.resolve.alias,
       '@paul-portfolio/react': path.resolve(__dirname, '../../react/src'),
+      '@paul-portfolio/css': path.resolve(__dirname, '../../css/src'),
+      '@paul-portfolio/tokens/tokens.css': path.resolve(__dirname, '../../tokens/build/tokens.css'),
     };
     // Use automatic JSX runtime so source TSX files don't need `import React`
     config.esbuild = {

@@ -24,6 +24,7 @@
     height: 2px;
     width: 11px;
     border-radius: var(--paul-radius-full);
+    corner-shape: round;
     background: var(--paul-color-primary-500);
     transform-origin: left center;
     animation: paul-spark-ray 0.45s ease-out forwards;

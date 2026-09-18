@@ -9,6 +9,7 @@
     gap: var(--paul-spacing-2);
     padding: var(--paul-spacing-2) var(--paul-spacing-4);
     border-radius: var(--paul-radius-md);
+    corner-shape: squircle;
     font-weight: var(--paul-font-weight-medium);
     font-size: var(--paul-font-size-sm);
     line-height: var(--paul-line-height-tight);
@@ -173,6 +174,7 @@
     border: 2px solid var(--paul-color-foreground);
     border-right-color: transparent;
     border-radius: 50%;
+    corner-shape: round;
     animation: btn-spin 0.6s linear infinite;
   }
 

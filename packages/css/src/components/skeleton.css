@@ -6,6 +6,7 @@
     display: block;
     background: var(--paul-color-neutral-200);
     border-radius: var(--paul-radius-md);
+    corner-shape: squircle;
     overflow: hidden;
     position: relative;
   }
@@ -42,6 +43,7 @@
 
   .skeleton--circle {
     border-radius: var(--paul-radius-full);
+    corner-shape: round;
     /* Size from the width prop, default to an avatar-ish 40px. Without a
        width a block skeleton fills its container, and aspect-ratio then
        turns that full width into a giant circle. */

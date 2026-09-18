@@ -53,6 +53,7 @@
     width: var(--hir-w);
     height: var(--hir-h);
     border-radius: var(--hir-radius);
+    corner-shape: squircle;
     overflow: hidden;
     pointer-events: none;
     opacity: 0;

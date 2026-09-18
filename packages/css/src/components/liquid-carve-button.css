@@ -1,0 +1,44 @@
+@layer components {
+  .liquid-carve-button {
+    position: relative;
+    isolation: isolate;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: var(--paul-spacing-3) var(--paul-spacing-6);
+    overflow: hidden;
+    border: 1px solid transparent;
+    border-radius: var(--lcb-radius, var(--paul-radius-lg));
+    corner-shape: squircle;
+    background: var(--lcb-blob, var(--paul-color-primary-600));
+    color: var(--lcb-text, var(--paul-color-background));
+    font: inherit;
+    font-weight: var(--paul-font-weight-semibold);
+    text-decoration: none;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+  .liquid-carve-button__surface { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  .liquid-carve-button__label {
+    position: relative;
+    padding: 0.15em 0.3em;
+    background: var(--lcb-fill, var(--paul-color-foreground));
+    border-radius: var(--paul-radius-sm);
+    corner-shape: squircle;
+    pointer-events: none;
+  }
+  .liquid-carve-button:hover { color: var(--lcb-text, var(--paul-color-background)); }
+  .liquid-carve-button:focus-visible { outline: 2px solid var(--paul-color-primary-600); outline-offset: 3px; }
+  .liquid-carve-button:active:not(:disabled):not([aria-disabled='true']) { transform: scale(0.98); }
+  .liquid-carve-button:disabled, .liquid-carve-button[aria-disabled='true'] { opacity: 0.5; cursor: not-allowed; }
+  @media (prefers-reduced-motion: reduce) {
+    .liquid-carve-button:active:not(:disabled):not([aria-disabled='true']) { transform: none; }
+    .liquid-carve-button__surface path { display: none; }
+  }
+  @media (forced-colors: active) {
+    .liquid-carve-button { border-color: ButtonText; background: ButtonFace; }
+    .liquid-carve-button__surface { display: none; }
+    .liquid-carve-button__label { background: ButtonFace; }
+  }
+}

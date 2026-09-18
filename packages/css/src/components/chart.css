@@ -140,6 +140,7 @@
     height: 0.625rem;
     width: 0.625rem;
     border-radius: var(--paul-radius-full);
+    corner-shape: round;
     flex-shrink: 0;
   }
 

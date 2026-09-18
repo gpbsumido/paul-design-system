@@ -1,9 +1,13 @@
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { axe } from 'vitest-axe';
+import * as matchers from 'vitest-axe/matchers';
+expect.extend(matchers);
 import * as components from '../index';
 
-afterEach(cleanup);
+let reduced = false;
+vi.mock('../usePrefersReducedMotion', () => ({ usePrefersReducedMotion: () => reduced }));
+afterEach(() => { cleanup(); reduced = false; vi.unstubAllGlobals(); vi.restoreAllMocks(); });
 for (const name of ['Hero06', 'Hero13'] as const) {
   describe(name, () => {
     it('exports a labelled section with configurable copy, heading level and action slots', async () => {
@@ -28,6 +32,22 @@ for (const name of ['Hero06', 'Hero13'] as const) {
       expect(screen.getByRole('heading', { name: 'Still here' })).toBeVisible();
       expect(screen.getByRole('button', { name: 'Continue' })).toBeEnabled();
       expect(container.querySelector('img')).not.toBeVisible();
+    });
+    it('moves only decorative imagery with the pointer and resets for reduced motion', () => {
+      vi.stubGlobal('PointerEvent', MouseEvent);
+      const Hero = components[name];
+      const { container, rerender } = render(<Hero heading="Steady copy" />);
+      const region = screen.getByRole('region');
+      vi.spyOn(region, 'getBoundingClientRect').mockReturnValue({ left: 0, top: 0, width: 400, height: 400 } as DOMRect);
+      fireEvent.pointerMove(region, { clientX: 400, clientY: 400 });
+      const gallery = container.querySelector<HTMLElement>('.portrait-hero__gallery')!;
+      expect(gallery.style.transform).toBe('translate3d(10px, 10px, 0)');
+      fireEvent.pointerLeave(region);
+      expect(gallery.style.transform).toBe('');
+      reduced = true;
+      rerender(<Hero heading="Steady copy" />);
+      fireEvent.pointerMove(region, { clientX: 400, clientY: 400 });
+      expect(gallery.style.transform).toBe('');
     });
     it('creates separate accessible names for multiple instances', () => {
       const Hero = components[name];

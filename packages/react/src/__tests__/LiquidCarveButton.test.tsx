@@ -2,6 +2,8 @@ import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
 import { axe } from 'vitest-axe';
+import * as matchers from 'vitest-axe/matchers';
+expect.extend(matchers);
 import { LiquidCarveButton } from '../LiquidCarveButton';
 
 let frames: Map<number, FrameRequestCallback>;

@@ -13,6 +13,7 @@
        never shows in the square corners outside a rounded button. Inherits the
        radius the caller sets on this element (or its wrapping context). */
     border-radius: inherit;
+    corner-shape: inherit;
   }
 
   .shine-sweep__sheen {

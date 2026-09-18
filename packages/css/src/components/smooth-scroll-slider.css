@@ -33,6 +33,7 @@
     width: var(--sss-w);
     height: var(--sss-h);
     border-radius: 12px;
+    corner-shape: squircle;
     overflow: hidden;
     background: var(--paul-color-surface);
     box-shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.4);
