@@ -44,10 +44,20 @@
     max-width: 38rem;
     padding: var(--paul-spacing-6);
     text-align: center;
+  }
+  /* A blurred solid scrim behind the copy: opaque where the text sits, its edges
+     softened so the portraits fade in behind it rather than meeting a hard box
+     border. The copy itself stays sharp on top. */
+  .portrait-hero__content::before {
+    content: "";
+    position: absolute;
+    inset: -0.5rem;
+    z-index: -1;
     background: var(--paul-color-background);
     border-radius: var(--paul-radius-xl);
     corner-shape: squircle;
-    box-shadow: 0 0 4rem 2rem var(--paul-color-background);
+    filter: blur(1.75rem);
+    pointer-events: none;
   }
   .portrait-hero__heading { margin: 0; font-size: clamp(2.25rem, 5vw, 4.5rem); font-weight: var(--paul-font-weight-semibold); letter-spacing: -0.045em; line-height: 1.05; text-wrap: balance; overflow-wrap: anywhere; }
   .portrait-hero--tunnel .portrait-hero__heading { font-family: var(--paul-font-family-serif, Georgia, serif); font-weight: 400; letter-spacing: -0.035em; }

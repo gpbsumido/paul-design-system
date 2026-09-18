@@ -11,7 +11,10 @@
     overflow: hidden;
     height: 1.2em;
     line-height: 1.2em;
-    vertical-align: bottom;
+    /* Align the clip window to the parent's text bottom (not the line box, which
+       sits a half-leading lower) so the cycling word shares the baseline of the
+       words beside it. */
+    vertical-align: text-bottom;
   }
 
   .text-loop__track {
