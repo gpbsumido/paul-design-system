@@ -33,6 +33,7 @@ import { DriftWall } from '../DriftWall';
 import { HoverImageReveal } from '../HoverImageReveal';
 import { LinkPreview } from '../LinkPreview';
 import { SmoothScrollSlider } from '../SmoothScrollSlider';
+import { LightBloom } from '../LightBloom';
 import { Sparkline } from '../Sparkline';
 import { BarChart } from '../BarChart';
 import { DonutChart } from '../DonutChart';
@@ -634,6 +635,15 @@ describe('Accessibility', () => {
           { image: 'b.jpg', title: 'Beta', href: '#b' },
         ]}
       />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('LightBloom has no a11y violations', async () => {
+    const { container } = render(
+      <LightBloom>
+        <h2>Layered content</h2>
+      </LightBloom>,
     );
     expect(await axe(container)).toHaveNoViolations();
   });
