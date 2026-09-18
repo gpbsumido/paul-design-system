@@ -1,4 +1,13 @@
 @layer base {
+  /* Squircle (continuous) corners wherever a radius is set — the Apple corner
+     style. Progressive enhancement: browsers without corner-shape ignore this
+     and fall back to circular rounding, so nothing breaks where it's missing. */
+  *,
+  *::before,
+  *::after {
+    corner-shape: squircle;
+  }
+
   :root {
     font-family: var(--paul-font-family-sans);
     font-size: var(--paul-font-size-base);

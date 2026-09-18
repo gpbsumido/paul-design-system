@@ -31,11 +31,15 @@ const buttonStyle: React.CSSProperties = {
 };
 
 export const Default: Story = {
-  args: {
-    children: (
-      <button type="button" style={buttonStyle}>
-        Place bet
-      </button>
-    ),
-  },
+  render: () => (
+    // The wrapper's radius flows into the ShineSweep (border-radius: inherit),
+    // so the sheen is clipped to the button's rounded shape.
+    <div style={{ display: 'inline-flex', borderRadius: 10 }}>
+      <ShineSweep>
+        <button type="button" style={buttonStyle}>
+          Place bet
+        </button>
+      </ShineSweep>
+    </div>
+  ),
 };
