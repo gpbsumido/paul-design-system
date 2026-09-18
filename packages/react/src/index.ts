@@ -76,7 +76,7 @@ export { cx } from './cx';
 export { readableOn, chipColors, contrastRatio } from './readableOn';
 
 export { LiquidCarveButton, type LiquidCarveButtonProps } from './LiquidCarveButton';
-export { SpiralPortraitHero, PerspectivePortraitHero, type PortraitHeroProps, type PortraitHeroImage } from './PortraitHero';
+export { SpiralPortraitHero, PerspectivePortraitHero, CorridorPortraitHero, type PortraitHeroProps, type PortraitHeroImage } from './PortraitHero';
 export { LightBloom } from './LightBloom';
 export { ParticleText } from './ParticleText';
 export { CircularGallery, type CircularGalleryItem } from './CircularGallery';

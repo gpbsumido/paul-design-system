@@ -34,9 +34,52 @@
       transform: translate(-50%, -50%) rotate(360deg) translateX(var(--portrait-orbit-r, 16px)) rotate(-360deg) rotate(var(--portrait-rotate)) rotateX(var(--portrait-rotate-x)) rotateY(var(--portrait-rotate-y)) scale(var(--portrait-scale));
     }
   }
+  /* Tunnel: each portrait flies out along its spoke from the centre to the rim,
+     growing as it comes. The double rotate keeps the image upright while the
+     translate is measured along the spoke angle. */
+  .portrait-hero--tunnel .portrait-hero__image {
+    --tunnel-reach: 42vmin;
+    opacity: 0.85;
+    animation: paul-portrait-tunnel var(--tunnel-dur, 7s) linear infinite;
+    animation-delay: var(--tunnel-delay, 0s);
+  }
+  @keyframes paul-portrait-tunnel {
+    0% { opacity: 0; transform: translate(-50%, -50%) rotate(var(--tunnel-angle)) translateX(0) rotate(calc(-1 * var(--tunnel-angle))) scale(0.12); }
+    12% { opacity: 0.85; }
+    82% { opacity: 0.85; }
+    100% { opacity: 0; transform: translate(-50%, -50%) rotate(var(--tunnel-angle)) translateX(var(--tunnel-reach)) rotate(calc(-1 * var(--tunnel-angle))) scale(1.25); }
+  }
+  /* Corridor: portraits stream out of the centre to alternating sides, growing
+     and tilting into a receding wall. */
+  .portrait-hero--corridor .portrait-hero__image {
+    --corridor-reach: 44vw;
+    opacity: 0.9;
+    animation: paul-portrait-corridor var(--corridor-dur, 11s) linear infinite;
+    animation-delay: var(--corridor-delay, 0s);
+  }
+  @keyframes paul-portrait-corridor {
+    0% { opacity: 0; transform: translate(-50%, -50%) translateX(0) translateY(0) rotateY(0deg) scale(0.28); }
+    14% { opacity: 0.9; }
+    82% { opacity: 0.9; }
+    100% { opacity: 0; transform: translate(-50%, -50%) translateX(calc(var(--corridor-dir) * var(--corridor-reach))) translateY(-1.5rem) rotateY(calc(var(--corridor-dir) * -34deg)) scale(1.12); }
+  }
   .portrait-hero__image[hidden] { display: none; }
   .portrait-hero--spiral .portrait-hero__gallery {
     background: repeating-radial-gradient(circle at center, transparent 0 9rem, var(--paul-color-border) 9.02rem 9.06rem, transparent 9.08rem 15rem);
+  }
+  /* Tunnel spokes: twelve thin lines radiating from the centre, faded toward the
+     rim so they read as coming from the middle, with a dot marking the vanishing
+     point the portraits fly out of. */
+  .portrait-hero--tunnel .portrait-hero__gallery {
+    background:
+      repeating-conic-gradient(from 0deg at 50% 50%, var(--paul-color-border) 0deg 0.32deg, transparent 0.32deg 30deg),
+      radial-gradient(circle at center, var(--paul-color-border) 0 0.28rem, transparent 0.32rem);
+    -webkit-mask-image: radial-gradient(circle at center, #000 0%, #000 26%, rgba(0, 0, 0, 0.35) 55%, transparent 74%);
+    mask-image: radial-gradient(circle at center, #000 0%, #000 26%, rgba(0, 0, 0, 0.35) 55%, transparent 74%);
+  }
+  /* Corridor: just the vanishing-point dot; the portraits build the walls. */
+  .portrait-hero--corridor .portrait-hero__gallery {
+    background: radial-gradient(circle at center, var(--paul-color-border) 0 0.2rem, transparent 0.24rem);
   }
   .portrait-hero__content {
     position: relative;
@@ -75,6 +118,18 @@
     .portrait-hero__image {
       transform: translate(-50%, -50%) scale(var(--portrait-scale));
       animation: none;
+    }
+    /* With motion off, freeze the streams into a still tunnel and corridor
+       rather than piling every portrait on the centre point. */
+    .portrait-hero--tunnel .portrait-hero__image {
+      animation: none;
+      opacity: 0.6;
+      transform: translate(-50%, -50%) rotate(var(--tunnel-angle)) translateX(calc(var(--tunnel-reach, 42vmin) * var(--tunnel-rest, 0.5))) rotate(calc(-1 * var(--tunnel-angle))) scale(calc(0.35 + var(--tunnel-rest, 0.5) * 0.85));
+    }
+    .portrait-hero--corridor .portrait-hero__image {
+      animation: none;
+      opacity: 0.7;
+      transform: translate(-50%, -50%) translateX(calc(var(--corridor-dir, 1) * var(--corridor-reach, 44vw) * var(--corridor-rest, 0.5))) translateY(-1rem) rotateY(calc(var(--corridor-dir, 1) * -34deg * var(--corridor-rest, 0.5))) scale(calc(0.35 + var(--corridor-rest, 0.5) * 0.8));
     }
   }
   @media (prefers-contrast: more) { .portrait-hero__image { opacity: 0.25; } }

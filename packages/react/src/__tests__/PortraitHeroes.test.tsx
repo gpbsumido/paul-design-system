@@ -8,7 +8,7 @@ import * as components from '../index';
 let reduced = false;
 vi.mock('../usePrefersReducedMotion', () => ({ usePrefersReducedMotion: () => reduced }));
 afterEach(() => { cleanup(); reduced = false; vi.unstubAllGlobals(); vi.restoreAllMocks(); });
-for (const name of ['SpiralPortraitHero', 'PerspectivePortraitHero'] as const) {
+for (const name of ['SpiralPortraitHero', 'PerspectivePortraitHero', 'CorridorPortraitHero'] as const) {
   describe(name, () => {
     it('exports a labelled section with configurable copy, heading level and action slots', async () => {
       const Hero = components[name];

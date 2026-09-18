@@ -298,7 +298,7 @@ Live demos are in Storybook.
 | `LinkPreview` | An inline link that raises a floating thumbnail leaning toward the pointer |
 | `SmoothScrollSlider` | A rail whose cards grow toward the centre and coast after a flick |
 | `LiquidCarveButton` | A button a cursor-following blob carves into |
-| `SpiralPortraitHero` / `PerspectivePortraitHero` | Portrait hero compositions with imagery orbiting behind the copy |
+| `SpiralPortraitHero` / `PerspectivePortraitHero` / `CorridorPortraitHero` | Portrait hero compositions — a spiral, a radial tunnel, and a horizontal corridor — with imagery moving behind the copy |
 | `LightBloom` | A glow blooming from an edge, breathing and pointer-following (CSS, not WebGL) |
 | `ParticleText` | Text as a cloud of canvas particles that assemble and scatter |
 | `CircularGallery` | Cards on a rotating 3D cylinder you spin with a drag |
