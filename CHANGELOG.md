@@ -23,6 +23,7 @@
 
 ### Added
 
+- **PathGallery, reinterpreted from OriginKit.** Images gliding along a curved closed path, spaced evenly and looping. Built with CSS motion path (`offset-path`) — **no dependency**. Items are real links, the strip is a labelled `role="group"`, and under reduced motion the travel stops and the images rest along the path.
 - **CircularGallery, reinterpreted from OriginKit.** Cards on a rotating 3D cylinder you spin with a drag — the WebGL original becomes a CSS `preserve-3d` ring, **no dependency**. A drag flings it and it coasts; left alone it turns slowly. Cards are real links, the ring is a labelled `role="group"`, and under reduced motion the auto-spin and coast drop (it only turns while dragged).
 - **ParticleText, reinterpreted from ReactBits.** Text drawn as a cloud of particles that assemble into the letters, drift, and scatter away from the pointer — on the built-in 2D canvas, so there's **no renderer or dependency** for consumers to install. The container is a labelled `role="img"` so the words are always read; under reduced motion the particles are drawn at rest.
 - **LightBloom, reinterpreted from OriginKit.** A glow blooming from one edge of the frame, its origin sliding toward the pointer and breathing slowly, with optional drifting light shafts. The original is a WebGL fragment shader; this captures the look as a CSS radial bloom — no renderer, no dependency. Decorative (`aria-hidden`) with content layered over it; under reduced motion the breathe, drift and pointer-follow all stop.

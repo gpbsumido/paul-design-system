@@ -36,6 +36,7 @@ import { SmoothScrollSlider } from '../SmoothScrollSlider';
 import { LightBloom } from '../LightBloom';
 import { ParticleText } from '../ParticleText';
 import { CircularGallery } from '../CircularGallery';
+import { PathGallery } from '../PathGallery';
 import { Sparkline } from '../Sparkline';
 import { BarChart } from '../BarChart';
 import { DonutChart } from '../DonutChart';
@@ -658,6 +659,18 @@ describe('Accessibility', () => {
   it('CircularGallery has no a11y violations', async () => {
     const { container } = render(
       <CircularGallery
+        items={[
+          { image: 'a.jpg', title: 'Alpha', href: '#a' },
+          { image: 'b.jpg', title: 'Beta', href: '#b' },
+        ]}
+      />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('PathGallery has no a11y violations', async () => {
+    const { container } = render(
+      <PathGallery
         items={[
           { image: 'a.jpg', title: 'Alpha', href: '#a' },
           { image: 'b.jpg', title: 'Beta', href: '#b' },

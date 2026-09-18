@@ -80,3 +80,4 @@ export { Hero06, Hero13, type PortraitHeroProps, type PortraitHeroImage } from '
 export { LightBloom } from './LightBloom';
 export { ParticleText } from './ParticleText';
 export { CircularGallery, type CircularGalleryItem } from './CircularGallery';
+export { PathGallery, type PathGalleryItem } from './PathGallery';
