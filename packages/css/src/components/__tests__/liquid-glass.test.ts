@@ -19,4 +19,8 @@ describe('LiquidGlass CSS component', () => {
   it('respects reduced motion', () => {
     expect(css).toContain('prefers-reduced-motion');
   });
+
+  it('solidifies under reduced transparency', () => {
+    expect(css).toContain('prefers-reduced-transparency');
+  });
 });
