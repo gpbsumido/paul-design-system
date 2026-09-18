@@ -11,7 +11,7 @@ export type PortraitHeroProps = {
   images?: readonly PortraitHeroImage[];
   actions?: ReactNode;
   navigation?: ReactNode;
-  /** Optional centrepiece above the heading (Hero06). */
+  /** Optional centrepiece above the heading (spiral variant). */
   visual?: ReactNode;
   className?: string;
   id?: string;
@@ -74,7 +74,7 @@ function PortraitHero({ heading, description, headingLevel = 1, images = [], act
   </section>;
 }
 
-/** Portrait spiral composition inspired by OriginKit Hero 06. */
-export function Hero06(props: PortraitHeroProps) { return <PortraitHero {...props} variant="spiral" />; }
-/** CSS perspective composition inspired by the public OriginKit Hero 13 poster. */
-export function Hero13(props: PortraitHeroProps) { return <PortraitHero {...props} variant="tunnel" />; }
+/** A portrait hero whose imagery spirals behind the copy. */
+export function SpiralPortraitHero(props: PortraitHeroProps) { return <PortraitHero {...props} variant="spiral" />; }
+/** A portrait hero that arranges its imagery with CSS perspective for depth. */
+export function PerspectivePortraitHero(props: PortraitHeroProps) { return <PortraitHero {...props} variant="tunnel" />; }

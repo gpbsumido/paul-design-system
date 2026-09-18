@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.9.0] - 2026-09-18
+
+### Changed
+
+- Renamed the two portrait-hero exports to descriptive names — `SpiralPortraitHero` and `PerspectivePortraitHero` — in place of the source library's numbered codenames. The components, props, variants and CSS are unchanged; only the export identifiers differ. `react` bumps to 0.12.0; importers pinned to 0.11.x keep working and pick up the new names when they move to 0.12.
+
 ## [0.8.2] - 2026-09-18
 
 ### Added
