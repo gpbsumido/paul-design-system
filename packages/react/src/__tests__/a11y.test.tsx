@@ -32,6 +32,7 @@ import { LatticeLoader } from '../LatticeLoader';
 import { DriftWall } from '../DriftWall';
 import { HoverImageReveal } from '../HoverImageReveal';
 import { LinkPreview } from '../LinkPreview';
+import { SmoothScrollSlider } from '../SmoothScrollSlider';
 import { Sparkline } from '../Sparkline';
 import { BarChart } from '../BarChart';
 import { DonutChart } from '../DonutChart';
@@ -621,6 +622,18 @@ describe('Accessibility', () => {
         </LinkPreview>{' '}
         for more.
       </p>,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('SmoothScrollSlider has no a11y violations', async () => {
+    const { container } = render(
+      <SmoothScrollSlider
+        slides={[
+          { image: 'a.jpg', title: 'Alpha', href: '#a' },
+          { image: 'b.jpg', title: 'Beta', href: '#b' },
+        ]}
+      />,
     );
     expect(await axe(container)).toHaveNoViolations();
   });

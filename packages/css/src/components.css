@@ -52,6 +52,7 @@
 @import './components/lattice-loader.css';
 @import './components/link-preview.css';
 @import './components/rubber-segment.css';
+@import './components/smooth-scroll-slider.css';
 @import './components/squish-switch.css';
 @import './components/text-loop.css';
 @import './utilities/visually-hidden.css';

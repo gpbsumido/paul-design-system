@@ -70,6 +70,7 @@ export { LatticeLoader } from './LatticeLoader';
 export { DriftWall, type DriftWallItem } from './DriftWall';
 export { HoverImageReveal, type HoverImageRevealItem } from './HoverImageReveal';
 export { LinkPreview } from './LinkPreview';
+export { SmoothScrollSlider, type SmoothScrollSlide } from './SmoothScrollSlider';
 export { usePrefersReducedMotion } from './usePrefersReducedMotion';
 export { cx } from './cx';
 export { readableOn, chipColors, contrastRatio } from './readableOn';
