@@ -35,17 +35,21 @@ type Story = StoryObj<typeof meta>;
 export const Generating: Story = {
   args: { status: 'generating' },
   render: (args) => (
-    <RefineFrame {...args}>
-      <img src="https://picsum.photos/id/1025/400/300" alt="A generated preview" />
-    </RefineFrame>
+    <div style={{ width: 360 }}>
+      <RefineFrame {...args}>
+        <img src="https://picsum.photos/id/1025/400/300" alt="A generated preview" />
+      </RefineFrame>
+    </div>
   ),
 };
 
 export const Ready: Story = {
   args: { status: 'complete' },
   render: (args) => (
-    <RefineFrame {...args}>
-      <img src="https://picsum.photos/id/1025/400/300" alt="A generated preview" />
-    </RefineFrame>
+    <div style={{ width: 360 }}>
+      <RefineFrame {...args}>
+        <img src="https://picsum.photos/id/1025/400/300" alt="A generated preview" />
+      </RefineFrame>
+    </div>
   ),
 };

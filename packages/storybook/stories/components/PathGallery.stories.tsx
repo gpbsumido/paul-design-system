@@ -20,6 +20,7 @@ const meta = {
   argTypes: {
     duration: { control: { type: 'range', min: 10, max: 60, step: 2 } },
     itemSize: { control: { type: 'range', min: 48, max: 120, step: 4 } },
+    showPath: { control: 'boolean' },
   },
 } satisfies Meta<typeof PathGallery>;
 
@@ -34,7 +35,7 @@ const items = ids.map((id) => ({
 }));
 
 export const Default: Story = {
-  args: { items, duration: 32, itemSize: 84 },
+  args: { items, duration: 32, itemSize: 84, showPath: true },
   render: (args) => (
     <div style={{ background: '#0a0a0a', padding: 24 }}>
       <PathGallery {...args} />

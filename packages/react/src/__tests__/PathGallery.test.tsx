@@ -22,5 +22,14 @@ describe('PathGallery', () => {
     ).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Alpha' })).toHaveAttribute('href', '#a');
     expect(container.querySelectorAll('.path-gallery__item')).toHaveLength(2);
+    expect(container.querySelector('.path-gallery__track')).not.toBeNull();
+  });
+
+  it('hides the track line when showPath is false', () => {
+    const { container } = render(
+      <PathGallery items={[{ image: 'a.jpg', title: 'Alpha' }]} showPath={false} />,
+    );
+    expect(container.querySelector('.path-gallery__track')).toBeNull();
+    expect(container.querySelectorAll('.path-gallery__item')).toHaveLength(1);
   });
 });

@@ -14,6 +14,8 @@ type PathGalleryProps = {
   /** Seconds for one full lap. */
   duration?: number;
   itemSize?: number;
+  /** Draw the dashed track line the items follow. */
+  showPath?: boolean;
   className?: string;
 };
 
@@ -32,6 +34,7 @@ export function PathGallery({
   path = DEFAULT_PATH,
   duration = 32,
   itemSize = 84,
+  showPath = true,
   className,
 }: PathGalleryProps) {
   const count = Math.max(1, items.length);
@@ -42,14 +45,16 @@ export function PathGallery({
       aria-label="Gallery along a path"
       style={{ '--pg-dur': `${duration}s`, '--pg-size': `${itemSize}px` } as CSSProperties}
     >
-      <svg
-        className="path-gallery__track"
-        viewBox="0 0 600 360"
-        preserveAspectRatio="xMidYMid meet"
-        aria-hidden="true"
-      >
-        <path d={path} />
-      </svg>
+      {showPath ? (
+        <svg
+          className="path-gallery__track"
+          viewBox="0 0 600 360"
+          preserveAspectRatio="xMidYMid meet"
+          aria-hidden="true"
+        >
+          <path d={path} />
+        </svg>
+      ) : null}
       {items.map((item, i) => {
         const style = {
           offsetPath: `path('${path}')`,
