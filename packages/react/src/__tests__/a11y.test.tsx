@@ -29,6 +29,7 @@ import { TextLoop } from '../TextLoop';
 import { SquishSwitch } from '../SquishSwitch';
 import { RubberSegment } from '../RubberSegment';
 import { LatticeLoader } from '../LatticeLoader';
+import { DriftWall } from '../DriftWall';
 import { Sparkline } from '../Sparkline';
 import { BarChart } from '../BarChart';
 import { DonutChart } from '../DonutChart';
@@ -581,6 +582,19 @@ describe('Accessibility', () => {
 
   it('LatticeLoader has no a11y violations', async () => {
     const { container } = render(<LatticeLoader label="Loading" />);
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('DriftWall has no a11y violations', async () => {
+    const { container } = render(
+      <DriftWall
+        items={[
+          { image: 'a.jpg', title: 'Alpha' },
+          { image: 'b.jpg', title: 'Beta' },
+        ]}
+        columns={2}
+      />,
+    );
     expect(await axe(container)).toHaveNoViolations();
   });
 });
