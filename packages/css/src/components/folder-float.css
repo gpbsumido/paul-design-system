@@ -1,0 +1,116 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * FolderFloat – a folder whose chips float out above it, fanned and bobbing.
+   * The ReactBits original is a matter-js simulation; this reinterprets the feel
+   * with a CSS fan and a per-chip bob — no physics engine.
+   *
+   * The bob is a keyframe with a per-chip delay; under reduced motion it stops
+   * and the chips rest in their fanned positions.
+   * ---------------------------------------------------------------- */
+  .folder-float {
+    position: relative;
+    display: inline-block;
+    width: 260px;
+    height: 200px;
+    --ff-fill: var(--ff-accent, var(--paul-color-primary-600));
+  }
+
+  .folder-float__back,
+  .folder-float__front {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 210px;
+    background: var(--ff-fill);
+    border-radius: var(--paul-radius-lg);
+    corner-shape: squircle;
+  }
+
+  .folder-float__back {
+    height: 118px;
+    z-index: 1;
+    filter: brightness(0.9);
+  }
+
+  .folder-float__front {
+    height: 84px;
+    z-index: 3;
+  }
+
+  .folder-float__tab {
+    position: absolute;
+    left: calc(50% - 105px);
+    bottom: 110px;
+    width: 84px;
+    height: 18px;
+    background: var(--ff-fill);
+    filter: brightness(0.9);
+    border-radius: var(--paul-radius-md) var(--paul-radius-md) 0 0;
+    corner-shape: squircle;
+    z-index: 1;
+  }
+
+  .folder-float__stack {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+  }
+
+  .folder-float__chip {
+    position: absolute;
+    left: 50%;
+    bottom: 58px;
+    width: 104px;
+    padding: 8px 10px;
+    box-sizing: border-box;
+    background: var(--paul-color-surface);
+    border: 1px solid var(--paul-color-border);
+    border-radius: var(--paul-radius-md);
+    corner-shape: squircle;
+    box-shadow: 0 8px 20px -8px rgb(0 0 0 / 0.35);
+    font-size: 0.78rem;
+    font-weight: var(--paul-font-weight-medium);
+    text-align: center;
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transform: translate(-50%, 0) translateX(var(--ff-shift, 0px)) rotate(var(--ff-rot, 0deg));
+    animation: paul-folder-bob 3.2s ease-in-out infinite;
+    animation-delay: var(--ff-delay, 0s);
+  }
+
+  .folder-float__chip:focus-visible {
+    outline: 2px solid var(--paul-color-primary-500);
+    outline-offset: 2px;
+    z-index: 4;
+  }
+
+  .folder-float__label {
+    position: absolute;
+    left: 50%;
+    bottom: 26px;
+    transform: translateX(-50%);
+    z-index: 4;
+    color: var(--paul-color-on-primary, #fff);
+    font-weight: var(--paul-font-weight-semibold);
+    font-size: 0.95rem;
+  }
+
+  @keyframes paul-folder-bob {
+    0%,
+    100% {
+      transform: translate(-50%, 0) translateX(var(--ff-shift, 0px)) rotate(var(--ff-rot, 0deg));
+    }
+    50% {
+      transform: translate(-50%, -9px) translateX(var(--ff-shift, 0px)) rotate(var(--ff-rot, 0deg));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .folder-float__chip {
+      animation: none;
+    }
+  }
+}

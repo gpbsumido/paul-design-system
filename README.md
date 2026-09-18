@@ -157,6 +157,40 @@ Angular counterpart yet) and are fully documented in the
 | `Toast` | `ToastProvider` + `useToast()` notifications in a live region |
 | `TokenUsageMeter` | LLM token budget bar (prompt/completion split, cost) |
 
+### React — Motion & effects
+
+A set of motion primitives and effect components, reimplemented on the design
+tokens rather than pulled from an animation library. Each pairs a React
+component with a `@paul-portfolio/css` stylesheet, is keyboard-operable and
+axe-clean, and answers `prefers-reduced-motion`. None add a runtime dependency —
+the canvas pieces use the built-in 2D canvas. Full docs and live demos in
+Storybook.
+
+| Component | What it's for |
+|-----------|---------------|
+| `ClickSpark` | A ring of rays bursts from the press point |
+| `BlurReveal` | Content resolves from a blur as it rises into place |
+| `StarBorder` | A conic gradient sweeps the border (tinted from `currentColor`) |
+| `ShineSweep` | A specular bar sweeps diagonally across a button or badge |
+| `LiquidGlass` | An iOS-style frosted surface with a drifting specular highlight |
+| `TextLoop` | Cycles a list of phrases in place, each sliding up |
+| `SquishSwitch` | A `role="switch"` whose thumb springs across and compresses on press |
+| `RubberSegment` | A `role="radiogroup"` whose indicator rubber-bands between segments |
+| `LatticeLoader` | A grid of cells lighting in a travelling pattern, resolving to a check/cross |
+| `DriftWall` | A 3D wall of image tiles, each column drifting at its own speed |
+| `HoverImageReveal` | A text menu revealing a per-row image in a cursor-trailing window |
+| `LinkPreview` | An inline link that raises a floating thumbnail leaning toward the pointer |
+| `SmoothScrollSlider` | A rail whose cards grow toward the centre and coast after a flick |
+| `LiquidCarveButton` | A button a cursor-following blob carves into, the blob colour showing through |
+| `Hero06` / `Hero13` | Portrait hero compositions with imagery orbiting behind the copy |
+| `LightBloom` | A glow blooming from an edge, breathing and pointer-following (CSS, not WebGL) |
+| `ParticleText` | Text as a cloud of canvas particles that assemble and scatter (no dependency) |
+| `CircularGallery` | Cards on a rotating 3D cylinder you spin with a drag |
+| `PathGallery` | Images gliding along a curved CSS motion path |
+| `RefineFrame` | Content resolving from blurred to sharp as its status advances |
+| `FolderFloat` | A folder whose chips float out above it, fanned and bobbing |
+| `BotanicalText` | Text grown from tiny flowers and leaves on a canvas (no WebGL) |
+
 ## Design tokens
 
 Tokens are the single source of truth for every visual value in the system.

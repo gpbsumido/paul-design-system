@@ -10,6 +10,7 @@
     background-color: var(--paul-color-surface);
     border: 1px solid var(--paul-color-border);
     border-radius: var(--paul-radius-lg);
+    corner-shape: squircle;
     font-family: var(--paul-font-family-sans);
   }
 

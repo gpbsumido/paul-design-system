@@ -34,6 +34,7 @@
     display: flex;
     height: 0.5rem;
     border-radius: var(--paul-radius-full);
+    corner-shape: round;
     overflow: hidden;
     background-color: var(--paul-color-neutral-200);
   }
@@ -71,6 +72,7 @@
     width: 0.5rem;
     height: 0.5rem;
     border-radius: var(--paul-radius-full);
+    corner-shape: round;
   }
 
   .token-meter__key--prompt {

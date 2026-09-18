@@ -1,0 +1,81 @@
+@layer components {
+  .portrait-hero {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    place-items: center;
+    min-height: 40rem;
+    padding: clamp(5rem, 12vw, 10rem) var(--paul-spacing-6);
+    overflow: hidden;
+    background: var(--paul-color-background);
+    color: var(--paul-color-foreground);
+  }
+  .portrait-hero__navigation { position: relative; z-index: 2; width: 100%; margin-bottom: var(--paul-spacing-8); align-self: start; }
+  .portrait-hero__gallery { position: absolute; inset: 0; overflow: hidden; pointer-events: none; perspective: 700px; }
+  .portrait-hero__image {
+    position: absolute;
+    left: var(--portrait-x);
+    top: var(--portrait-y);
+    width: clamp(4rem, 9vw, 8rem);
+    height: clamp(5rem, 12vw, 10rem);
+    object-fit: cover;
+    border-radius: var(--paul-radius-md);
+    corner-shape: squircle;
+    opacity: 0.7;
+    transform: translate(-50%, -50%) rotate(var(--portrait-rotate)) rotateX(var(--portrait-rotate-x)) rotateY(var(--portrait-rotate-y)) scale(var(--portrait-scale));
+    animation: paul-portrait-orbit var(--portrait-orbit-dur, 18s) linear infinite;
+    animation-delay: var(--portrait-orbit-delay, 0s);
+  }
+  @keyframes paul-portrait-orbit {
+    from {
+      transform: translate(-50%, -50%) rotate(0deg) translateX(var(--portrait-orbit-r, 16px)) rotate(0deg) rotate(var(--portrait-rotate)) rotateX(var(--portrait-rotate-x)) rotateY(var(--portrait-rotate-y)) scale(var(--portrait-scale));
+    }
+    to {
+      transform: translate(-50%, -50%) rotate(360deg) translateX(var(--portrait-orbit-r, 16px)) rotate(-360deg) rotate(var(--portrait-rotate)) rotateX(var(--portrait-rotate-x)) rotateY(var(--portrait-rotate-y)) scale(var(--portrait-scale));
+    }
+  }
+  .portrait-hero__image[hidden] { display: none; }
+  .portrait-hero--spiral .portrait-hero__gallery {
+    background: repeating-radial-gradient(circle at center, transparent 0 9rem, var(--paul-color-border) 9.02rem 9.06rem, transparent 9.08rem 15rem);
+  }
+  .portrait-hero__content {
+    position: relative;
+    z-index: 1;
+    max-width: 38rem;
+    padding: var(--paul-spacing-6);
+    text-align: center;
+  }
+  /* A blurred solid scrim behind the copy: opaque where the text sits, its edges
+     softened so the portraits fade in behind it rather than meeting a hard box
+     border. The copy itself stays sharp on top. */
+  .portrait-hero__content::before {
+    content: "";
+    position: absolute;
+    inset: -0.5rem;
+    z-index: -1;
+    background: var(--paul-color-background);
+    border-radius: var(--paul-radius-xl);
+    corner-shape: squircle;
+    filter: blur(1.75rem);
+    pointer-events: none;
+  }
+  .portrait-hero__heading { margin: 0; font-size: clamp(2.25rem, 5vw, 4.5rem); font-weight: var(--paul-font-weight-semibold); letter-spacing: -0.045em; line-height: 1.05; text-wrap: balance; overflow-wrap: anywhere; }
+  .portrait-hero--tunnel .portrait-hero__heading { font-family: var(--paul-font-family-serif, Georgia, serif); font-weight: 400; letter-spacing: -0.035em; }
+  .portrait-hero__description { max-width: 30rem; margin: var(--paul-spacing-6) auto 0; font-size: var(--paul-font-size-base); line-height: 1.6; color: var(--paul-color-muted); text-wrap: pretty; }
+  .portrait-hero__actions { display: flex; justify-content: center; flex-wrap: wrap; gap: var(--paul-spacing-3); margin-top: var(--paul-spacing-6); }
+  .portrait-hero__actions > * { min-height: 44px; }
+  .portrait-hero__visual { display: flex; justify-content: center; margin-bottom: var(--paul-spacing-6); }
+  @media (max-width: 36rem) {
+    .portrait-hero { min-height: 36rem; padding: 5rem var(--paul-spacing-4); }
+    .portrait-hero__content { padding: var(--paul-spacing-4); }
+    .portrait-hero__image { opacity: 0.4; }
+    .portrait-hero__navigation { margin-bottom: var(--paul-spacing-6); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .portrait-hero__image {
+      transform: translate(-50%, -50%) scale(var(--portrait-scale));
+      animation: none;
+    }
+  }
+  @media (prefers-contrast: more) { .portrait-hero__image { opacity: 0.25; } }
+}

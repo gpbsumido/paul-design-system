@@ -1,0 +1,33 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * BlurReveal – content resolves from a blur as it rises into place.
+   *
+   * A one-shot entrance, so under reduced motion the safe answer is to skip it
+   * and present the content at rest.
+   * ---------------------------------------------------------------- */
+  .blur-reveal {
+    animation: paul-blur-reveal 0.6s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  }
+
+  @keyframes paul-blur-reveal {
+    from {
+      opacity: 0;
+      filter: blur(12px);
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      filter: blur(0);
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .blur-reveal {
+      animation: none;
+      opacity: 1;
+      filter: none;
+      transform: none;
+    }
+  }
+}

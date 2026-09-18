@@ -1,0 +1,63 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * SmoothScrollSlider – a horizontal rail whose cards grow toward the centre
+   * and coast after a flick. Reinterpreted from OriginKit.
+   *
+   * The per-card transform/opacity are written by a rAF loop in JS (no keyframes
+   * here), which is also where reduced motion removes the coast; the centre
+   * scaling is spatial and stays.
+   * ---------------------------------------------------------------- */
+  .smooth-scroll-slider {
+    position: relative;
+    width: 100%;
+    height: calc(var(--sss-h) * 1.6);
+    overflow: hidden;
+    touch-action: pan-y;
+    cursor: grab;
+    user-select: none;
+  }
+
+  .smooth-scroll-slider:active {
+    cursor: grabbing;
+  }
+
+  .smooth-scroll-slider__rail {
+    position: absolute;
+    inset: 0;
+  }
+
+  .smooth-scroll-slider__slide {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: var(--sss-w);
+    height: var(--sss-h);
+    border-radius: 12px;
+    corner-shape: squircle;
+    overflow: hidden;
+    background: var(--paul-color-surface);
+    box-shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.4);
+    transform: translate3d(-50%, -50%, 0);
+    will-change: transform, opacity;
+    text-decoration: none;
+  }
+
+  .smooth-scroll-slider__slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    -webkit-user-drag: none;
+  }
+
+  .smooth-scroll-slider__slide:focus-visible {
+    outline: 2px solid var(--paul-color-primary-500);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .smooth-scroll-slider__slide {
+      will-change: auto;
+    }
+  }
+}

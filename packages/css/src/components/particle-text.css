@@ -1,0 +1,20 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * ParticleText – text drawn as a cloud of particles on a 2D canvas.
+   * Reinterpreted from ReactBits with the built-in canvas (no dependency).
+   *
+   * The motion lives in the component's rAF loop, and reduced motion is handled
+   * there (particles drawn at rest), so there are no keyframes to guard here.
+   * ---------------------------------------------------------------- */
+  .particle-text {
+    position: relative;
+    display: block;
+    width: 100%;
+    background: var(--pt-bg, transparent);
+  }
+
+  .particle-text__canvas {
+    display: block;
+    width: 100%;
+  }
+}

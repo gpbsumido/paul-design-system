@@ -1,0 +1,21 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * BotanicalText – text grown from tiny flowers and leaves on a 2D canvas.
+   * Reinterpreted from OriginKit (a Three.js sprite field) with the built-in
+   * canvas, so there's no WebGL and no dependency.
+   *
+   * The sway lives in the component's rAF loop, and reduced motion is handled
+   * there (blooms drawn at rest), so there are no keyframes to guard here.
+   * ---------------------------------------------------------------- */
+  .botanical-text {
+    position: relative;
+    display: block;
+    width: 100%;
+    background: var(--bt-bg, transparent);
+  }
+
+  .botanical-text__canvas {
+    display: block;
+    width: 100%;
+  }
+}

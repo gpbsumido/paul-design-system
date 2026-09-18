@@ -5,6 +5,7 @@
   .card {
     border: 1px solid var(--paul-color-border);
     border-radius: var(--paul-radius-lg);
+    corner-shape: squircle;
     background: var(--paul-color-surface);
     overflow: hidden;
   }

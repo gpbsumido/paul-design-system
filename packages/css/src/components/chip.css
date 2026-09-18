@@ -8,6 +8,7 @@
     gap: var(--paul-spacing-1);
     padding: var(--paul-spacing-1) var(--paul-spacing-2);
     border-radius: var(--paul-radius-full);
+    corner-shape: round;
     font-size: var(--paul-font-size-xs);
     line-height: var(--paul-line-height-tight);
     border: 1px solid var(--paul-color-border);
@@ -78,6 +79,7 @@
     padding: 0;
     border: none;
     border-radius: var(--paul-radius-full);
+    corner-shape: round;
     background: transparent;
     color: var(--paul-color-foreground);
     cursor: pointer;

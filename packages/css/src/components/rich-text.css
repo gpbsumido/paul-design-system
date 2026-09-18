@@ -22,6 +22,7 @@
     padding: var(--paul-spacing-1);
     border: 1px solid var(--paul-color-border);
     border-radius: var(--paul-radius-md) var(--paul-radius-md) 0 0;
+    corner-shape: squircle;
     background-color: var(--paul-color-surface);
   }
 
@@ -34,6 +35,7 @@
     padding: 0 var(--paul-spacing-1_5);
     border: 1px solid transparent;
     border-radius: var(--paul-radius-sm);
+    corner-shape: squircle;
     background: none;
     color: var(--paul-color-foreground);
     font-size: var(--paul-font-size-sm);
@@ -57,6 +59,7 @@
     border: 1px solid var(--paul-color-border);
     border-top: none;
     border-radius: 0 0 var(--paul-radius-md) var(--paul-radius-md);
+    corner-shape: squircle;
     background-color: var(--paul-color-surface);
     color: var(--paul-color-foreground);
     font-size: var(--paul-font-size-base);
@@ -78,6 +81,7 @@
   .rich-text__editable :where(pre) {
     padding: var(--paul-spacing-2) var(--paul-spacing-3);
     border-radius: var(--paul-radius-sm);
+    corner-shape: squircle;
     background-color: var(--paul-color-neutral-100);
     font-family: var(--paul-font-family-mono);
     font-size: var(--paul-font-size-sm);

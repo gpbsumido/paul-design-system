@@ -1,0 +1,111 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * LightBloom – a glow blooming from one edge, origin sliding to the pointer,
+   * breathing slowly. Reinterpreted from OriginKit (a WebGL shader) as a CSS
+   * radial bloom with optional drifting shafts.
+   *
+   * The breathe and shaft drift are keyframes; under reduced motion they stop
+   * (and the pointer-follow is disabled in the component).
+   * ---------------------------------------------------------------- */
+  .light-bloom {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    background: var(--lb-bg, #05060a);
+    --lb-px: 50%;
+    --lb-py: 50%;
+  }
+
+  .light-bloom__glow {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    animation: paul-bloom-breathe 6s ease-in-out infinite;
+  }
+
+  .light-bloom--bottom .light-bloom__glow {
+    background: radial-gradient(
+      130% 95% at var(--lb-px) 100%,
+      var(--lb-accent),
+      var(--lb-base) var(--lb-spread),
+      transparent 100%
+    );
+  }
+
+  .light-bloom--top .light-bloom__glow {
+    background: radial-gradient(
+      130% 95% at var(--lb-px) 0%,
+      var(--lb-accent),
+      var(--lb-base) var(--lb-spread),
+      transparent 100%
+    );
+  }
+
+  .light-bloom--left .light-bloom__glow {
+    background: radial-gradient(
+      95% 130% at 0% var(--lb-py),
+      var(--lb-accent),
+      var(--lb-base) var(--lb-spread),
+      transparent 100%
+    );
+  }
+
+  .light-bloom--right .light-bloom__glow {
+    background: radial-gradient(
+      95% 130% at 100% var(--lb-py),
+      var(--lb-accent),
+      var(--lb-base) var(--lb-spread),
+      transparent 100%
+    );
+  }
+
+  .light-bloom__shafts {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent calc(50% / var(--lb-shafts)),
+      rgb(255 255 255 / 0.06) calc(50% / var(--lb-shafts)),
+      rgb(255 255 255 / 0.06) calc(100% / var(--lb-shafts))
+    );
+    background-size: 200% 100%;
+    -webkit-mask-image: linear-gradient(to top, #000, transparent 70%);
+    mask-image: linear-gradient(to top, #000, transparent 70%);
+    animation: paul-bloom-drift 14s linear infinite;
+  }
+
+  .light-bloom__content {
+    position: relative;
+    z-index: 2;
+  }
+
+  @keyframes paul-bloom-breathe {
+    0%,
+    100% {
+      opacity: 0.82;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes paul-bloom-drift {
+    from {
+      background-position: 0 0;
+    }
+    to {
+      background-position: 200% 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .light-bloom__glow,
+    .light-bloom__shafts {
+      animation: none;
+    }
+  }
+}

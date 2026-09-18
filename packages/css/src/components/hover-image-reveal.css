@@ -1,0 +1,98 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * HoverImageReveal – a text menu that reveals a per-row image in a window
+   * trailing the cursor. Reinterpreted from OriginKit.
+   *
+   * The window position is written to a transform by the component and eased
+   * here (a cheap spring); the active image fades in over the others. No
+   * keyframes — reduced motion stops the trailing ease and the image rise.
+   * ---------------------------------------------------------------- */
+  .hover-image-reveal {
+    position: relative;
+    display: inline-block;
+  }
+
+  .hover-image-reveal__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .hover-image-reveal--center .hover-image-reveal__list {
+    text-align: center;
+  }
+
+  .hover-image-reveal--right .hover-image-reveal__list {
+    text-align: right;
+  }
+
+  .hover-image-reveal__label {
+    display: inline-block;
+    font-size: clamp(1.5rem, 4vw, 2.75rem);
+    font-weight: 600;
+    line-height: 1.15;
+    color: var(--paul-color-muted);
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.25s ease;
+  }
+
+  .hover-image-reveal__label:hover,
+  .hover-image-reveal__label:focus-visible {
+    color: var(--paul-color-foreground);
+    outline: none;
+  }
+
+  .hover-image-reveal__window {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--hir-w);
+    height: var(--hir-h);
+    border-radius: var(--hir-radius);
+    corner-shape: squircle;
+    overflow: hidden;
+    pointer-events: none;
+    opacity: 0;
+    transition:
+      opacity 0.3s ease,
+      transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: 2;
+  }
+
+  .hover-image-reveal__window.is-visible {
+    opacity: 1;
+  }
+
+  .hover-image-reveal__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transform: translateY(12%) scale(1.05);
+    transition:
+      opacity 0.4s ease,
+      transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .hover-image-reveal__img.is-active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hover-image-reveal__window {
+      transition: opacity 0.2s ease;
+    }
+    .hover-image-reveal__img,
+    .hover-image-reveal__img.is-active {
+      transition: opacity 0.2s ease;
+      transform: none;
+    }
+  }
+}

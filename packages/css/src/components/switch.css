@@ -12,6 +12,7 @@
     padding: 0;
     border: none;
     border-radius: var(--paul-radius-full);
+    corner-shape: round;
     background-color: var(--paul-color-neutral-300);
     cursor: pointer;
     transition: background-color var(--paul-duration-fast) var(--paul-easing-default);
@@ -37,6 +38,7 @@
     height: 1rem;
     width: 1rem;
     border-radius: var(--paul-radius-full);
+    corner-shape: round;
     background-color: #fff;
     transition: transform var(--paul-duration-fast) var(--paul-easing-default);
   }

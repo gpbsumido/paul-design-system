@@ -44,6 +44,7 @@
     block-size: 0.75rem;
     margin-block-start: 0.2rem;
     border-radius: var(--paul-radius-full);
+    corner-shape: round;
     background-color: var(--paul-color-muted-foreground);
     box-shadow: 0 0 0 3px var(--paul-color-surface);
     z-index: 1;

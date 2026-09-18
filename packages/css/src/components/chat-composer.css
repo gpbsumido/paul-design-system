@@ -22,6 +22,7 @@
     padding: var(--paul-spacing-2);
     border: 1px solid var(--paul-color-border);
     border-radius: var(--paul-radius-lg);
+    corner-shape: squircle;
     background-color: var(--paul-color-surface);
     transition: border-color var(--paul-duration-fast) var(--paul-easing-default);
   }
@@ -64,6 +65,7 @@
     padding: var(--paul-spacing-2) var(--paul-spacing-4);
     border: none;
     border-radius: var(--paul-radius-md);
+    corner-shape: squircle;
     background-color: var(--paul-color-primary-600);
     color: var(--paul-color-on-primary, #fff);
     font-size: var(--paul-font-size-sm);
