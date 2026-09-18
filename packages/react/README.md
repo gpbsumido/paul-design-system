@@ -274,6 +274,36 @@ A tiny classname joiner used internally, exported for convenience.
 cx("card", isActive && "card--active"); // "card card--active"
 ```
 
+## Motion & effects
+
+Motion primitives and effect components, reimplemented on the design tokens
+(no animation library). Each pairs with a `@paul-portfolio/css` stylesheet,
+answers `prefers-reduced-motion`, and is axe-clean. None add a runtime
+dependency — the canvas pieces (`ParticleText`) use the built-in 2D canvas.
+Live demos are in Storybook.
+
+| Component | What it's for |
+|-----------|---------------|
+| `ClickSpark` | A ring of rays bursts from the press point; wraps a control without swallowing its click |
+| `BlurReveal` | Content resolves from a blur as it rises in (`as`, `delayMs`) |
+| `StarBorder` | A conic gradient sweeps the border, tinted from `currentColor` |
+| `ShineSweep` | A specular bar sweeps diagonally across a button or badge |
+| `LiquidGlass` | An iOS-style frosted surface with a drifting specular highlight |
+| `TextLoop` | Cycles a list of phrases in place, each sliding up |
+| `SquishSwitch` | A `role="switch"` whose thumb springs across and compresses on press |
+| `RubberSegment` | A `role="radiogroup"` whose indicator rubber-bands between segments |
+| `LatticeLoader` | A `role="status"` grid lighting in a travelling pattern, resolving to a check/cross |
+| `DriftWall` | A 3D wall of image tiles, each column drifting at its own speed |
+| `HoverImageReveal` | A text menu revealing a per-row image in a cursor-trailing window |
+| `LinkPreview` | An inline link that raises a floating thumbnail leaning toward the pointer |
+| `SmoothScrollSlider` | A rail whose cards grow toward the centre and coast after a flick |
+| `LiquidCarveButton` | A button a cursor-following blob carves into |
+| `Hero06` / `Hero13` | Portrait hero compositions with imagery orbiting behind the copy |
+| `LightBloom` | A glow blooming from an edge, breathing and pointer-following (CSS, not WebGL) |
+| `ParticleText` | Text as a cloud of canvas particles that assemble and scatter |
+| `CircularGallery` | Cards on a rotating 3D cylinder you spin with a drag |
+| `PathGallery` | Images gliding along a curved CSS motion path |
+
 ## Accessibility
 
 Every component ships with an axe test in the package's suite. Components that
