@@ -23,6 +23,16 @@
     corner-shape: squircle;
     opacity: 0.7;
     transform: translate(-50%, -50%) rotate(var(--portrait-rotate)) rotateX(var(--portrait-rotate-x)) rotateY(var(--portrait-rotate-y)) scale(var(--portrait-scale));
+    animation: paul-portrait-orbit var(--portrait-orbit-dur, 18s) linear infinite;
+    animation-delay: var(--portrait-orbit-delay, 0s);
+  }
+  @keyframes paul-portrait-orbit {
+    from {
+      transform: translate(-50%, -50%) rotate(0deg) translateX(var(--portrait-orbit-r, 16px)) rotate(0deg) rotate(var(--portrait-rotate)) rotateX(var(--portrait-rotate-x)) rotateY(var(--portrait-rotate-y)) scale(var(--portrait-scale));
+    }
+    to {
+      transform: translate(-50%, -50%) rotate(360deg) translateX(var(--portrait-orbit-r, 16px)) rotate(-360deg) rotate(var(--portrait-rotate)) rotateX(var(--portrait-rotate-x)) rotateY(var(--portrait-rotate-y)) scale(var(--portrait-scale));
+    }
   }
   .portrait-hero__image[hidden] { display: none; }
   .portrait-hero--spiral .portrait-hero__gallery {
@@ -52,7 +62,10 @@
     .portrait-hero__navigation { margin-bottom: var(--paul-spacing-6); }
   }
   @media (prefers-reduced-motion: reduce) {
-    .portrait-hero__image { transform: translate(-50%, -50%) scale(var(--portrait-scale)); }
+    .portrait-hero__image {
+      transform: translate(-50%, -50%) scale(var(--portrait-scale));
+      animation: none;
+    }
   }
   @media (prefers-contrast: more) { .portrait-hero__image { opacity: 0.25; } }
 }

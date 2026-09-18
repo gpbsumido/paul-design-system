@@ -33,6 +33,11 @@ function Portrait({ image, index, tunnel }: { image: PortraitHeroImage; index: n
     '--portrait-scale': tunnel ? 1 - depth * 0.18 : 0.7 + (index % 3) * 0.15,
     '--portrait-rotate-x': `${tunnel && side >= 2 ? (side === 2 ? -55 : 55) : 0}deg`,
     '--portrait-rotate-y': `${tunnel && side < 2 ? (side === 0 ? 55 : -55) : 0}deg`,
+    // Each portrait drifts along its own small circle, upright, at its own
+    // speed and phase — deterministic per index so SSR and hydration agree.
+    '--portrait-orbit-r': `${10 + (index % 4) * 4}px`,
+    '--portrait-orbit-dur': `${16 + (index % 5) * 2}s`,
+    '--portrait-orbit-delay': `-${(index % 7) * 2.4}s`,
     objectPosition: image.objectPosition,
   } as CSSProperties;
   return <img className="portrait-hero__image" src={image.src} alt="" draggable={false}
