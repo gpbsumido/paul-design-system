@@ -39,6 +39,7 @@ import { CircularGallery } from '../CircularGallery';
 import { PathGallery } from '../PathGallery';
 import { RefineFrame } from '../RefineFrame';
 import { FolderFloat } from '../FolderFloat';
+import { BotanicalText } from '../BotanicalText';
 import { Sparkline } from '../Sparkline';
 import { BarChart } from '../BarChart';
 import { DonutChart } from '../DonutChart';
@@ -701,6 +702,11 @@ describe('Accessibility', () => {
         ]}
       />,
     );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('BotanicalText has no a11y violations', async () => {
+    const { container } = render(<BotanicalText text="Wildflowers" />);
     expect(await axe(container)).toHaveNoViolations();
   });
 });
