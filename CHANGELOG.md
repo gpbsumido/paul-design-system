@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.8.1] - 2026-09-18
+
+### Tests
+
+- Capture failing contracts for liquid-carve interaction, accessible portrait hero sections, and component-only squircle coverage before implementation.
+
 ## [0.8.0] - 2026-09-18
 
 ### Added
