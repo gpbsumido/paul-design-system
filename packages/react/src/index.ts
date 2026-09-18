@@ -66,6 +66,7 @@ export { StarBorder } from './StarBorder';
 export { TextLoop } from './TextLoop';
 export { SquishSwitch } from './SquishSwitch';
 export { RubberSegment } from './RubberSegment';
+export { LatticeLoader } from './LatticeLoader';
 export { usePrefersReducedMotion } from './usePrefersReducedMotion';
 export { cx } from './cx';
 export { readableOn, chipColors, contrastRatio } from './readableOn';

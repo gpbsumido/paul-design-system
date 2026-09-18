@@ -28,6 +28,7 @@ import { StarBorder } from '../StarBorder';
 import { TextLoop } from '../TextLoop';
 import { SquishSwitch } from '../SquishSwitch';
 import { RubberSegment } from '../RubberSegment';
+import { LatticeLoader } from '../LatticeLoader';
 import { Sparkline } from '../Sparkline';
 import { BarChart } from '../BarChart';
 import { DonutChart } from '../DonutChart';
@@ -575,6 +576,11 @@ describe('Accessibility', () => {
     const { container } = render(
       <RubberSegment segments={['Day', 'Week']} value="Day" onChange={() => {}} />,
     );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('LatticeLoader has no a11y violations', async () => {
+    const { container } = render(<LatticeLoader label="Loading" />);
     expect(await axe(container)).toHaveNoViolations();
   });
 });
