@@ -47,4 +47,7 @@
 @import './components/liquid-glass.css';
 @import './components/shine-sweep.css';
 @import './components/star-border.css';
+@import './components/rubber-segment.css';
+@import './components/squish-switch.css';
+@import './components/text-loop.css';
 @import './utilities/visually-hidden.css';
