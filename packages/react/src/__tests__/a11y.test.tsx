@@ -35,6 +35,7 @@ import { LinkPreview } from '../LinkPreview';
 import { SmoothScrollSlider } from '../SmoothScrollSlider';
 import { LightBloom } from '../LightBloom';
 import { ParticleText } from '../ParticleText';
+import { CircularGallery } from '../CircularGallery';
 import { Sparkline } from '../Sparkline';
 import { BarChart } from '../BarChart';
 import { DonutChart } from '../DonutChart';
@@ -651,6 +652,18 @@ describe('Accessibility', () => {
 
   it('ParticleText has no a11y violations', async () => {
     const { container } = render(<ParticleText text="Accessible words" />);
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('CircularGallery has no a11y violations', async () => {
+    const { container } = render(
+      <CircularGallery
+        items={[
+          { image: 'a.jpg', title: 'Alpha', href: '#a' },
+          { image: 'b.jpg', title: 'Beta', href: '#b' },
+        ]}
+      />,
+    );
     expect(await axe(container)).toHaveNoViolations();
   });
 });

@@ -79,3 +79,4 @@ export { LiquidCarveButton, type LiquidCarveButtonProps } from './LiquidCarveBut
 export { Hero06, Hero13, type PortraitHeroProps, type PortraitHeroImage } from './PortraitHero';
 export { LightBloom } from './LightBloom';
 export { ParticleText } from './ParticleText';
+export { CircularGallery, type CircularGalleryItem } from './CircularGallery';
