@@ -30,6 +30,8 @@ import { SquishSwitch } from '../SquishSwitch';
 import { RubberSegment } from '../RubberSegment';
 import { LatticeLoader } from '../LatticeLoader';
 import { DriftWall } from '../DriftWall';
+import { HoverImageReveal } from '../HoverImageReveal';
+import { LinkPreview } from '../LinkPreview';
 import { Sparkline } from '../Sparkline';
 import { BarChart } from '../BarChart';
 import { DonutChart } from '../DonutChart';
@@ -594,6 +596,31 @@ describe('Accessibility', () => {
         ]}
         columns={2}
       />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('HoverImageReveal has no a11y violations', async () => {
+    const { container } = render(
+      <HoverImageReveal
+        items={[
+          { label: 'Alpha', image: 'a.jpg', href: '#a' },
+          { label: 'Beta', image: 'b.jpg', href: '#b' },
+        ]}
+      />,
+    );
+    expect(await axe(container)).toHaveNoViolations();
+  });
+
+  it('LinkPreview has no a11y violations', async () => {
+    const { container } = render(
+      <p>
+        See the{' '}
+        <LinkPreview href="https://example.com" image="p.jpg">
+          docs
+        </LinkPreview>{' '}
+        for more.
+      </p>,
     );
     expect(await axe(container)).toHaveNoViolations();
   });

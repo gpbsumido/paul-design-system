@@ -1,0 +1,64 @@
+@layer components {
+  /* ----------------------------------------------------------------
+   * LinkPreview – an inline link that raises a floating thumbnail on hover,
+   * leaning toward the pointer. Reinterpreted from OriginKit (custom-image
+   * mode). The lean rides on --lp-lean/--lp-shift written by the component;
+   * the card fades, rises and scales in. No keyframes — reduced motion drops
+   * the lean and the card just fades.
+   * ---------------------------------------------------------------- */
+  .link-preview {
+    position: relative;
+    display: inline-block;
+  }
+
+  .link-preview__link {
+    color: var(--paul-color-primary-600);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+  }
+
+  .link-preview__card {
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 12px);
+    width: var(--lp-w);
+    height: var(--lp-h);
+    border-radius: var(--lp-radius);
+    overflow: hidden;
+    pointer-events: none;
+    background: var(--paul-color-surface);
+    box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.45);
+    transform-origin: bottom center;
+    transform: perspective(800px)
+      translateX(calc(-50% + var(--lp-shift, 0px))) translateY(8px)
+      rotateY(var(--lp-lean, 0deg)) scale(0.92);
+    opacity: 0;
+    transition:
+      opacity 0.28s ease,
+      transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 5;
+  }
+
+  .link-preview__card.is-open {
+    opacity: 1;
+    transform: perspective(800px)
+      translateX(calc(-50% + var(--lp-shift, 0px))) translateY(0)
+      rotateY(var(--lp-lean, 0deg)) scale(1);
+  }
+
+  .link-preview__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .link-preview__card,
+    .link-preview__card.is-open {
+      transform: translateX(-50%) translateY(0);
+      transition: opacity 0.2s ease;
+    }
+  }
+}

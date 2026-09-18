@@ -48,7 +48,9 @@
 @import './components/shine-sweep.css';
 @import './components/star-border.css';
 @import './components/drift-wall.css';
+@import './components/hover-image-reveal.css';
 @import './components/lattice-loader.css';
+@import './components/link-preview.css';
 @import './components/rubber-segment.css';
 @import './components/squish-switch.css';
 @import './components/text-loop.css';
