@@ -3,7 +3,7 @@ import { SpiralPortraitHero, PerspectivePortraitHero, CorridorPortraitHero, Butt
 const images = [64, 65, 91, 177, 203, 219, 244, 250, 338, 342, 349, 399].map(id => ({ src: `https://picsum.photos/id/${id}/240/320` }));
 const meta = {
   title: 'Sections/PortraitHeroes', component: SpiralPortraitHero, tags: ['autodocs'],
-  parameters: { layout: 'fullscreen', docs: { description: { component: 'Portrait-hero compositions made with token CSS. SpiralPortraitHero orbits the imagery around the copy like planets around the sun; PerspectivePortraitHero is a one-point-perspective corridor with the imagery as posters pasted on the walls; CorridorPortraitHero fans the imagery out to both sides. Decorative images never block the central copy or action slots. Empty and failed imagery leaves a complete section. No renderer dependencies.' } } },
+  parameters: { layout: 'fullscreen', docs: { description: { component: 'Portrait-hero compositions made with token CSS. SpiralPortraitHero moves photos in an expanding spiral around the copy; PerspectivePortraitHero is a one-point-perspective corridor with the imagery as posters spanning either half of all four walls; CorridorPortraitHero uses the same divided left and right walls without guide lines. Decorative images never block the central copy or action slots. Empty and failed imagery leaves a complete section. No renderer dependencies.' } } },
   args: {
     heading: 'Meet the people behind every great idea.',
     description: 'A collection of independent voices, unexpected perspectives, and stories worth sharing.', images,

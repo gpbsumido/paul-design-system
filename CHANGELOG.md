@@ -1,8 +1,16 @@
-# 0.9.1
+# Changelog
+
+## [0.9.2] - 2026-09-18
+
+### Fixed
+
+- Photos follow an expanding spiral around the hero copy.
+- Tunnel posters use perspective projection across both halves of all four walls, with staggered depth and wall midlines.
+- Corridor uses the same divided side walls without guide lines. Reduced motion keeps a distributed still composition.
+
+## [0.9.1] - 2026-09-18
 
 - Add regression coverage for portrait wall lanes and perspective projection.
-
-# Changelog
 
 ## [0.9.0] - 2026-09-18
 

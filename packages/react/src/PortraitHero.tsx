@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { cx } from './cx';
+import { posterCorners, posterPlacement, projectPoster } from './portraitHeroGeometry';
 import { usePrefersReducedMotion } from './usePrefersReducedMotion';
 
 export type PortraitHeroImage = { src: string; objectPosition?: string };
@@ -21,50 +22,20 @@ type HeroVariant = 'spiral' | 'tunnel' | 'corridor';
 
 function Portrait({ image, index, variant }: { image: PortraitHeroImage; index: number; variant: HeroVariant }) {
   const [failed, setFailed] = useState(false);
-  // Every value below is deterministic per index, so the server and the first
-  // client frame always agree and there is no hydration flash.
-  let style: CSSProperties;
-  if (variant === 'tunnel') {
-    // A one-point-perspective corridor: posters pasted on the left (-1) and
-    // right (+1) walls, streaming out of the centre and growing as they near the
-    // viewer. slot is the depth along the wall; the delay staggers each wall
-    // into a continuous run, and rest is where a poster sits when motion is off.
-    const dir = index % 2 === 0 ? -1 : 1;
-    const slot = Math.floor(index / 2);
-    style = {
-      '--corr-dir': `${dir}`,
-      '--corr-delay': `-${(slot * 2).toFixed(1)}s`,
-      '--corr-rest': `${(1 - slot / 8).toFixed(3)}`,
-      objectPosition: image.objectPosition,
-    } as CSSProperties;
-  } else if (variant === 'corridor') {
-    // Portraits stream out of the centre to alternating sides, growing and
-    // tilting into a receding corridor wall. Lanes stagger the stream so each
-    // side is a continuous run rather than one card.
-    const dir = index % 2 === 0 ? 1 : -1;
-    const lane = Math.floor(index / 2);
-    style = {
-      '--portrait-x': '50%', '--portrait-y': '50%',
-      '--corridor-dir': `${dir}`,
-      '--corridor-dur': `${9 + (index % 4)}s`,
-      '--corridor-delay': `-${(lane * 1.1).toFixed(2)}s`,
-      '--corridor-rest': `${(0.3 + (index % 4) * 0.18).toFixed(2)}`,
-      objectPosition: image.objectPosition,
-    } as CSSProperties;
-  } else {
-    // Spiral: the copy is the sun and the portraits are planets. Each sits on one
-    // of four rings, spread around by the golden angle so they never bunch, and
-    // circles the centre at its own speed. phase doubles as the rest angle.
-    style = {
-      '--orbit-r': `${15 + (index % 4) * 9}vmin`,
-      '--orbit-phase': `${((index * 137.508) % 360).toFixed(1)}deg`,
-      '--orbit-scale': `${(0.75 - (index % 4) * 0.07).toFixed(2)}`,
-      '--orbit-dur': `${26 + (index % 5) * 7}s`,
-      objectPosition: image.objectPosition,
-    } as CSSProperties;
+  if (variant !== 'spiral') {
+    const { wall, lane, phase } = posterPlacement(index, variant);
+    return <g className="portrait-hero__poster" data-wall={wall} data-lane={lane}
+      style={{ '--poster-delay': `${-phase * 24}s` } as CSSProperties}>
+      <foreignObject width="1000" height="1000" overflow="visible">
+        <img className="portrait-hero__wall-image" src={image.src} alt="" draggable={false}
+          decoding="async" hidden={failed} onError={() => setFailed(true)}
+          style={{ transform: `matrix3d(${projectPoster(posterCorners(wall, lane)).join(',')})`, objectPosition: image.objectPosition }} />
+      </foreignObject>
+    </g>;
   }
   return <img className="portrait-hero__image" src={image.src} alt="" draggable={false}
-    decoding="async" style={style} hidden={failed} onError={() => setFailed(true)} />;
+    decoding="async" hidden={failed} onError={() => setFailed(true)}
+    style={{ '--spiral-delay': `${-index * 2}s`, objectPosition: image.objectPosition } as CSSProperties} />;
 }
 
 function PortraitHero({ heading, description, headingLevel = 1, images = [], actions, navigation,
@@ -86,16 +57,17 @@ function PortraitHero({ heading, description, headingLevel = 1, images = [], act
     }} onPointerLeave={reset} onPointerCancel={reset}>
     {navigation && <div className="portrait-hero__navigation">{navigation}</div>}
     <div ref={gallery} className="portrait-hero__gallery" aria-hidden="true">
-      {variant === 'tunnel' && (
-        <svg className="portrait-hero__wire" viewBox="0 0 100 100" preserveAspectRatio="none" focusable="false">
-          <rect x="43" y="43" width="14" height="14" />
-          <line x1="0" y1="0" x2="43" y2="43" />
-          <line x1="100" y1="0" x2="57" y2="43" />
-          <line x1="0" y1="100" x2="43" y2="57" />
-          <line x1="100" y1="100" x2="57" y2="57" />
-        </svg>
-      )}
-      {images.slice(0, 16).map((image, index) => <Portrait key={`${index}-${image.src}`} image={image} index={index} variant={variant} />)}
+      {variant === 'spiral' ? images.slice(0, 16).map((image, index) =>
+        <Portrait key={`${index}-${image.src}`} image={image} index={index} variant={variant} />
+      ) : <svg className="portrait-hero__scene" viewBox="0 0 1000 1000" preserveAspectRatio="none" focusable="false">
+        {variant === 'tunnel' && <g className="portrait-hero__wire">
+          <rect x="430" y="430" width="140" height="140" />
+          <path d="M0 0L430 430 M1000 0L570 430 M0 1000L430 570 M1000 1000L570 570" />
+          <path data-wall-divisions="true" d="M500 0V430 M1000 500H570 M500 1000V570 M0 500H430" />
+        </g>}
+        {images.slice(0, 16).map((image, index) =>
+          <Portrait key={`${index}-${image.src}`} image={image} index={index} variant={variant} />)}
+      </svg>}
     </div>
     <div className="portrait-hero__content">
       {visual && <div className="portrait-hero__visual">{visual}</div>}
@@ -108,7 +80,7 @@ function PortraitHero({ heading, description, headingLevel = 1, images = [], act
 
 /** A portrait hero whose imagery spirals behind the copy. */
 export function SpiralPortraitHero(props: PortraitHeroProps) { return <PortraitHero {...props} variant="spiral" />; }
-/** A portrait hero whose imagery flies outward from a central vanishing point along radial tunnel lines. */
+/** A portrait hero whose imagery moves along all four divided walls of a perspective tunnel. */
 export function PerspectivePortraitHero(props: PortraitHeroProps) { return <PortraitHero {...props} variant="tunnel" />; }
-/** A portrait hero whose imagery streams out of the centre to both sides into a receding corridor wall. */
+/** A portrait hero whose imagery moves along the divided side walls of a perspective corridor. */
 export function CorridorPortraitHero(props: PortraitHeroProps) { return <PortraitHero {...props} variant="corridor" />; }

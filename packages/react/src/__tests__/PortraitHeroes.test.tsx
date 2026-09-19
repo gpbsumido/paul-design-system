@@ -57,3 +57,23 @@ for (const name of ['SpiralPortraitHero', 'PerspectivePortraitHero', 'CorridorPo
     });
   });
 }
+
+describe('portrait compositions', () => {
+  const images = Array.from({ length: 16 }, (_, index) => ({ src: `portrait-${index}.jpg` }));
+  it('divides the tunnel into eight lanes across all four walls', () => {
+    const { container } = render(<components.PerspectivePortraitHero heading="Tunnel" images={images} />);
+    expect(container.querySelector('[data-wall-divisions]')).toBeInTheDocument();
+    for (const wall of ['left', 'right', 'top', 'bottom']) {
+      for (const lane of [0, 1]) {
+        expect(container.querySelector(`[data-wall="${wall}"][data-lane="${lane}"] img`)).toBeInTheDocument();
+      }
+    }
+  });
+  it('uses only divided side walls and no guide lines for corridor', () => {
+    const { container } = render(<components.CorridorPortraitHero heading="Corridor" images={images} />);
+    expect(container.querySelector('.portrait-hero__wire')).not.toBeInTheDocument();
+    expect(container.querySelector('[data-wall="top"], [data-wall="bottom"]')).not.toBeInTheDocument();
+    expect(container.querySelectorAll('[data-wall="left"]').length).toBe(8);
+    expect(container.querySelectorAll('[data-wall="right"]').length).toBe(8);
+  });
+});

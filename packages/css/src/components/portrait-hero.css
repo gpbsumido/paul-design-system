@@ -26,64 +26,79 @@
   }
   .portrait-hero__image[hidden] { display: none; }
 
-  /* Spiral: the copy is the sun and the portraits are planets, each on its own
-     ring, orbiting the centre. The double rotate keeps each portrait upright
-     while it circles. */
+  /* One expanding spiral, sampled along a shared path. Negative delays spread
+     the photos along it from the very first frame. Container units keep the
+     composition centered on this hero, including in embedded layouts. */
+  .portrait-hero__gallery { container-type: size; }
   .portrait-hero--spiral .portrait-hero__image {
-    opacity: 0.72;
-    animation: paul-portrait-spiral var(--orbit-dur, 30s) linear infinite;
+    animation: paul-portrait-spiral 32s linear infinite;
+    animation-delay: var(--spiral-delay);
   }
   @keyframes paul-portrait-spiral {
-    from { transform: translate(-50%, -50%) rotate(var(--orbit-phase)) translateX(var(--orbit-r)) rotate(calc(-1 * var(--orbit-phase))) scale(var(--orbit-scale)); }
-    to { transform: translate(-50%, -50%) rotate(calc(var(--orbit-phase) + 360deg)) translateX(var(--orbit-r)) rotate(calc(-1 * (var(--orbit-phase) + 360deg))) scale(var(--orbit-scale)); }
-  }
-  .portrait-hero--spiral .portrait-hero__gallery {
-    background: repeating-radial-gradient(circle at center, transparent 0 8.7vmin, var(--paul-color-border) 8.7vmin 8.8vmin, transparent 8.8vmin 9vmin);
-    -webkit-mask-image: radial-gradient(circle at center, #000 0, #000 55%, transparent 86%);
-    mask-image: radial-gradient(circle at center, #000 0, #000 55%, transparent 86%);
+    0% { opacity: 0; transform: translate(-50%, -50%) translate(-9.500cqw, -16.454cqh) rotate(-12.00deg) scale(0.500); }
+    3.125% { opacity: 0.78; transform: translate(-50%, -50%) translate(-4.754cqw, -20.391cqh) rotate(-11.25deg) scale(0.522); }
+    6.25% { opacity: 0.78; transform: translate(-50%, -50%) translate(1.496cqw, -22.826cqh) rotate(-10.50deg) scale(0.544); }
+    9.375% { opacity: 0.78; transform: translate(-50%, -50%) translate(8.740cqw, -23.222cqh) rotate(-9.75deg) scale(0.566); }
+    12.5% { opacity: 0.78; transform: translate(-50%, -50%) translate(16.284cqw, -21.222cqh) rotate(-9.00deg) scale(0.588); }
+    15.625% { opacity: 0.78; transform: translate(-50%, -50%) translate(23.319cqw, -16.710cqh) rotate(-8.25deg) scale(0.609); }
+    18.75% { opacity: 0.78; transform: translate(-50%, -50%) translate(29.000cqw, -9.844cqh) rotate(-7.50deg) scale(0.631); }
+    21.875% { opacity: 0.78; transform: translate(-50%, -50%) translate(32.545cqw, -1.065cqh) rotate(-6.75deg) scale(0.653); }
+    25% { opacity: 0.78; transform: translate(-50%, -50%) translate(33.324cqw, 8.929cqh) rotate(-6.00deg) scale(0.675); }
+    28.125% { opacity: 0.78; transform: translate(-50%, -50%) translate(30.943cqw, 19.241cqh) rotate(-5.25deg) scale(0.697); }
+    31.25% { opacity: 0.78; transform: translate(-50%, -50%) translate(25.302cqw, 28.852cqh) rotate(-4.50deg) scale(0.719); }
+    34.375% { opacity: 0.78; transform: translate(-50%, -50%) translate(16.637cqw, 36.719cqh) rotate(-3.75deg) scale(0.741); }
+    37.5% { opacity: 0.78; transform: translate(-50%, -50%) translate(5.515cqw, 41.889cqh) rotate(-3.00deg) scale(0.762); }
+    40.625% { opacity: 0.78; transform: translate(-50%, -50%) translate(-7.198cqw, 43.597cqh) rotate(-2.25deg) scale(0.784); }
+    43.75% { opacity: 0.78; transform: translate(-50%, -50%) translate(-20.401cqw, 41.368cqh) rotate(-1.50deg) scale(0.806); }
+    46.875% { opacity: 0.78; transform: translate(-50%, -50%) translate(-32.855cqw, 35.079cqh) rotate(-0.75deg) scale(0.828); }
+    50% { opacity: 0.78; transform: translate(-50%, -50%) translate(-43.301cqw, 25.000cqh) rotate(0.00deg) scale(0.850); }
+    53.125% { opacity: 0.78; transform: translate(-50%, -50%) translate(-50.581cqw, 11.794cqh) rotate(0.75deg) scale(0.872); }
+    56.25% { opacity: 0.78; transform: translate(-50%, -50%) translate(-53.760cqw, -3.524cqh) rotate(1.50deg) scale(0.894); }
+    59.375% { opacity: 0.78; transform: translate(-50%, -50%) translate(-52.235cqw, -19.660cqh) rotate(2.25deg) scale(0.916); }
+    62.5% { opacity: 0.78; transform: translate(-50%, -50%) translate(-45.816cqw, -35.156cqh) rotate(3.00deg) scale(0.938); }
+    65.625% { opacity: 0.78; transform: translate(-50%, -50%) translate(-34.767cqw, -48.517cqh) rotate(3.75deg) scale(0.959); }
+    68.75% { opacity: 0.78; transform: translate(-50%, -50%) translate(-19.809cqw, -58.355cqh) rotate(4.50deg) scale(0.981); }
+    71.875% { opacity: 0.78; transform: translate(-50%, -50%) translate(-2.080cqw, -63.528cqh) rotate(5.25deg) scale(1.003); }
+    75% { opacity: 0.78; transform: translate(-50%, -50%) translate(16.953cqw, -63.268cqh) rotate(6.00deg) scale(1.025); }
+    78.125% { opacity: 0.78; transform: translate(-50%, -50%) translate(35.612cqw, -57.268cqh) rotate(6.75deg) scale(1.047); }
+    81.25% { opacity: 0.78; transform: translate(-50%, -50%) translate(52.159cqw, -45.742cqh) rotate(7.50deg) scale(1.069); }
+    84.375% { opacity: 0.78; transform: translate(-50%, -50%) translate(64.956cqw, -29.431cqh) rotate(8.25deg) scale(1.091); }
+    87.5% { opacity: 0.78; transform: translate(-50%, -50%) translate(72.623cqw, -9.561cqh) rotate(9.00deg) scale(1.112); }
+    90.625% { opacity: 0.78; transform: translate(-50%, -50%) translate(74.183cqw, 12.248cqh) rotate(9.75deg) scale(1.134); }
+    93.75% { opacity: 0.78; transform: translate(-50%, -50%) translate(69.171cqw, 34.112cqh) rotate(10.50deg) scale(1.156); }
+    96.875% { opacity: 0.78; transform: translate(-50%, -50%) translate(57.705cqw, 54.047cqh) rotate(11.25deg) scale(1.178); }
+    100% { opacity: 0; transform: translate(-50%, -50%) translate(40.500cqw, 70.148cqh) rotate(12.00deg) scale(1.200); }
   }
 
-  /* Tunnel: a one-point-perspective corridor. A wireframe draws the far wall and
-     four edge lines to the corners; the portraits are posters pasted on the left
-     and right walls, streaming out of the centre and growing as they near the
-     viewer. --corr-dir is the wall side (-1 left, +1 right). */
-  .portrait-hero--tunnel .portrait-hero__gallery { perspective: 680px; }
-  .portrait-hero__wire { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .portrait-hero__wire line,
+  .portrait-hero__scene { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .portrait-hero__wire path,
   .portrait-hero__wire rect {
     fill: none;
     stroke: var(--paul-color-border);
     stroke-width: 1.2;
     vector-effect: non-scaling-stroke;
   }
-  .portrait-hero--tunnel .portrait-hero__image {
-    opacity: 0.9;
-    animation: paul-portrait-tunnel var(--corr-dur, 16s) linear infinite;
-    animation-delay: var(--corr-delay, 0s);
+  /* Scaling a projected wall plane about the vanishing point preserves its
+     seams. The inner homography maps the actual image onto that plane. */
+  .portrait-hero__poster {
+    transform-origin: 500px 500px;
+    animation: paul-portrait-wall 24s linear infinite;
+    animation-delay: var(--poster-delay);
   }
-  @keyframes paul-portrait-tunnel {
-    0% { opacity: 0; transform: translate(-50%, -50%) translateX(calc(var(--corr-dir) * 7vw)) rotateY(calc(var(--corr-dir) * -54deg)) scale(0.3); }
-    10% { opacity: 0.92; }
-    88% { opacity: 0.92; }
-    100% { opacity: 0; transform: translate(-50%, -50%) translateX(calc(var(--corr-dir) * 45vw)) rotateY(calc(var(--corr-dir) * -54deg)) scale(1.2); }
+  .portrait-hero__wall-image {
+    display: block;
+    width: 100px;
+    height: 100px;
+    max-width: none;
+    object-fit: cover;
+    transform-origin: 0 0;
   }
-
-  /* Corridor: a shallower horizontal fan — portraits stream out of the centre to
-     alternating sides, tilting into a receding wall without the wireframe. */
-  .portrait-hero--corridor .portrait-hero__image {
-    --corridor-reach: 44vw;
-    opacity: 0.9;
-    animation: paul-portrait-corridor var(--corridor-dur, 11s) linear infinite;
-    animation-delay: var(--corridor-delay, 0s);
-  }
-  @keyframes paul-portrait-corridor {
-    0% { opacity: 0; transform: translate(-50%, -50%) translateX(0) translateY(0) rotateY(0deg) scale(0.28); }
-    14% { opacity: 0.9; }
-    82% { opacity: 0.9; }
-    100% { opacity: 0; transform: translate(-50%, -50%) translateX(calc(var(--corridor-dir) * var(--corridor-reach))) translateY(-1.5rem) rotateY(calc(var(--corridor-dir) * -34deg)) scale(1.12); }
-  }
-  .portrait-hero--corridor .portrait-hero__gallery {
-    background: radial-gradient(circle at center, var(--paul-color-border) 0 0.2rem, transparent 0.24rem);
+  .portrait-hero__wall-image[hidden] { display: none; }
+  @keyframes paul-portrait-wall {
+    0% { transform: scale(0.18); opacity: 0; }
+    12% { opacity: 0.85; }
+    82% { opacity: 0.85; }
+    100% { transform: scale(1.65); opacity: 0; }
   }
 
   .portrait-hero__content {
@@ -120,21 +135,10 @@
     .portrait-hero__navigation { margin-bottom: var(--paul-spacing-6); }
   }
   @media (prefers-reduced-motion: reduce) {
-    /* Motion off: freeze each arrangement into a still frame rather than piling
-       every portrait on the centre point. Each variant places its portraits at
-       their rest position from the same maths the keyframe animates. */
-    .portrait-hero__image { animation: none; }
-    .portrait-hero--spiral .portrait-hero__image {
-      transform: translate(-50%, -50%) rotate(var(--orbit-phase)) translateX(var(--orbit-r)) rotate(calc(-1 * var(--orbit-phase))) scale(var(--orbit-scale));
-    }
-    .portrait-hero--tunnel .portrait-hero__image {
-      opacity: calc(0.4 + var(--corr-rest, 0.5) * 0.5);
-      transform: translate(-50%, -50%) translateX(calc(var(--corr-dir, -1) * (7vw + 38vw * var(--corr-rest, 0.5)))) rotateY(calc(var(--corr-dir, -1) * -54deg)) scale(calc(0.3 + var(--corr-rest, 0.5) * 0.9));
-    }
-    .portrait-hero--corridor .portrait-hero__image {
-      opacity: 0.7;
-      transform: translate(-50%, -50%) translateX(calc(var(--corridor-dir, 1) * var(--corridor-reach, 44vw) * var(--corridor-rest, 0.5))) translateY(-1rem) rotateY(calc(var(--corridor-dir, 1) * -34deg * var(--corridor-rest, 0.5))) scale(calc(0.35 + var(--corridor-rest, 0.5) * 0.8));
-    }
+    /* Keep each negative animation delay as a distinct, static composition. */
+    .portrait-hero--spiral .portrait-hero__image,
+    .portrait-hero__poster { animation-play-state: paused; }
   }
-  @media (prefers-contrast: more) { .portrait-hero__image { opacity: 0.25; } }
+
+  @media (prefers-contrast: more) { .portrait-hero__gallery { opacity: 0.25; } }
 }
