@@ -11,33 +11,155 @@
     color: var(--paul-color-foreground);
   }
   .portrait-hero__navigation { position: relative; z-index: 2; width: 100%; margin-bottom: var(--paul-spacing-8); align-self: start; }
-  .portrait-hero__gallery { position: absolute; inset: 0; overflow: hidden; pointer-events: none; perspective: 700px; }
+  .portrait-hero__gallery { position: absolute; inset: 0; overflow: hidden; pointer-events: none; perspective: 700px; perspective-origin: 50% 50%; }
   .portrait-hero__image {
     position: absolute;
-    left: var(--portrait-x);
-    top: var(--portrait-y);
-    width: clamp(4rem, 9vw, 8rem);
-    height: clamp(5rem, 12vw, 10rem);
-    object-fit: cover;
+    left: var(--portrait-x, 50%);
+    top: var(--portrait-y, 50%);
+    width: min(8rem, 9cqw, 9cqh);
+    height: min(10rem, 12cqw, 12cqh);
     border-radius: var(--paul-radius-md);
     corner-shape: squircle;
     opacity: 0.7;
-    transform: translate(-50%, -50%) rotate(var(--portrait-rotate)) rotateX(var(--portrait-rotate-x)) rotateY(var(--portrait-rotate-y)) scale(var(--portrait-scale));
-    animation: paul-portrait-orbit var(--portrait-orbit-dur, 18s) linear infinite;
-    animation-delay: var(--portrait-orbit-delay, 0s);
-  }
-  @keyframes paul-portrait-orbit {
-    from {
-      transform: translate(-50%, -50%) rotate(0deg) translateX(var(--portrait-orbit-r, 16px)) rotate(0deg) rotate(var(--portrait-rotate)) rotateX(var(--portrait-rotate-x)) rotateY(var(--portrait-rotate-y)) scale(var(--portrait-scale));
-    }
-    to {
-      transform: translate(-50%, -50%) rotate(360deg) translateX(var(--portrait-orbit-r, 16px)) rotate(-360deg) rotate(var(--portrait-rotate)) rotateX(var(--portrait-rotate-x)) rotateY(var(--portrait-rotate-y)) scale(var(--portrait-scale));
-    }
+    transform: translate(-50%, -50%);
   }
   .portrait-hero__image[hidden] { display: none; }
-  .portrait-hero--spiral .portrait-hero__gallery {
-    background: repeating-radial-gradient(circle at center, transparent 0 9rem, var(--paul-color-border) 9.02rem 9.06rem, transparent 9.08rem 15rem);
+
+  .portrait-hero__image,
+  .portrait-hero__wall-image {
+    display: block;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    pointer-events: auto;
   }
+  .portrait-hero__image > img,
+  .portrait-hero__wall-image > img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+    corner-shape: inherit;
+  }
+  a.portrait-hero__image, button.portrait-hero__image,
+  a.portrait-hero__wall-image, button.portrait-hero__wall-image { cursor: pointer; }
+  .portrait-hero__image:focus-visible,
+  .portrait-hero__wall-image:focus-visible {
+    outline: 3px solid var(--paul-color-foreground);
+    outline-offset: 4px;
+  }
+  /* Keyboard focus brings even an off-screen image into view above the copy.
+     The remaining composition slows down while its action has focus. */
+  .portrait-hero__gallery:has(:focus-visible) { z-index: 3; }
+  .portrait-hero__gallery:has(:focus-visible) .portrait-hero__image:not(:focus-visible),
+  .portrait-hero__gallery:has(:focus-visible) .portrait-hero__wall-image:not(:focus-visible) {
+    opacity: 0 !important;
+    pointer-events: none;
+  }
+  .portrait-hero--spiral .portrait-hero__image:focus-visible {
+    animation: none;
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+  .portrait-hero .portrait-hero__poster:has(:focus-visible) {
+    animation: none;
+    opacity: 1;
+    transform: scale(0.8);
+  }
+
+  /* One expanding spiral, sampled along a shared path. Negative delays spread
+     the photos along it from the very first frame. Container units keep the
+     composition centered on this hero, including in embedded layouts. */
+  .portrait-hero__gallery { container-type: size; }
+  .portrait-hero--spiral .portrait-hero__image {
+    animation: paul-portrait-spiral 32s linear infinite;
+    animation-delay: var(--spiral-delay);
+  }
+  @keyframes paul-portrait-spiral {
+    0.0000% { opacity: 0; transform: translate(-50%, -50%) translate(-11.000cqw, -19.053cqh) rotate(-12.00deg) scale(0.500); }
+    2.0833% { opacity: 0.78; transform: translate(-50%, -50%) translate(-5.899cqw, -22.015cqh) rotate(-11.50deg) scale(0.515); }
+    4.1667% { opacity: 0.78; transform: translate(-50%, -50%) translate(0.000cqw, -23.583cqh) rotate(-11.00deg) scale(0.529); }
+    6.2500% { opacity: 0.78; transform: translate(-50%, -50%) translate(6.309cqw, -23.544cqh) rotate(-10.50deg) scale(0.544); }
+    8.3333% { opacity: 0.78; transform: translate(-50%, -50%) translate(12.583cqw, -21.795cqh) rotate(-10.00deg) scale(0.558); }
+    10.4167% { opacity: 0.78; transform: translate(-50%, -50%) translate(18.355cqw, -18.355cqh) rotate(-9.50deg) scale(0.573); }
+    12.5000% { opacity: 0.78; transform: translate(-50%, -50%) translate(23.166cqw, -13.375cqh) rotate(-9.00deg) scale(0.588); }
+    14.5833% { opacity: 0.78; transform: translate(-50%, -50%) translate(26.603cqw, -7.128cqh) rotate(-8.50deg) scale(0.602); }
+    16.6667% { opacity: 0.78; transform: translate(-50%, -50%) translate(28.333cqw, 0.000cqh) rotate(-8.00deg) scale(0.617); }
+    18.7500% { opacity: 0.78; transform: translate(-50%, -50%) translate(28.133cqw, 7.538cqh) rotate(-7.50deg) scale(0.631); }
+    20.8333% { opacity: 0.78; transform: translate(-50%, -50%) translate(25.909cqw, 14.958cqh) rotate(-7.00deg) scale(0.646); }
+    22.9167% { opacity: 0.78; transform: translate(-50%, -50%) translate(21.714cqw, 21.714cqh) rotate(-6.50deg) scale(0.660); }
+    25.0000% { opacity: 0.78; transform: translate(-50%, -50%) translate(15.750cqw, 27.280cqh) rotate(-6.00deg) scale(0.675); }
+    27.0833% { opacity: 0.78; transform: translate(-50%, -50%) translate(8.358cqw, 31.191cqh) rotate(-5.50deg) scale(0.690); }
+    29.1667% { opacity: 0.78; transform: translate(-50%, -50%) translate(0.000cqw, 33.083cqh) rotate(-5.00deg) scale(0.704); }
+    31.2500% { opacity: 0.78; transform: translate(-50%, -50%) translate(-8.767cqw, 32.721cqh) rotate(-4.50deg) scale(0.719); }
+    33.3333% { opacity: 0.78; transform: translate(-50%, -50%) translate(-17.333cqw, 30.022cqh) rotate(-4.00deg) scale(0.733); }
+    35.4167% { opacity: 0.78; transform: translate(-50%, -50%) translate(-25.073cqw, 25.073cqh) rotate(-3.50deg) scale(0.748); }
+    37.5000% { opacity: 0.78; transform: translate(-50%, -50%) translate(-31.393cqw, 18.125cqh) rotate(-3.00deg) scale(0.762); }
+    39.5833% { opacity: 0.78; transform: translate(-50%, -50%) translate(-35.780cqw, 9.587cqh) rotate(-2.50deg) scale(0.777); }
+    41.6667% { opacity: 0.78; transform: translate(-50%, -50%) translate(-37.833cqw, 0.000cqh) rotate(-2.00deg) scale(0.792); }
+    43.7500% { opacity: 0.78; transform: translate(-50%, -50%) translate(-37.309cqw, -9.997cqh) rotate(-1.50deg) scale(0.806); }
+    45.8333% { opacity: 0.78; transform: translate(-50%, -50%) translate(-34.136cqw, -19.708cqh) rotate(-1.00deg) scale(0.821); }
+    47.9167% { opacity: 0.78; transform: translate(-50%, -50%) translate(-28.432cqw, -28.432cqh) rotate(-0.50deg) scale(0.835); }
+    50.0000% { opacity: 0.78; transform: translate(-50%, -50%) translate(-20.500cqw, -35.507cqh) rotate(0.00deg) scale(0.850); }
+    52.0833% { opacity: 0.78; transform: translate(-50%, -50%) translate(-10.816cqw, -40.368cqh) rotate(0.50deg) scale(0.865); }
+    54.1667% { opacity: 0.78; transform: translate(-50%, -50%) translate(-0.000cqw, -42.583cqh) rotate(1.00deg) scale(0.879); }
+    56.2500% { opacity: 0.78; transform: translate(-50%, -50%) translate(11.226cqw, -41.897cqh) rotate(1.50deg) scale(0.894); }
+    58.3333% { opacity: 0.78; transform: translate(-50%, -50%) translate(22.083cqw, -38.249cqh) rotate(2.00deg) scale(0.908); }
+    60.4167% { opacity: 0.78; transform: translate(-50%, -50%) translate(31.790cqw, -31.790cqh) rotate(2.50deg) scale(0.923); }
+    62.5000% { opacity: 0.78; transform: translate(-50%, -50%) translate(39.621cqw, -22.875cqh) rotate(3.00deg) scale(0.938); }
+    64.5833% { opacity: 0.78; transform: translate(-50%, -50%) translate(44.956cqw, -12.046cqh) rotate(3.50deg) scale(0.952); }
+    66.6667% { opacity: 0.78; transform: translate(-50%, -50%) translate(47.333cqw, -0.000cqh) rotate(4.00deg) scale(0.967); }
+    68.7500% { opacity: 0.78; transform: translate(-50%, -50%) translate(46.485cqw, 12.456cqh) rotate(4.50deg) scale(0.981); }
+    70.8333% { opacity: 0.78; transform: translate(-50%, -50%) translate(42.363cqw, 24.458cqh) rotate(5.00deg) scale(0.996); }
+    72.9167% { opacity: 0.78; transform: translate(-50%, -50%) translate(35.149cqw, 35.149cqh) rotate(5.50deg) scale(1.010); }
+    75.0000% { opacity: 0.78; transform: translate(-50%, -50%) translate(25.250cqw, 43.734cqh) rotate(6.00deg) scale(1.025); }
+    77.0833% { opacity: 0.78; transform: translate(-50%, -50%) translate(13.275cqw, 49.544cqh) rotate(6.50deg) scale(1.040); }
+    79.1667% { opacity: 0.78; transform: translate(-50%, -50%) translate(0.000cqw, 52.083cqh) rotate(7.00deg) scale(1.054); }
+    81.2500% { opacity: 0.78; transform: translate(-50%, -50%) translate(-13.685cqw, 51.073cqh) rotate(7.50deg) scale(1.069); }
+    83.3333% { opacity: 0.78; transform: translate(-50%, -50%) translate(-26.833cqw, 46.477cqh) rotate(8.00deg) scale(1.083); }
+    85.4167% { opacity: 0.78; transform: translate(-50%, -50%) translate(-38.508cqw, 38.508cqh) rotate(8.50deg) scale(1.098); }
+    87.5000% { opacity: 0.78; transform: translate(-50%, -50%) translate(-47.848cqw, 27.625cqh) rotate(9.00deg) scale(1.112); }
+    89.5833% { opacity: 0.78; transform: translate(-50%, -50%) translate(-54.132cqw, 14.505cqh) rotate(9.50deg) scale(1.127); }
+    91.6667% { opacity: 0.78; transform: translate(-50%, -50%) translate(-56.833cqw, 0.000cqh) rotate(10.00deg) scale(1.142); }
+    93.7500% { opacity: 0.78; transform: translate(-50%, -50%) translate(-55.661cqw, -14.914cqh) rotate(10.50deg) scale(1.156); }
+    95.8333% { opacity: 0.78; transform: translate(-50%, -50%) translate(-50.590cqw, -29.208cqh) rotate(11.00deg) scale(1.171); }
+    97.9167% { opacity: 0.78; transform: translate(-50%, -50%) translate(-41.867cqw, -41.867cqh) rotate(11.50deg) scale(1.185); }
+    100.0000% { opacity: 0; transform: translate(-50%, -50%) translate(-30.000cqw, -51.962cqh) rotate(12.00deg) scale(1.200); }
+  }
+
+  .portrait-hero__scene { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .portrait-hero__wire path,
+  .portrait-hero__wire rect {
+    fill: none;
+    stroke: var(--paul-color-border);
+    stroke-width: 1.2;
+    vector-effect: non-scaling-stroke;
+  }
+  /* Scaling a projected wall plane about the vanishing point preserves its
+     seams. The inner homography maps the actual image onto that plane. */
+  .portrait-hero__poster {
+    transform-origin: 500px 500px;
+    animation: paul-portrait-wall 24s linear infinite;
+    animation-delay: var(--poster-delay);
+  }
+  .portrait-hero__wall-image {
+    display: block;
+    width: 100px;
+    height: 100px;
+    max-width: none;
+    object-fit: cover;
+    transform-origin: 0 0;
+  }
+  .portrait-hero__wall-image[hidden] { display: none; }
+  @keyframes paul-portrait-wall {
+    0% { transform: scale(0.18); opacity: 0; }
+    12% { opacity: 0.85; }
+    82% { opacity: 0.85; }
+    100% { transform: scale(1.65); opacity: 0; }
+  }
+
   .portrait-hero__content {
     position: relative;
     z-index: 1;
@@ -72,10 +194,10 @@
     .portrait-hero__navigation { margin-bottom: var(--paul-spacing-6); }
   }
   @media (prefers-reduced-motion: reduce) {
-    .portrait-hero__image {
-      transform: translate(-50%, -50%) scale(var(--portrait-scale));
-      animation: none;
-    }
+    /* Keep each negative animation delay as a distinct, static composition. */
+    .portrait-hero--spiral .portrait-hero__image,
+    .portrait-hero__poster { animation-play-state: paused; }
   }
-  @media (prefers-contrast: more) { .portrait-hero__image { opacity: 0.25; } }
+
+  @media (prefers-contrast: more) { .portrait-hero__gallery { opacity: 0.25; } }
 }

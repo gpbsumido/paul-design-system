@@ -298,7 +298,7 @@ Live demos are in Storybook.
 | `LinkPreview` | An inline link that raises a floating thumbnail leaning toward the pointer |
 | `SmoothScrollSlider` | A rail whose cards grow toward the centre and coast after a flick |
 | `LiquidCarveButton` | A button a cursor-following blob carves into |
-| `Hero06` / `Hero13` | Portrait hero compositions with imagery orbiting behind the copy |
+| `SpiralPortraitHero` / `PerspectivePortraitHero` / `CorridorPortraitHero` | Portrait hero compositions — an outward spiral around the copy, a divided four-wall tunnel, and a corridor with side-wall posters |
 | `LightBloom` | A glow blooming from an edge, breathing and pointer-following (CSS, not WebGL) |
 | `ParticleText` | Text as a cloud of canvas particles that assemble and scatter |
 | `CircularGallery` | Cards on a rotating 3D cylinder you spin with a drag |
@@ -313,6 +313,20 @@ Every component ships with an axe test in the package's suite. Components that
 have no visible text (IconButton, Switch, Spinner) require or default an
 accessible name, and interactive components expose the right roles and ARIA
 state.
+
+### Portrait hero image actions
+
+All three portrait heroes slow their animation while an image is hovered or focused. Tunnel and corridor stay fixed under pointer movement. Images remain decorative by default; set `href` for a link or `onClick` for a button action, and provide `alt` as its accessible name.
+
+```tsx
+<SpiralPortraitHero
+  heading="Meet the people"
+  images={[
+    { src: '/portraits/alex.jpg', href: '/people/alex', alt: 'Meet Alex' },
+    { src: '/portraits/sam.jpg', onClick: () => openPortrait('sam'), alt: 'Open Sam’s portrait' },
+  ]}
+/>
+```
 
 ## License
 

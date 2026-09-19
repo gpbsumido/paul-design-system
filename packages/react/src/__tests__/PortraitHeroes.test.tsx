@@ -8,7 +8,7 @@ import * as components from '../index';
 let reduced = false;
 vi.mock('../usePrefersReducedMotion', () => ({ usePrefersReducedMotion: () => reduced }));
 afterEach(() => { cleanup(); reduced = false; vi.unstubAllGlobals(); vi.restoreAllMocks(); });
-for (const name of ['Hero06', 'Hero13'] as const) {
+for (const name of ['SpiralPortraitHero', 'PerspectivePortraitHero', 'CorridorPortraitHero'] as const) {
   describe(name, () => {
     it('exports a labelled section with configurable copy, heading level and action slots', async () => {
       const Hero = components[name];
@@ -41,13 +41,48 @@ for (const name of ['Hero06', 'Hero13'] as const) {
       vi.spyOn(region, 'getBoundingClientRect').mockReturnValue({ left: 0, top: 0, width: 400, height: 400 } as DOMRect);
       fireEvent.pointerMove(region, { clientX: 400, clientY: 400 });
       const gallery = container.querySelector<HTMLElement>('.portrait-hero__gallery')!;
-      expect(gallery.style.transform).toBe('translate3d(10px, 10px, 0)');
+      expect(gallery.style.transform).toBe(name === 'SpiralPortraitHero' ? 'translate3d(10px, 10px, 0)' : '');
       fireEvent.pointerLeave(region);
       expect(gallery.style.transform).toBe('');
       reduced = true;
       rerender(<Hero heading="Steady copy" />);
       fireEvent.pointerMove(region, { clientX: 400, clientY: 400 });
       expect(gallery.style.transform).toBe('');
+    });
+    it('supports named image links and buttons without exposing decorative images', async () => {
+      const Hero = components[name];
+      const onClick = vi.fn();
+      const { container } = render(<Hero heading="Gallery" images={[
+        { src: 'linked.jpg', href: '#portrait', alt: 'Open portrait' },
+        { src: 'action.jpg', onClick, alt: 'Select portrait' },
+        { src: 'decorative.jpg' },
+      ]} />);
+      expect(screen.getByRole('link', { name: 'Open portrait' })).toHaveAttribute('href', '#portrait');
+      fireEvent.click(screen.getByRole('button', { name: 'Select portrait' }));
+      expect(onClick).toHaveBeenCalledOnce();
+      expect(screen.queryByRole('img')).not.toBeInTheDocument();
+      expect(await axe(container)).toHaveNoViolations();
+      fireEvent.error(container.querySelector('img')!);
+      expect(screen.queryByRole('link', { name: 'Open portrait' })).not.toBeInTheDocument();
+    });
+    it('slows the composition while hovering or focusing an image, without resetting time', () => {
+      const Hero = components[name];
+      const { container } = render(<Hero heading="Gallery" images={[{ src: 'portrait.jpg', href: '#portrait', alt: 'Portrait' }]} />);
+      const gallery = container.querySelector('.portrait-hero__gallery')!;
+      const updatePlaybackRate = vi.fn();
+      const animation = { updatePlaybackRate, currentTime: 12000 };
+      const restarted = { updatePlaybackRate: vi.fn(), currentTime: 0 };
+      Object.defineProperty(gallery, 'getAnimations', { value: () => [animation, restarted] });
+      const link = screen.getByRole('link', { name: 'Portrait' });
+      fireEvent.pointerEnter(link);
+      expect(updatePlaybackRate).toHaveBeenLastCalledWith(0.2);
+      fireEvent.focus(link);
+      fireEvent.pointerLeave(link);
+      expect(updatePlaybackRate).toHaveBeenLastCalledWith(0.2);
+      fireEvent.blur(link);
+      expect(updatePlaybackRate).toHaveBeenLastCalledWith(1);
+      expect(animation.currentTime).toBe(12000);
+      expect(restarted.currentTime).toBe(12000);
     });
     it('creates separate accessible names for multiple instances', () => {
       const Hero = components[name];
@@ -57,3 +92,23 @@ for (const name of ['Hero06', 'Hero13'] as const) {
     });
   });
 }
+
+describe('portrait compositions', () => {
+  const images = Array.from({ length: 16 }, (_, index) => ({ src: `portrait-${index}.jpg` }));
+  it('divides the tunnel into eight lanes across all four walls', () => {
+    const { container } = render(<components.PerspectivePortraitHero heading="Tunnel" images={images} />);
+    expect(container.querySelector('[data-wall-divisions]')).toBeInTheDocument();
+    for (const wall of ['left', 'right', 'top', 'bottom']) {
+      for (const lane of [0, 1]) {
+        expect(container.querySelector(`[data-wall="${wall}"][data-lane="${lane}"] img`)).toBeInTheDocument();
+      }
+    }
+  });
+  it('uses only divided side walls and no guide lines for corridor', () => {
+    const { container } = render(<components.CorridorPortraitHero heading="Corridor" images={images} />);
+    expect(container.querySelector('.portrait-hero__wire')).not.toBeInTheDocument();
+    expect(container.querySelector('[data-wall="top"], [data-wall="bottom"]')).not.toBeInTheDocument();
+    expect(container.querySelectorAll('[data-wall="left"]').length).toBe(8);
+    expect(container.querySelectorAll('[data-wall="right"]').length).toBe(8);
+  });
+});

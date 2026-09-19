@@ -1,59 +1,83 @@
 import { useEffect, useId, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { cx } from './cx';
+import { posterCorners, posterPlacement, projectPoster } from './portraitHeroGeometry';
 import { usePrefersReducedMotion } from './usePrefersReducedMotion';
 
-export type PortraitHeroImage = { src: string; objectPosition?: string };
+export type PortraitHeroImage = {
+  src: string;
+  objectPosition?: string;
+  /** Accessible name for an optional image link or action. */
+  alt?: string;
+  href?: string;
+  onClick?: () => void;
+};
 export type PortraitHeroProps = {
   heading: ReactNode;
   description?: ReactNode;
   headingLevel?: 1 | 2 | 3;
-  /** Decorative imagery. Put meaningful descriptions in the section copy. */
+  /** Images are decorative unless href or onClick is provided. */
   images?: readonly PortraitHeroImage[];
   actions?: ReactNode;
   navigation?: ReactNode;
-  /** Optional centrepiece above the heading (Hero06). */
+  /** Optional centrepiece above the heading (spiral variant). */
   visual?: ReactNode;
   className?: string;
   id?: string;
 };
 
-function Portrait({ image, index, tunnel }: { image: PortraitHeroImage; index: number; tunnel: boolean }) {
+type HeroVariant = 'spiral' | 'tunnel' | 'corridor';
+
+function Portrait({ image, index, variant, onHover }: {
+  image: PortraitHeroImage; index: number; variant: HeroVariant; onHover: (hovered: boolean) => void;
+}) {
   const [failed, setFailed] = useState(false);
-  const angle = index * 137.508 * Math.PI / 180;
-  const ring = 33 + (index % 3) * 6;
-  // Deterministic positions: the server and first client frame always agree.
-  const side = index % 4;
-  const depth = Math.floor(index / 4);
-  const spread = 46 - depth * 9;
-  const x = tunnel ? (side === 0 ? -spread : side === 1 ? spread : (index % 3 - 1) * 20) : Math.cos(angle) * ring;
-  const y = tunnel ? (side === 2 ? -spread : side === 3 ? spread : (index % 3 - 1) * 19) : Math.sin(angle) * ring;
-  const style = {
-    '--portrait-x': `${50 + x}%`, '--portrait-y': `${50 + y}%`,
-    '--portrait-rotate': `${tunnel ? 0 : (index % 5 - 2) * 9}deg`,
-    '--portrait-scale': tunnel ? 1 - depth * 0.18 : 0.7 + (index % 3) * 0.15,
-    '--portrait-rotate-x': `${tunnel && side >= 2 ? (side === 2 ? -55 : 55) : 0}deg`,
-    '--portrait-rotate-y': `${tunnel && side < 2 ? (side === 0 ? 55 : -55) : 0}deg`,
-    // Each portrait drifts along its own small circle, upright, at its own
-    // speed and phase — deterministic per index so SSR and hydration agree.
-    '--portrait-orbit-r': `${10 + (index % 4) * 4}px`,
-    '--portrait-orbit-dur': `${16 + (index % 5) * 2}s`,
-    '--portrait-orbit-delay': `-${(index % 7) * 2.4}s`,
-    objectPosition: image.objectPosition,
-  } as CSSProperties;
-  return <img className="portrait-hero__image" src={image.src} alt="" draggable={false}
-    decoding="async" style={style} hidden={failed} onError={() => setFailed(true)} />;
+  const Tag = image.href ? 'a' : image.onClick ? 'button' : 'span';
+  const interactive = Boolean(image.href || image.onClick);
+  const placement = variant === 'spiral' ? null : posterPlacement(index, variant);
+  const portrait = <Tag className={placement ? 'portrait-hero__wall-image' : 'portrait-hero__image'}
+    href={image.href} onClick={image.onClick} type={Tag === 'button' ? 'button' : undefined}
+    aria-label={interactive ? image.alt || `View image ${index + 1}` : undefined}
+    hidden={failed} onPointerEnter={event => { if (event.pointerType !== 'touch') onHover(true); }}
+    onPointerLeave={() => onHover(false)} onPointerCancel={() => onHover(false)}
+    style={placement
+      ? { transform: `matrix3d(${projectPoster(posterCorners(placement.wall, placement.lane)).join(',')})` }
+      : { '--spiral-delay': `${-index * 2}s` } as CSSProperties}>
+    <img src={image.src} alt="" draggable={false} decoding="async"
+      style={{ objectPosition: image.objectPosition }}
+      onError={() => { setFailed(true); onHover(false); }} />
+  </Tag>;
+  if (!placement) return portrait;
+  return <g className="portrait-hero__poster" data-wall={placement.wall} data-lane={placement.lane}
+    style={{ '--poster-delay': `${-placement.phase * 24}s` } as CSSProperties}>
+    <foreignObject width="1000" height="1000" overflow="visible">{portrait}</foreignObject>
+  </g>;
 }
 
 function PortraitHero({ heading, description, headingLevel = 1, images = [], actions, navigation,
-  visual, className, id, variant }: PortraitHeroProps & { variant: 'spiral' | 'tunnel' }) {
+  visual, className, id, variant }: PortraitHeroProps & { variant: HeroVariant }) {
   const headingId = useId();
   const reduced = usePrefersReducedMotion();
   const gallery = useRef<HTMLDivElement>(null);
+  const hovered = useRef(false);
+  const focused = useRef(false);
+  const updateSpeed = () => {
+    // Changing playback rate preserves the current frame; changing CSS duration
+    // would jump to a different point along the path.
+    const animations = gallery.current?.getAnimations?.({ subtree: true }) ?? [];
+    // Focus temporarily replaces one image's animation to bring its action into
+    // view. Rejoin the shared clock when it returns, preserving the lane gaps.
+    const time = Math.max(0, ...animations.map(animation => Number(animation.currentTime) || 0));
+    animations.forEach(animation => {
+      animation.currentTime = time;
+      animation.updatePlaybackRate(hovered.current || focused.current ? 0.2 : 1);
+    });
+  };
+  const onHover = (value: boolean) => { hovered.current = value; updateSpeed(); };
   const reset = () => { if (gallery.current) gallery.current.style.transform = ''; };
   useEffect(() => { if (reduced) reset(); }, [reduced]);
   const Heading = `h${headingLevel}` as 'h1' | 'h2' | 'h3';
   return <section id={id} aria-labelledby={headingId} className={cx('portrait-hero', `portrait-hero--${variant}`, className)}
-    onPointerMove={reduced ? undefined : event => {
+    onPointerMove={reduced || variant !== 'spiral' ? undefined : event => {
       if (event.pointerType === 'touch' || !gallery.current) return;
       const rect = event.currentTarget.getBoundingClientRect();
       if (!rect.width || !rect.height) return;
@@ -62,8 +86,23 @@ function PortraitHero({ heading, description, headingLevel = 1, images = [], act
       gallery.current.style.transform = `translate3d(${x}px, ${y}px, 0)`;
     }} onPointerLeave={reset} onPointerCancel={reset}>
     {navigation && <div className="portrait-hero__navigation">{navigation}</div>}
-    <div ref={gallery} className="portrait-hero__gallery" aria-hidden="true">
-      {images.slice(0, 16).map((image, index) => <Portrait key={`${index}-${image.src}`} image={image} index={index} tunnel={variant === 'tunnel'} />)}
+    <div ref={gallery} className="portrait-hero__gallery"
+      onFocusCapture={() => { focused.current = true; updateSpeed(); }}
+      onBlurCapture={event => {
+        focused.current = Boolean(event.relatedTarget && event.currentTarget.contains(event.relatedTarget));
+        updateSpeed();
+      }}>
+      {variant === 'spiral' ? images.slice(0, 16).map((image, index) =>
+        <Portrait key={`${index}-${image.src}`} image={image} index={index} variant={variant} onHover={onHover} />
+      ) : <svg className="portrait-hero__scene" viewBox="0 0 1000 1000" preserveAspectRatio="none" focusable="false">
+        {variant === 'tunnel' && <g className="portrait-hero__wire" aria-hidden="true">
+          <rect x="430" y="430" width="140" height="140" />
+          <path d="M0 0L430 430 M1000 0L570 430 M0 1000L430 570 M1000 1000L570 570" />
+          <path data-wall-divisions="true" d="M500 0V430 M1000 500H570 M500 1000V570 M0 500H430" />
+        </g>}
+        {images.slice(0, 16).map((image, index) =>
+          <Portrait key={`${index}-${image.src}`} image={image} index={index} variant={variant} onHover={onHover} />)}
+      </svg>}
     </div>
     <div className="portrait-hero__content">
       {visual && <div className="portrait-hero__visual">{visual}</div>}
@@ -74,7 +113,9 @@ function PortraitHero({ heading, description, headingLevel = 1, images = [], act
   </section>;
 }
 
-/** Portrait spiral composition inspired by OriginKit Hero 06. */
-export function Hero06(props: PortraitHeroProps) { return <PortraitHero {...props} variant="spiral" />; }
-/** CSS perspective composition inspired by the public OriginKit Hero 13 poster. */
-export function Hero13(props: PortraitHeroProps) { return <PortraitHero {...props} variant="tunnel" />; }
+/** A portrait hero whose imagery spirals behind the copy. */
+export function SpiralPortraitHero(props: PortraitHeroProps) { return <PortraitHero {...props} variant="spiral" />; }
+/** A portrait hero whose imagery moves along all four divided walls of a perspective tunnel. */
+export function PerspectivePortraitHero(props: PortraitHeroProps) { return <PortraitHero {...props} variant="tunnel" />; }
+/** A portrait hero whose imagery moves along the divided side walls of a perspective corridor. */
+export function CorridorPortraitHero(props: PortraitHeroProps) { return <PortraitHero {...props} variant="corridor" />; }
