@@ -41,6 +41,7 @@
     height: 100%;
     object-fit: cover;
     border-radius: inherit;
+    corner-shape: inherit;
   }
   a.portrait-hero__image, button.portrait-hero__image,
   a.portrait-hero__wall-image, button.portrait-hero__wall-image { cursor: pointer; }

@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.9.8] - 2026-09-18
+
+- Inherit portrait image corner shape alongside border radius, fixing the CSS corner-coverage check.
+
 ## [0.9.7] - 2026-09-18
 
 - Prevent overlapping hero photos by shortening wall-poster depth and sizing spiral photos against both hero dimensions.
