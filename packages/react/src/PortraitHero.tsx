@@ -63,7 +63,12 @@ function PortraitHero({ heading, description, headingLevel = 1, images = [], act
   const updateSpeed = () => {
     // Changing playback rate preserves the current frame; changing CSS duration
     // would jump to a different point along the path.
-    gallery.current?.getAnimations?.({ subtree: true }).forEach(animation => {
+    const animations = gallery.current?.getAnimations?.({ subtree: true }) ?? [];
+    // Focus temporarily replaces one image's animation to bring its action into
+    // view. Rejoin the shared clock when it returns, preserving the lane gaps.
+    const time = Math.max(0, ...animations.map(animation => Number(animation.currentTime) || 0));
+    animations.forEach(animation => {
+      animation.currentTime = time;
       animation.updatePlaybackRate(hovered.current || focused.current ? 0.2 : 1);
     });
   };

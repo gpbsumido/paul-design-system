@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.9.7] - 2026-09-18
+
+- Prevent overlapping hero photos by shortening wall-poster depth and sizing spiral photos against both hero dimensions.
+- Preserve animation spacing after keyboard focus and add a maximum-density Storybook example.
+
 ## [0.9.6] - 2026-09-18
 
 - Add full-loop regression coverage for overlapping wall posters.

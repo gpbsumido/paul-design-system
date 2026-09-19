@@ -16,9 +16,11 @@ export function posterPlacement(index: number, variant: 'tunnel' | 'corridor') {
 export function posterCorners(wall: PosterWall, lane: 0 | 1): Point[] {
   // Image corners in a 1000-square perspective scene. Both horizontal edges
   // follow the corner seam or midline; the vertical edges share a depth plane.
+  // The far edge sits at 84% of the near depth, leaving a gap even with four
+  // posters per lane at the largest animated scale.
   const points: Point[] = lane === 0
-    ? [[0, 0], [170, 170], [170, 500], [0, 500]]
-    : [[0, 500], [170, 500], [170, 830], [0, 1000]];
+    ? [[0, 0], [80, 80], [80, 500], [0, 500]]
+    : [[0, 500], [80, 500], [80, 920], [0, 1000]];
   if (wall === 'right') return [points[1], points[0], points[3], points[2]].map(([x, y]) => [1000 - x, y] as Point);
   if (wall === 'top') return points.map(([x, y]) => [1000 - y, x] as Point);
   if (wall === 'bottom') return points.map(([x, y]) => [y, 1000 - x] as Point);

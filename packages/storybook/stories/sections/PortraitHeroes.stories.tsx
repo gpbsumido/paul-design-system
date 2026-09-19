@@ -31,3 +31,9 @@ const linkedImages = images.map((image, index) => ({ ...image, href: `#portrait-
 export const LinkedSpiral: Story = { args: { images: linkedImages } };
 export const LinkedTunnel: Story = { ...Tunnel, args: { ...Tunnel.args, images: linkedImages } };
 export const LinkedCorridor: Story = { ...Corridor, args: { ...Corridor.args, images: linkedImages } };
+
+/** Maximum supported density for checking spacing across the complete loops. */
+export const MaximumImages: Story = {
+  args: { images: [...linkedImages, ...linkedImages.slice(0, 4)], visual: null },
+  render: args => <><SpiralPortraitHero {...args} /><PerspectivePortraitHero {...args} /><CorridorPortraitHero {...args} /></>,
+};

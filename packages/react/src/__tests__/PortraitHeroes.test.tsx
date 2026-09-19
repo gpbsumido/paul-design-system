@@ -71,7 +71,8 @@ for (const name of ['SpiralPortraitHero', 'PerspectivePortraitHero', 'CorridorPo
       const gallery = container.querySelector('.portrait-hero__gallery')!;
       const updatePlaybackRate = vi.fn();
       const animation = { updatePlaybackRate, currentTime: 12000 };
-      Object.defineProperty(gallery, 'getAnimations', { value: () => [animation] });
+      const restarted = { updatePlaybackRate: vi.fn(), currentTime: 0 };
+      Object.defineProperty(gallery, 'getAnimations', { value: () => [animation, restarted] });
       const link = screen.getByRole('link', { name: 'Portrait' });
       fireEvent.pointerEnter(link);
       expect(updatePlaybackRate).toHaveBeenLastCalledWith(0.2);
@@ -81,6 +82,7 @@ for (const name of ['SpiralPortraitHero', 'PerspectivePortraitHero', 'CorridorPo
       fireEvent.blur(link);
       expect(updatePlaybackRate).toHaveBeenLastCalledWith(1);
       expect(animation.currentTime).toBe(12000);
+      expect(restarted.currentTime).toBe(12000);
     });
     it('creates separate accessible names for multiple instances', () => {
       const Hero = components[name];
