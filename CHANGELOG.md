@@ -1,5 +1,57 @@
 # Changelog
 
+## [0.9.8] - 2026-09-18
+
+- Inherit portrait image corner shape alongside border radius, fixing the CSS corner-coverage check.
+
+## [0.9.7] - 2026-09-18
+
+- Prevent overlapping hero photos by shortening wall-poster depth and sizing spiral photos against both hero dimensions.
+- Preserve animation spacing after keyboard focus and add a maximum-density Storybook example.
+
+## [0.9.6] - 2026-09-18
+
+- Add full-loop regression coverage for overlapping wall posters.
+
+## [0.9.5] - 2026-09-18
+
+- Tighten the outward spiral and remove pointer parallax from tunnel and corridor.
+- Slow all portrait animations to 20% while hovering or focusing an image, preserving playback position on hover.
+- Add optional image `href`, `onClick` and accessible `alt` labels, with keyboard focus and linked Storybook examples for every variant.
+
+## [0.9.4] - 2026-09-18
+
+- Specify image actions, hover slowdown and fixed corridor pointer behavior in regression tests.
+
+## [0.9.3] - 2026-09-18
+
+- Update the component catalogs to describe the outward spiral and divided poster walls.
+
+## [0.9.2] - 2026-09-18
+
+### Fixed
+
+- Photos follow an expanding spiral around the hero copy.
+- Tunnel posters use perspective projection across both halves of all four walls, with staggered depth and wall midlines.
+- Corridor uses the same divided side walls without guide lines. Reduced motion keeps a distributed still composition.
+
+## [0.9.1] - 2026-09-18
+
+- Add regression coverage for portrait wall lanes and perspective projection.
+
+## [0.9.0] - 2026-09-18
+
+### Added
+
+- `CorridorPortraitHero`: a third portrait-hero composition — a horizontal fan where the imagery streams out of the centre to both sides, tilting into a receding wall. All CSS, no dependency; freezes into a still fan under reduced motion.
+
+### Changed
+
+- Renamed the two existing portrait-hero exports to descriptive names — `SpiralPortraitHero` and `PerspectivePortraitHero` — in place of the source library's numbered codenames.
+- Rebuilt `SpiralPortraitHero` so the portraits orbit the centred copy like planets around the sun: each sits on one of a few rings, spread by the golden angle, circling at its own speed, with the rings drawn faintly behind them. (Previously each portrait only drifted in place.)
+- Rebuilt `PerspectivePortraitHero` as a one-point-perspective corridor: a wireframe draws the far wall and four edge lines out to the corners, and the portraits are posters pasted on the left and right walls, streaming out of the centre and growing toward the viewer. Reduced motion freezes it into a still corridor.
+- `react` bumps to 0.12.0; importers pinned to 0.11.x keep working and pick up the new names and heroes when they move to 0.12.
+
 ## [0.8.2] - 2026-09-18
 
 ### Added
