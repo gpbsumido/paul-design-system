@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.9.9] - 2026-09-18
+
+### Fixed
+
+- Tooltip (and InfoTip, built on it) now portals its bubble to the document body. It positions at fixed screen coordinates, but `position: fixed` is only viewport-relative when no ancestor establishes a containing block — a `transform`, `filter`, `backdrop-filter`, `perspective`, or `contain` on any ancestor makes it relative to that ancestor instead. Inside a frosted-glass card the bubble was landing offset by the card's position; portaling out to the body fixes it everywhere. `react` bumps to 0.12.4.
+
 ## [0.9.8] - 2026-09-18
 
 - Inherit portrait image corner shape alongside border radius, fixing the CSS corner-coverage check.

@@ -8,6 +8,7 @@ import {
   type ReactNode,
   type CSSProperties,
 } from 'react';
+import { createPortal } from 'react-dom';
 import { cx } from './cx';
 
 /** Layout effect on the client, a no-op-safe effect on the server (SSR). */
@@ -36,8 +37,13 @@ const GAP = 8;
 
 /**
  * A tooltip that renders at a fixed screen position, so it's never clipped by
- * an overflow:hidden ancestor (grids, cards, chips) and needs no portal. Shows
- * on hover and focus after `delay` ms; Escape dismisses it.
+ * an overflow:hidden ancestor (grids, cards, chips). The bubble is portaled to
+ * the document body: `position: fixed` is only viewport-relative when no
+ * ancestor establishes a containing block, and a `transform`, `filter`,
+ * `backdrop-filter`, `perspective`, or `contain` on any ancestor does exactly
+ * that — a frosted glass card would offset the bubble by the card's position.
+ * Portaling out to the body sidesteps all of them. Shows on hover and focus
+ * after `delay` ms; Escape dismisses it.
  */
 export function Tooltip({
   content,
@@ -120,17 +126,19 @@ export function Tooltip({
       aria-describedby={visible ? id : undefined}
     >
       {children}
-      {visible && rect && (
-        <span
-          ref={bubbleRef}
-          id={id}
-          role="tooltip"
-          className={cx('tooltip', `tooltip--${side}`, 'tooltip--visible')}
-          style={style}
-        >
-          {content}
-        </span>
-      )}
+      {visible && rect && typeof document !== 'undefined' &&
+        createPortal(
+          <span
+            ref={bubbleRef}
+            id={id}
+            role="tooltip"
+            className={cx('tooltip', `tooltip--${side}`, 'tooltip--visible')}
+            style={style}
+          >
+            {content}
+          </span>,
+          document.body,
+        )}
     </span>
   );
 }
