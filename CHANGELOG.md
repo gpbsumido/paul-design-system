@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.9.5] - 2026-09-18
+
+- Tighten the outward spiral and remove pointer parallax from tunnel and corridor.
+- Slow all portrait animations to 20% while hovering or focusing an image, preserving playback position on hover.
+- Add optional image `href`, `onClick` and accessible `alt` labels, with keyboard focus and linked Storybook examples for every variant.
+
 ## [0.9.4] - 2026-09-18
 
 - Specify image actions, hover slowdown and fixed corridor pointer behavior in regression tests.

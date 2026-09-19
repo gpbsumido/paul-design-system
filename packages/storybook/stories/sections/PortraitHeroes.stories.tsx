@@ -26,3 +26,8 @@ export const Corridor: Story = {
 };
 export const Empty: Story = { args: { images: [], visual: null } };
 export const LongCopy: Story = { args: { heading: 'An independent collection of extraordinary people and the stories that connect them across the world.' } };
+
+const linkedImages = images.map((image, index) => ({ ...image, href: `#portrait-${index + 1}`, alt: `Explore portrait ${index + 1}` }));
+export const LinkedSpiral: Story = { args: { images: linkedImages } };
+export const LinkedTunnel: Story = { ...Tunnel, args: { ...Tunnel.args, images: linkedImages } };
+export const LinkedCorridor: Story = { ...Corridor, args: { ...Corridor.args, images: linkedImages } };

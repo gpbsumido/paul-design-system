@@ -314,6 +314,20 @@ have no visible text (IconButton, Switch, Spinner) require or default an
 accessible name, and interactive components expose the right roles and ARIA
 state.
 
+### Portrait hero image actions
+
+All three portrait heroes slow their animation while an image is hovered or focused. Tunnel and corridor stay fixed under pointer movement. Images remain decorative by default; set `href` for a link or `onClick` for a button action, and provide `alt` as its accessible name.
+
+```tsx
+<SpiralPortraitHero
+  heading="Meet the people"
+  images={[
+    { src: '/portraits/alex.jpg', href: '/people/alex', alt: 'Meet Alex' },
+    { src: '/portraits/sam.jpg', onClick: () => openPortrait('sam'), alt: 'Open Sam’s portrait' },
+  ]}
+/>
+```
+
 ## License
 
 MIT © Paul Sumido
