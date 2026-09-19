@@ -182,7 +182,7 @@ Storybook.
 | `LinkPreview` | An inline link that raises a floating thumbnail leaning toward the pointer |
 | `SmoothScrollSlider` | A rail whose cards grow toward the centre and coast after a flick |
 | `LiquidCarveButton` | A button a cursor-following blob carves into, the blob colour showing through |
-| `SpiralPortraitHero` / `PerspectivePortraitHero` / `CorridorPortraitHero` | Portrait hero compositions — imagery orbiting the copy like planets, a one-point-perspective corridor, and a horizontal fan |
+| `SpiralPortraitHero` / `PerspectivePortraitHero` / `CorridorPortraitHero` | Portrait hero compositions — an outward spiral around the copy, a divided four-wall tunnel, and a corridor with side-wall posters |
 | `LightBloom` | A glow blooming from an edge, breathing and pointer-following (CSS, not WebGL) |
 | `ParticleText` | Text as a cloud of canvas particles that assemble and scatter (no dependency) |
 | `CircularGallery` | Cards on a rotating 3D cylinder you spin with a drag |
