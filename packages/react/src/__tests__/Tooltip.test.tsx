@@ -89,6 +89,25 @@ describe('Tooltip', () => {
     expect(anchor).toHaveAttribute('aria-describedby', tip.id);
   });
 
+  it('portals the bubble to the body so a containing-block ancestor cannot offset it', () => {
+    vi.useFakeTimers();
+    // A backdrop-filter (like a frosted glass card) — or a transform, filter or
+    // contain — makes position:fixed relative to that ancestor instead of the
+    // viewport, which lands the bubble in the wrong place. Portaling it out to
+    // the body keeps its screen coordinates viewport-relative.
+    render(
+      <div data-testid="glass" style={{ backdropFilter: 'blur(4px)' }}>
+        <Tooltip content="Tip text">
+          <button>Hover me</button>
+        </Tooltip>
+      </div>,
+    );
+    hover(screen.getByText('Hover me').parentElement!);
+    const tip = screen.getByRole('tooltip');
+    expect(tip.parentElement).toBe(document.body);
+    expect(screen.getByTestId('glass')).not.toContainElement(tip);
+  });
+
   it('appears on focus and hides on Escape', () => {
     vi.useFakeTimers();
     render(
