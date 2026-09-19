@@ -5,6 +5,7 @@
 ### Fixed
 
 - RubberSegment respects dark mode. Its track was painted with `--paul-color-neutral-100`, a fixed light value that doesn't flip with the theme, so the control stayed light on a dark page. It now takes the dark-surface value the buttons and chips already use under `[data-theme="dark"]`. `css` bumps to 0.13.7.
+- LiquidCarveButton respects dark mode. Its carve surface was painted with the foreground (text) colour, which flipped it to a light button on a dark page. The surface is now a consistent dark neutral and the label a light on-primary colour, so it reads as a dark button with the blue liquid carve in both themes. `react` bumps to 0.12.5.
 
 ## [0.9.9] - 2026-09-18
 
