@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.9.12] - 2026-09-19
+
+### Fixed
+
+- RubberSegment hugs each label. Segments sized to equal widths, so a short label got an oversized pill floating in empty space. They now size to their content and the indicator takes the active option's measured position and width, snug to any label length. `react` bumps to 0.12.7, `css` to 0.13.9.
+
 ## [0.9.11] - 2026-09-18
 
 ### Fixed
