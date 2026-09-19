@@ -1,3 +1,7 @@
+# 0.9.1
+
+- Add regression coverage for portrait wall lanes and perspective projection.
+
 # Changelog
 
 ## [0.9.0] - 2026-09-18
