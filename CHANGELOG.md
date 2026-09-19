@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.9.11] - 2026-09-18
+
+### Fixed
+
+- PathGallery keeps its images on the drawn path at any width. The dashed track scaled with its SVG viewBox while the images stayed on a fixed 600×360 `offset-path`, so they drifted apart in a narrow container. Both now share a fixed plane that's scaled to fit, so they stay aligned. `react` bumps to 0.12.6.
+- TiltCard's glare respects the card's rounded corners. The sheen inherits its radius from the inner layer, which never carried one, so it showed as a rectangle past the corners. The inner layer now inherits the card's rounding (set a matching radius on the TiltCard). `css` bumps to 0.13.8.
+
 ## [0.9.10] - 2026-09-18
 
 ### Fixed
