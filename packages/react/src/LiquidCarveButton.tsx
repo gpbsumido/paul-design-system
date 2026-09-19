@@ -117,7 +117,7 @@ export function LiquidCarveButton({ label, blobColor, fillColor, textColor, radi
           <path ref={pathRef} d="" fill="black" filter={`url(#${id}-soften)`} />
         </mask>
       </defs>
-      <rect width="100%" height="100%" fill="var(--lcb-fill, var(--paul-color-foreground))" mask={`url(#${id}-carve)`} />
+      <rect width="100%" height="100%" fill="var(--lcb-fill, var(--paul-color-neutral-800))" mask={`url(#${id}-carve)`} />
     </svg>
     <span className="liquid-carve-button__label">{label}</span>
   </>;
