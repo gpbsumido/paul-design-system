@@ -14,6 +14,19 @@
     margin-inline: auto;
   }
 
+  /* The fixed coordinate plane the track and the items share, scaled to fit the
+     container so the offset-path (in pixels) and the dashed track stay aligned
+     at any width. */
+  .path-gallery__plane {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 600px;
+    height: 360px;
+    transform-origin: top left;
+    transform: scale(var(--pg-scale, 1));
+  }
+
   .path-gallery__track {
     position: absolute;
     inset: 0;
