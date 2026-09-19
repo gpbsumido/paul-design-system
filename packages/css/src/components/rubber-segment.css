@@ -16,6 +16,13 @@
     isolation: isolate;
   }
 
+  /* neutral-100 is a fixed light value that doesn't flip with the theme, so the
+     track stayed light in dark mode. Match the dark-surface value the buttons
+     and chips use. */
+  [data-theme="dark"] .rubber-segment {
+    background: var(--paul-color-neutral-800);
+  }
+
   .rubber-segment__indicator {
     position: absolute;
     top: 0.25rem;

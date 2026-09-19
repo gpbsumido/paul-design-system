@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.9.10] - 2026-09-18
+
+### Fixed
+
+- RubberSegment respects dark mode. Its track was painted with `--paul-color-neutral-100`, a fixed light value that doesn't flip with the theme, so the control stayed light on a dark page. It now takes the dark-surface value the buttons and chips already use under `[data-theme="dark"]`. `css` bumps to 0.13.7.
+
 ## [0.9.9] - 2026-09-18
 
 ### Fixed
