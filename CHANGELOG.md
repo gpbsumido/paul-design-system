@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.9.4] - 2026-09-18
+
+- Specify image actions, hover slowdown and fixed corridor pointer behavior in regression tests.
+
 ## [0.9.3] - 2026-09-18
 
 - Update the component catalogs to describe the outward spiral and divided poster walls.

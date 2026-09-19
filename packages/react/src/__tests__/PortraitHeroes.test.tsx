@@ -41,13 +41,46 @@ for (const name of ['SpiralPortraitHero', 'PerspectivePortraitHero', 'CorridorPo
       vi.spyOn(region, 'getBoundingClientRect').mockReturnValue({ left: 0, top: 0, width: 400, height: 400 } as DOMRect);
       fireEvent.pointerMove(region, { clientX: 400, clientY: 400 });
       const gallery = container.querySelector<HTMLElement>('.portrait-hero__gallery')!;
-      expect(gallery.style.transform).toBe('translate3d(10px, 10px, 0)');
+      expect(gallery.style.transform).toBe(name === 'SpiralPortraitHero' ? 'translate3d(10px, 10px, 0)' : '');
       fireEvent.pointerLeave(region);
       expect(gallery.style.transform).toBe('');
       reduced = true;
       rerender(<Hero heading="Steady copy" />);
       fireEvent.pointerMove(region, { clientX: 400, clientY: 400 });
       expect(gallery.style.transform).toBe('');
+    });
+    it('supports named image links and buttons without exposing decorative images', async () => {
+      const Hero = components[name];
+      const onClick = vi.fn();
+      const { container } = render(<Hero heading="Gallery" images={[
+        { src: 'linked.jpg', href: '#portrait', alt: 'Open portrait' },
+        { src: 'action.jpg', onClick, alt: 'Select portrait' },
+        { src: 'decorative.jpg' },
+      ]} />);
+      expect(screen.getByRole('link', { name: 'Open portrait' })).toHaveAttribute('href', '#portrait');
+      fireEvent.click(screen.getByRole('button', { name: 'Select portrait' }));
+      expect(onClick).toHaveBeenCalledOnce();
+      expect(screen.queryByRole('img')).not.toBeInTheDocument();
+      expect(await axe(container)).toHaveNoViolations();
+      fireEvent.error(container.querySelector('img')!);
+      expect(screen.queryByRole('link', { name: 'Open portrait' })).not.toBeInTheDocument();
+    });
+    it('slows the composition while hovering or focusing an image, without resetting time', () => {
+      const Hero = components[name];
+      const { container } = render(<Hero heading="Gallery" images={[{ src: 'portrait.jpg', href: '#portrait', alt: 'Portrait' }]} />);
+      const gallery = container.querySelector('.portrait-hero__gallery')!;
+      const updatePlaybackRate = vi.fn();
+      const animation = { updatePlaybackRate, currentTime: 12000 };
+      Object.defineProperty(gallery, 'getAnimations', { value: () => [animation] });
+      const link = screen.getByRole('link', { name: 'Portrait' });
+      fireEvent.pointerEnter(link);
+      expect(updatePlaybackRate).toHaveBeenLastCalledWith(0.2);
+      fireEvent.focus(link);
+      fireEvent.pointerLeave(link);
+      expect(updatePlaybackRate).toHaveBeenLastCalledWith(0.2);
+      fireEvent.blur(link);
+      expect(updatePlaybackRate).toHaveBeenLastCalledWith(1);
+      expect(animation.currentTime).toBe(12000);
     });
     it('creates separate accessible names for multiple instances', () => {
       const Hero = components[name];
