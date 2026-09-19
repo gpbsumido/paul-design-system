@@ -31,3 +31,22 @@ describe('portrait wall projection', () => {
     }
   });
 });
+
+it('keeps same-lane posters separated across the entire loop at maximum image count', () => {
+  for (const variant of ['tunnel', 'corridor'] as const) {
+    for (let frame = 0; frame < 240; frame++) {
+      const posters = Array.from({ length: 16 }, (_, index) => {
+        const placement = posterPlacement(index, variant);
+        const scale = 0.18 + 1.47 * ((placement.phase + frame / 240) % 1);
+        const distances = posterCorners('left', 0).map(([x]) => (500 - x) * scale);
+        return { ...placement, near: Math.max(...distances), far: Math.min(...distances) };
+      });
+      for (let i = 0; i < posters.length; i++) for (let j = i + 1; j < posters.length; j++) {
+        const a = posters[i], b = posters[j];
+        if (a.wall === b.wall && a.lane === b.lane) {
+          expect(Math.min(a.near, b.near)).toBeLessThan(Math.max(a.far, b.far));
+        }
+      }
+    }
+  }
+});

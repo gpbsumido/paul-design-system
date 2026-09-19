@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.9.6] - 2026-09-18
+
+- Add full-loop regression coverage for overlapping wall posters.
+
 ## [0.9.5] - 2026-09-18
 
 - Tighten the outward spiral and remove pointer parallax from tunnel and corridor.
