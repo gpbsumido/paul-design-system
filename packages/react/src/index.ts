@@ -84,3 +84,5 @@ export { PathGallery, type PathGalleryItem } from './PathGallery';
 export { RefineFrame, type RefineStatus } from './RefineFrame';
 export { FolderFloat, type FolderFloatItem } from './FolderFloat';
 export { BotanicalText } from './BotanicalText';
+
+export { MobileOrbitHero, MobileReelHero, MobileLensHero, type MobileHeroProps } from './MobileHero';
