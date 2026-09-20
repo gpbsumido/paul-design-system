@@ -31,10 +31,15 @@ function Shell({ heading, headingLevel = 1, description, actions, id, className,
   </section>;
 }
 
+function Arrow({ direction }: { direction: 'out' | 'both' | 'next' }) {
+  const path = direction === 'out' ? 'M6 18L18 6M6 6h12v12' : direction === 'both' ? 'M4 12h16M8 8l-4 4 4 4M16 8l4 4-4 4' : 'M4 12h16M14 6l6 6-6 6';
+  return <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d={path} /></svg>;
+}
+
 function ProjectAction({ image }: { image: PortraitHeroImage }) {
   const label = `Open ${image.alt || 'project'}`;
-  if (image.href) return <a className="mobile-hero__project-link" href={image.href}>{label}<span aria-hidden="true">↗</span></a>;
-  if (image.onClick) return <button type="button" className="mobile-hero__project-link" onClick={image.onClick}>{label}<span aria-hidden="true">↗</span></button>;
+  if (image.href) return <a className="mobile-hero__project-link" href={image.href}>{label}<Arrow direction="out" /></a>;
+  if (image.onClick) return <button type="button" className="mobile-hero__project-link" onClick={image.onClick}>{label}<Arrow direction="out" /></button>;
   return null;
 }
 
@@ -46,11 +51,11 @@ export function MobileReelHero({ images = [], ...props }: MobileHeroProps) {
   const image = images[index];
   return <Shell {...props} variant="reel">
     {image && <div className="mobile-hero__reel">
-      <div className="mobile-hero__film-label"><span>Selected experiments</span><span aria-hidden="true">↔ REEL</span></div>
+      <div className="mobile-hero__film-label"><span>Selected experiments</span><span aria-hidden="true">REEL</span></div>
       <Frame key={image.src} image={image} />
       <p className="mobile-hero__reel-caption" role="status" aria-live="polite"><span>{image.alt || 'Selected project'}</span><span>{String(index + 1).padStart(2, '0')} / {String(images.length).padStart(2, '0')}</span></p>
       <div className="mobile-hero__scrubber">
-        <label htmlFor={id}>Scrub projects <span aria-hidden="true">↔</span></label>
+        <label htmlFor={id}>Scrub projects <Arrow direction="both" /></label>
         <input id={id} type="range" min={0} max={Math.max(0, images.length - 1)} step={1} value={index}
           disabled={images.length < 2} aria-valuetext={`${image.alt || 'Project'}, ${index + 1} of ${images.length}`}
           onChange={event => setSelected(Number(event.target.value))} />
@@ -154,7 +159,7 @@ export function MobileLensHero({ images = [], ...props }: MobileHeroProps) {
         </div>
       </div>
       <div className="mobile-hero__lens-caption"><div><p role="status" aria-live="polite">{image.alt || 'Selected project'}</p><span>Drag the lens. Look a little closer.</span></div>
-        <button type="button" aria-label="Next project" disabled={entries.length < 2} onClick={() => select((index + 1) % entries.length)}>→</button>
+        <button type="button" aria-label="Next project" disabled={entries.length < 2} onClick={() => select((index + 1) % entries.length)}><Arrow direction="next" /></button>
       </div>
       <ProjectAction image={image} />
     </div>}

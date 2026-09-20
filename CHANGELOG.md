@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.9.14-mobile.0] - 2026-09-20
+
+### Fixed
+
+- Replaced the mobile hero arrow glyphs with consistent SVG icons, matching the landing page. Centered the Lens next control. React 0.12.9-mobile.0 and CSS 0.13.11-mobile.0 retain the local-preview packaging.
+
 ## [0.9.13-mobile.1] - 2026-09-19
 
 ### Added

@@ -60,7 +60,7 @@
   .mobile-hero__lens-handle { position: absolute; bottom: -12px; right: -8px; width: 48px; height: 48px; display: grid; place-items: center; border-radius: 50%; corner-shape: round; border: 2px solid var(--paul-color-background); background: var(--paul-color-foreground); color: var(--paul-color-background) !important; pointer-events: auto; touch-action: none; cursor: grab !important; font-size: 1.5rem !important; }
   .mobile-hero__lens-handle:active { cursor: grabbing !important; }
   .mobile-hero__lens-caption { display: flex; justify-content: space-between; align-items: center; gap: .75rem; margin-top: 1rem; }
-  .mobile-hero__lens-caption > button { flex-shrink: 0; width: 48px; height: 48px; border: 1px solid var(--paul-color-border); border-radius: 50%; corner-shape: round; background: var(--paul-color-surface); font-size: 1.25rem; }
+  .mobile-hero__lens-caption > button { display: grid; place-items: center; flex-shrink: 0; width: 48px; height: 48px; border: 1px solid var(--paul-color-border); border-radius: 50%; corner-shape: round; background: var(--paul-color-surface); font-size: 1.25rem; }
 }
 @layer components {
   .mobile-hero__orbit::before { content: ''; position: absolute; pointer-events: none; left: calc(50% - 1px); top: 9%; width: 2px; height: 41%; background: var(--mobile-hero-accent); transform-origin: center bottom; transform: rotate(var(--orbit-angle)); transition: transform .25s var(--paul-easing-out,ease-out); }
