@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.9.13-mobile.1] - 2026-09-19
+
+### Added
+
+- Three touch-first hero sections: a scrubbed film reel, a rotary project orbit, and a draggable magnifying lens. All provide keyboard and tap alternatives, theme-aware CSS, reduced-motion support, and resilient empty/failed imagery. React 0.12.8-mobile.1 and CSS 0.13.10-mobile.1 are local preview builds.
+
 ## [0.9.12] - 2026-09-19
 
 ### Fixed
