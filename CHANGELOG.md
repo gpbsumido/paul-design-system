@@ -1,16 +1,10 @@
 # Changelog
 
-## [0.9.14-mobile.0] - 2026-09-20
-
-### Fixed
-
-- Replaced the mobile hero arrow glyphs with consistent SVG icons, matching the landing page. Centered the Lens next control. React 0.12.9-mobile.0 and CSS 0.13.11-mobile.0 retain the local-preview packaging.
-
-## [0.9.13-mobile.1] - 2026-09-19
+## [0.9.14] - 2026-09-20
 
 ### Added
 
-- Three touch-first hero sections: a scrubbed film reel, a rotary project orbit, and a draggable magnifying lens. All provide keyboard and tap alternatives, theme-aware CSS, reduced-motion support, and resilient empty/failed imagery. React 0.12.8-mobile.1 and CSS 0.13.10-mobile.1 are local preview builds.
+- Three touch-first hero sections for small screens: a scrubbed film reel, a rotary project orbit, and a draggable magnifying lens. Each offers keyboard and tap alternatives to the gesture, theme-aware CSS, reduced-motion support, and holds up with empty or failed imagery. Their arrow glyphs use the same SVG icon set as the landing page, and the Lens next control sits centered. `react` bumps to 0.12.9, `css` to 0.13.11.
 
 ## [0.9.12] - 2026-09-19
 
