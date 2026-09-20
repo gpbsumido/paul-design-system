@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.9.14] - 2026-09-20
+
+### Added
+
+- Three touch-first hero sections for small screens: a scrubbed film reel, a rotary project orbit, and a draggable magnifying lens. Each offers keyboard and tap alternatives to the gesture, theme-aware CSS, reduced-motion support, and holds up with empty or failed imagery. Their arrow glyphs use the same SVG icon set as the landing page, and the Lens next control sits centered. `react` bumps to 0.12.9, `css` to 0.13.11.
+
 ## [0.9.12] - 2026-09-19
 
 ### Fixed
