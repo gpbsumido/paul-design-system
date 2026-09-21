@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.9.15] - 2026-09-21
+
+### Fixed
+
+- Modal pads plain children instead of silently rendering them flush against the panel edges. `.modal__content` carries no padding itself — that lives on `Modal.Header`/`.Body`/`.Footer` — so a consumer who passed children directly instead of wrapping them in `Modal.Body` got a modal with zero padding and no signal anything was wrong. `Modal` now checks whether its children already use a slot component and, if not, wraps them in `Modal.Body` itself. `react` bumps to 0.12.10.
+
 ## [0.9.14] - 2026-09-20
 
 ### Added
