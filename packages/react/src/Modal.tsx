@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, type ReactNode } from 'react';
+import { Children, isValidElement, useEffect, useId, useRef, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { cx } from './cx';
 
@@ -26,6 +26,17 @@ function Body({ children }: { children: ReactNode }) {
 
 function Footer({ children }: { children: ReactNode }) {
   return <div className="modal__footer">{children}</div>;
+}
+
+// A consumer who forgets Modal.Body/.Header/.Footer would otherwise get an
+// unpadded panel with no visual feedback that anything's wrong. Falling back
+// to Body for plain children keeps that failure mode from existing.
+function usesSlots(children: ReactNode): boolean {
+  return Children.toArray(children).some(
+    (child) =>
+      isValidElement(child) &&
+      (child.type === Header || child.type === Body || child.type === Footer),
+  );
 }
 
 const FOCUSABLE =
@@ -139,7 +150,7 @@ export function Modal({
             {title}
           </div>
         )}
-        {children}
+        {usesSlots(children) ? children : <Body>{children}</Body>}
       </div>
     </div>,
     document.body,

@@ -93,6 +93,25 @@ describe('Modal', () => {
     expect(screen.getByText('Footer').closest('.modal__footer')).toBeInTheDocument();
   });
 
+  it('pads plain children in modal__body when no slot component is used', () => {
+    render(
+      <Modal open={true} onClose={() => {}}>
+        <p>Plain content</p>
+      </Modal>,
+    );
+    expect(screen.getByText('Plain content').closest('.modal__body')).toBeInTheDocument();
+  });
+
+  it('does not double-wrap children that already use a slot component', () => {
+    render(
+      <Modal open={true} onClose={() => {}}>
+        <Modal.Body>Body</Modal.Body>
+      </Modal>,
+    );
+    const body = screen.getByText('Body').closest('.modal__body') as HTMLElement;
+    expect(body.querySelector('.modal__body')).not.toBeInTheDocument();
+  });
+
   it('labels itself from aria-label when there is no title', () => {
     render(
       <Modal open onClose={() => {}} aria-label="Settings">
