@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.9.16] - 2026-10-03
+
+### Fixed
+
+- `--paul-color-muted-foreground` now clears WCAG AA. It shipped at 2.41:1 on the light surface and 4.03:1 on the dark one, and StatCard, Timeline and AgentDecisionCard set their secondary text in it, so any page using them failed axe's `color-contrast` rule. paul-explore's accessibility scan caught it on its design-system page. It now takes `muted`'s values, the shade every other component already uses for secondary text: `#6d675b` in light (5.02:1 on surface) and `neutral-400` in dark (6.57:1). A new token test holds every text token at 4.5:1 or better on `surface` and `background` in both themes. `tokens` bumps to 0.4.2.
+
 ## [0.9.15] - 2026-09-21
 
 ### Fixed
