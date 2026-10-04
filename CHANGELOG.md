@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.9.16] - 2026-10-03
+
+### Fixed
+
+- `--paul-color-muted-foreground` now clears WCAG AA. It shipped at 2.41:1 on the light surface and 4.03:1 on the dark one, and StatCard, Timeline and AgentDecisionCard set their secondary text in it, so any page using them failed axe's `color-contrast` rule. paul-explore's accessibility scan caught it on its design-system page. It now takes `muted`'s values, the shade every other component already uses for secondary text: `#6d675b` in light (5.02:1 on surface) and `neutral-400` in dark (6.57:1). A new token test holds every text token at 4.5:1 or better on `surface` and `background` in both themes. `tokens` bumps to 0.4.2.
+- StatCard's positive delta is `success-800` in light mode. `success-700` is 5:1 on white but 4.48:1 on this system's warm surface, close enough to look right and still a fail in any consumer's axe scan. A new CSS test resolves every StatCard text colour through the tokens and holds each at AA on the card surface in both themes. `css` bumps to 0.13.12.
+- The Tooltip and InfoTip stories find their bubble again. Tooltip portals it to `document.body` so a transformed ancestor can't offset it, but the stories' `play` functions still searched the story canvas for `role="tooltip"`, so all seven failed in Chromatic once it had quota to run them. They now look in the body, the same way the Modal story finds its dialog.
+
 ## [0.9.15] - 2026-09-21
 
 ### Fixed

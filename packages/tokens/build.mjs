@@ -128,7 +128,8 @@ const semanticColors = {
     surface: '#f4f2ed',
     border: colors.neutral[200],
     muted: '#6d675b',
-    'muted-foreground': colors.neutral[400],
+    // Same as muted: secondary text still has to clear AA (5.02:1 on surface).
+    'muted-foreground': '#6d675b',
     'on-primary': '#ffffff',
     'on-primary-tint': colors.primary[700],
     'on-success-tint': colors.success[700],
@@ -143,7 +144,8 @@ const semanticColors = {
     surface: '#1b1815',
     border: '#322e28',
     muted: colors.neutral[400],
-    'muted-foreground': colors.neutral[500],
+    // Same as muted: neutral-500 was 4.03:1 on the dark surface (6.57:1 now).
+    'muted-foreground': colors.neutral[400],
     'on-primary': '#ffffff',
     'on-primary-tint': colors.primary[200],
     'on-success-tint': colors.success[200],
