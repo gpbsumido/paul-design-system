@@ -25,11 +25,18 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** Hover the trigger and wait out the show-delay so the tooltip is captured. */
+/**
+ * Hover the trigger and wait out the show-delay so the tooltip is captured.
+ * The bubble is portaled to the body, so look for it there, not in the canvas.
+ */
 const revealTooltip: Story['play'] = async ({ canvasElement }) => {
   const canvas = within(canvasElement);
   await userEvent.hover(canvas.getByRole('button'));
-  const tooltip = await canvas.findByRole('tooltip', undefined, { timeout: 2000 });
+  const tooltip = await within(canvasElement.ownerDocument.body).findByRole(
+    'tooltip',
+    undefined,
+    { timeout: 2000 },
+  );
   await expect(tooltip).toBeVisible();
 };
 
